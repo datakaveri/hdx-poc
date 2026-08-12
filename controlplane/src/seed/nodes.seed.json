@@ -1,0 +1,35 @@
+[
+  {
+    "id": "node-a",
+    "name": "Node A — ADARV Core",
+    "institution": "CDPG · Indian Institute of Science",
+    "location": "Bengaluru, KA",
+    "archetype": "greenfield",
+    "status": "online",
+    "onboardedVia": "Native HDX stack (existing ADARV deployment)",
+    "description": "Reused as-is: Catalogue UI, Onboarding Server, Keycloak, Controlplane, Fileserver, ElasticSearch, S3, Entity Mapper, Argo Workflow, FHIR + Postgres.",
+    "approvalStatus": "approved"
+  },
+  {
+    "id": "node-b",
+    "name": "Node B — Federation Pilot",
+    "institution": "CDPG · Second PoC Deployment",
+    "location": "Bengaluru, KA (separate MicroK8s namespace)",
+    "archetype": "greenfield",
+    "status": "online",
+    "onboardedVia": "Native HDX stack (own ElasticSearch + S3)",
+    "description": "Real second stack seeded with sample datasets, fronted by its own DCAT adaptor — proves federation is not just a Node A demo.",
+    "approvalStatus": "approved"
+  },
+  {
+    "id": "node-c",
+    "name": "City General Hospital",
+    "institution": "Private Hospital Network",
+    "location": "Pune, MH",
+    "archetype": "brownfield",
+    "status": "degraded",
+    "onboardedVia": "HDX Data Adaptor (agentic schema mapping, proxy at institutional boundary)",
+    "description": "Existing hospital EHR / LIMS warehouse wrapped without re-architecting — data never leaves the source; the adaptor exposes a conformant, queryable view.",
+    "approvalStatus": "approved"
+  }
+]

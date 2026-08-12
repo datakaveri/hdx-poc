@@ -1,0 +1,50 @@
+[
+  {
+    "id": "svc-tee-enclave",
+    "nodeId": "platform",
+    "name": "TEE / Secure Enclave Execution",
+    "category": "tee-enclave",
+    "description": "Hardware-attested chokepoint all consumer jobs route through — the only thing that touches node-local data.",
+    "operatesOn": ["ds-diabetes-registry", "ds-oncology-mcode", "ds-hospital-ehr", "ds-ed-triage"]
+  },
+  {
+    "id": "svc-mlops",
+    "nodeId": "platform",
+    "name": "MLOps-as-a-Service",
+    "category": "mlops",
+    "description": "Model training, federated learning, and large-scale analytics offered as a registered service.",
+    "operatesOn": ["ds-imaging-dicom", "ds-genomic-variants", "ds-wgs-panel"]
+  },
+  {
+    "id": "svc-federated-query",
+    "nodeId": "platform",
+    "name": "Federated Query Aggregation",
+    "category": "federated-query",
+    "description": "Dispatches a query across nodes and aggregates responses — modelled as just another marketplace service.",
+    "operatesOn": ["ds-diabetes-registry", "ds-genomic-variants", "ds-hospital-ehr", "ds-tb-surveillance"]
+  },
+  {
+    "id": "svc-federated-learning",
+    "nodeId": "platform",
+    "name": "Federated Learning + DEPA",
+    "category": "federated-learning",
+    "description": "Cross-institution model training bound to DEPA purpose-limited consent records.",
+    "operatesOn": ["ds-diabetes-registry", "ds-population-health", "ds-mental-health"]
+  },
+  {
+    "id": "svc-no-code-editor",
+    "nodeId": "node-a",
+    "name": "No-Code Editor (GDI reuse)",
+    "category": "no-code-editor",
+    "description": "Existing GDI No-Code Editor, repointed at the TEE job API instead of its current execution backend.",
+    "operatesOn": ["ds-oncology-mcode", "ds-cardio-risk"]
+  },
+  {
+    "id": "svc-jupyter-sandbox",
+    "nodeId": "node-b",
+    "name": "Jupyter Sandbox",
+    "category": "jupyter-sandbox",
+    "description": "Python/R execution with kernel isolation, package management, and resource limits.",
+    "operatesOn": ["ds-imaging-dicom", "ds-radiology-archive"]
+  }
+]

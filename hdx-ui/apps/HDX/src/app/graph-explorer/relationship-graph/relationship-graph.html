@@ -1,0 +1,118 @@
+@if (showCrossFilter()) {
+  <div class="relctl">
+    <label class="chk">
+      <input type="checkbox" [checked]="crossOnly()" (change)="toggleCrossOnly()" />
+      Only show connections that cross federated nodes
+    </label>
+  </div>
+}
+
+<div class="hint">{{ hint() }}</div>
+
+<div class="graphbox">
+  <svg #svgEl class="graph-svg" role="img" aria-label="Federation-wide relationship network" (click)="clearSelection()">
+    <g class="links">
+      @for (edge of renderEdges(); track edge.source + edge.target) {
+        <line
+          class="link"
+          [class.hosts]="edge.relation === 'hosts'"
+          [class.cross]="edge.relation === 'operates-on' && edge.cross"
+          [class.dim]="isEdgeDim(edge)"
+          [class.hi]="selectedEdge() === edge"
+          [attr.x1]="edge.x1"
+          [attr.y1]="edge.y1"
+          [attr.x2]="edge.x2"
+          [attr.y2]="edge.y2"
+          (click)="pickEdge(edge, $event)"
+          (mousemove)="
+            showTip(
+              $event,
+              (nodeById(edge.source)?.label ?? '') +
+                relationLabel(edge.relation) +
+                (nodeById(edge.target)?.label ?? '')
+            )
+          "
+          (mouseleave)="hideTip()"
+        />
+      }
+    </g>
+
+    <g class="nodes">
+      @for (node of renderNodes(); track node.id) {
+        <g
+          class="node"
+          [class.hub]="node.kind === 'node'"
+          [class.dim]="isNodeDim(node.id)"
+          [class.selected]="selectedId() === node.id"
+          tabindex="0"
+          role="button"
+          [attr.transform]="'translate(' + node.x + ',' + node.y + ')'"
+          (click)="pickNode(node, $event)"
+          (keydown.enter)="pickNode(node, $event)"
+          (keydown.space)="pickNode(node, $event)"
+          (mousemove)="showTip($event, '<b>' + node.label + '</b><br>' + node.nodeLabel + ' &middot; ' + node.degree + ' link' + (node.degree === 1 ? '' : 's'))"
+          (mouseleave)="hideTip()"
+        >
+          <circle class="halo" [attr.r]="node.r" />
+          <use
+            [attr.href]="'#i-' + node.icon"
+            class="ico"
+            [attr.x]="-node.r * 0.42"
+            [attr.y]="-node.r * 0.42"
+            [attr.width]="node.r * 0.84"
+            [attr.height]="node.r * 0.84"
+          />
+          <text class="cap" x="0" [attr.y]="node.r + 13" text-anchor="middle">
+            {{ node.label.length > 22 ? node.label.slice(0, 21) + '…' : node.label }}
+          </text>
+        </g>
+      }
+    </g>
+  </svg>
+
+  @if (tooltip(); as tip) {
+    <div class="tip on" [style.left.px]="tip.x + 14" [style.top.px]="tip.y + 14" [innerHTML]="tip.html"></div>
+  }
+
+  @if (selectedId() || selectedEdge()) {
+    <button class="reset" (click)="clearSelection()">Clear selection</button>
+  }
+
+  @if (showCrossFilter()) {
+    <div class="legend">
+      <span class="legend__item"><span class="legend__swatch legend__swatch--hosts"></span> hosts</span>
+      <span class="legend__item"><span class="legend__swatch legend__swatch--same"></span> operates-on (same node)</span>
+      <span class="legend__item"><span class="legend__swatch legend__swatch--cross"></span> operates-on (cross-node)</span>
+    </div>
+  }
+</div>
+
+@if (selectedEdge(); as edge) {
+  <div class="detail-card">
+    @if (edge.relation === 'hosts') {
+      <div class="detail-card__kind">Hosting relationship</div>
+      <h3>{{ nodeById(edge.source)?.label }} &rarr; {{ nodeById(edge.target)?.label }}</h3>
+      <p>{{ nodeById(edge.target)?.description }}</p>
+      <div class="detail-card__meta">
+        {{ nodeById(edge.target)?.label }} is hosted by {{ nodeById(edge.source)?.label }}
+      </div>
+    } @else if (edge.relation === 'references') {
+      <div class="detail-card__kind">Schema reference</div>
+      <h3>{{ nodeById(edge.source)?.label }} &rarr; {{ nodeById(edge.target)?.label }}</h3>
+      <p>{{ nodeById(edge.target)?.description }}</p>
+      <div class="detail-card__meta">
+        {{ nodeById(edge.source)?.label }} references {{ nodeById(edge.target)?.label }}
+      </div>
+    } @else {
+      <div class="detail-card__kind">{{ edge.cross ? 'Cross-node relationship' : 'Same-node relationship' }}</div>
+      <h3>{{ nodeById(edge.source)?.label }} &rarr; {{ nodeById(edge.target)?.label }}</h3>
+      <p>{{ nodeById(edge.target)?.description }}</p>
+      <div class="detail-card__meta">
+        {{ nodeById(edge.source)?.nodeLabel }} operating on data hosted by {{ nodeById(edge.target)?.nodeLabel }}
+      </div>
+    }
+    @if (nodeById(edge.target)?.kind === 'dataset') {
+      <a class="detail-card__link" [routerLink]="['/datasets', edge.target]">View dataset details &rarr;</a>
+    }
+  </div>
+}

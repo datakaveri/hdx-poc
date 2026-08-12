@@ -1,0 +1,38 @@
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 550;
+  color: var(--text-tertiary);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.on {
+    color: var(--text-primary);
+    border-bottom-color: var(--secondary-color);
+  }
+}
+
+.panel {
+  margin-top: 0.25rem;
+}
+
+.spec-diagram-viewer__empty {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: var(--spacing-lg) 0;
+  text-align: center;
+}

@@ -1,0 +1,157 @@
+/* Typography Styles - Headings h1 to h6 */
+
+h1,
+.h1 {
+  font-size: clamp(28px, 4vw, 3rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+h2,
+.h2 {
+  font-size: clamp(24px, 3.5vw, 2.5rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--primary-color);
+  font-family: var(--font-family-heading);
+}
+
+h3,
+.h3 {
+  font-size: clamp(20px, 3vw, 2rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+h4,
+.h4 {
+  font-size: clamp(18px, 2.5vw, 1.75rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+h5,
+.h5 {
+  font-size: clamp(16px, 2vw, 1.25rem);
+  font-weight:var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--primary-color);
+  font-family: var(--font-family-heading);
+}
+
+h6,
+.h6 {
+  font-size: clamp(14px, 1.5vw, 1.25rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--primary-color);
+  font-family: var(--font-family-heading);
+}
+
+/* Heading Utility Classes with double hyphens */
+.h--1 {
+  font-size: clamp(28px, 4vw, 3rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+.h--2 {
+  font-size: clamp(24px, 3.5vw, 2.5rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+.h--3 {
+  font-size: clamp(20px, 3vw, 2rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+.h--4 {
+  font-size: clamp(18px, 2.5vw, 1.75rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+.h--5 {
+  font-size: clamp(16px, 2vw, 1.5rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+.h--6 {
+  font-size: clamp(14px, 1.5vw, 1.25rem);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0 0 var(--heading-margin-bottom) 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-heading);
+}
+
+/* Body and other tags - DM Sans */
+body {
+  font-family: var(--font-family-body);
+}
+
+/* Apply DM Sans to all non-heading elements */
+p,
+span,
+div,
+a,
+button,
+input,
+textarea,
+select,
+label,
+li,
+td,
+th,
+ul,
+ol,
+dl,
+dt,
+dd,
+pre,
+code,
+blockquote,
+small,
+strong,
+em,
+b,
+i,
+u,
+s,
+mark,
+del,
+ins,
+sub,
+sup {
+  font-family: var(--font-family-body);
+}

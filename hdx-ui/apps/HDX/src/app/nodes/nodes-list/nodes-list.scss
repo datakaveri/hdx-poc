@@ -1,0 +1,126 @@
+.plane-page {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__intro {
+    margin-bottom: var(--spacing-lg);
+
+    h1 {
+      margin: 0 0 var(--spacing-xs);
+      font-size: 1.6rem;
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-secondary);
+      max-width: 760px;
+    }
+  }
+
+  &__stats {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+.stat-tile {
+  background: var(--primary-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+}
+
+.node-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.node-card {
+  position: relative;
+  display: block;
+  background: var(--primary-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Matches apps/IUDX dataset-card gradient hover ring */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(180deg, var(--primary-cyan), var(--secondary-color));
+    -webkit-mask: linear-gradient(var(--primary-white) 0 0) content-box, linear-gradient(var(--primary-white) 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-0.5rem);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &__badges {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  &__title {
+    margin: 0 0 var(--spacing-xs);
+    font-size: 1.15rem;
+  }
+
+  &__meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  &__description {
+    margin: 0 0 var(--spacing-md);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+  }
+
+  &__cta {
+    margin-left: auto;
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+}

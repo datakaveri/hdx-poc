@@ -1,0 +1,32 @@
+.node-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--primary-color-10);
+  color: var(--primary-color);
+  margin-right: var(--spacing-xs);
+
+  &--brownfield {
+    background: var(--secondary-color-15);
+    color: var(--secondary-color);
+  }
+
+  &--online {
+    background: #dcfce7;
+    color: var(--success-color);
+  }
+
+  &--degraded {
+    background: var(--secondary-color-15);
+    color: var(--secondary-color);
+  }
+
+  &--offline {
+    background: #fee2e2;
+    color: var(--error-color);
+  }
+}

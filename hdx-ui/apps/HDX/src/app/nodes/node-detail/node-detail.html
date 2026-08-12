@@ -1,0 +1,54 @@
+@if (node(); as n) {
+  <section class="plane-page">
+    <a class="back-link" routerLink="/nodes">&larr; All federated nodes</a>
+
+    <header class="node-header">
+      <div class="node-header__badges">
+        <app-node-badge [archetype]="n.archetype" [status]="n.status" />
+      </div>
+      <h1>{{ n.name }}</h1>
+      <div class="node-header__meta">{{ n.institution }} &middot; {{ n.location }}</div>
+      <p class="node-header__description">{{ n.description }}</p>
+      <div class="node-header__onboarding"><strong>Onboarded via:</strong> {{ n.onboardedVia }}</div>
+    </header>
+
+    <h2 class="section-title">Datasets hosted here ({{ datasets().length }})</h2>
+    <div class="dataset-grid">
+      @for (dataset of datasets(); track dataset.id) {
+        <p-card styleClass="dataset-card">
+          <a class="dataset-card__title" [routerLink]="['/datasets', dataset.id]">{{ dataset.title }}</a>
+          <p class="dataset-card__description">{{ dataset.description }}</p>
+          <div class="dataset-card__meta">
+            <p-tag [value]="dataset.track" severity="secondary" />
+            <p-tag [value]="dataset.access" [severity]="accessSeverity(dataset.access)" />
+            <span class="dataset-card__count">{{ dataset.recordCount | number }} records</span>
+          </div>
+          <div class="dataset-card__standards">
+            @for (standard of dataset.standards; track standard) {
+              <span class="standard-chip">{{ standard }}</span>
+            }
+          </div>
+        </p-card>
+      } @empty {
+        <p class="empty-state">This node hasn't published any datasets yet.</p>
+      }
+    </div>
+
+    @if (services().length) {
+      <h2 class="section-title">Services hosted here ({{ services().length }})</h2>
+      <div class="service-list">
+        @for (service of services(); track service.id) {
+          <div class="service-row">
+            <span class="service-row__name">{{ service.name }}</span>
+            <span class="service-row__description">{{ service.description }}</span>
+          </div>
+        }
+      </div>
+    }
+  </section>
+} @else {
+  <section class="plane-page">
+    <a class="back-link" routerLink="/nodes">&larr; All federated nodes</a>
+    <p class="empty-state">No federated node matches "{{ id() }}".</p>
+  </section>
+}

@@ -1,0 +1,217 @@
+<section class="wizard-page">
+  <header class="plane-page__intro">
+    <h1>Onboard a Dataset</h1>
+    <p>Publish a new dataset from an existing federated node into the catalogue.</p>
+  </header>
+
+  @if (!submitted()) {
+    <app-wizard-stepper [steps]="steps" [current]="currentStep()" (stepSelect)="goToStep($event)" />
+
+    <div class="wizard-card">
+      @if (currentStep() === 0) {
+        <h2 class="wizard-step__title">Basic Info</h2>
+        <p class="wizard-step__hint">What is this dataset, and which node hosts it?</p>
+
+        <div class="form-field">
+          <label class="form-label" for="ds-title">Title <span class="required">*</span></label>
+          <input
+            id="ds-title"
+            class="form-input"
+            [class.error]="showErrors() && !title().trim()"
+            [ngModel]="title()"
+            (ngModelChange)="title.set($event)"
+            placeholder="e.g. Sickle Cell Disease Registry"
+          />
+          @if (showErrors() && !title().trim()) {
+            <span class="error-message">Title is required.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="ds-description">Description <span class="required">*</span></label>
+          <textarea
+            id="ds-description"
+            class="form-textarea"
+            rows="3"
+            [class.error]="showErrors() && !description().trim()"
+            [ngModel]="description()"
+            (ngModelChange)="description.set($event)"
+            placeholder="What does this dataset contain, and how was it collected?"
+          ></textarea>
+          @if (showErrors() && !description().trim()) {
+            <span class="error-message">Description is required.</span>
+          }
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <span class="form-label" id="ds-node-label">Federated node <span class="required">*</span></span>
+            <app-dropdown-select
+              [id]="'ds-node'"
+              [labelledBy]="'ds-node-label'"
+              [options]="nodeOptions"
+              [value]="nodeId()"
+              placeholder="Select hosting node"
+              (valueChange)="nodeId.set($event)"
+            />
+            @if (showErrors() && !nodeId()) {
+              <span class="error-message">Select the hosting node.</span>
+            }
+          </div>
+          <div class="form-field">
+            <span class="form-label" id="ds-track-label">Track <span class="required">*</span></span>
+            <app-dropdown-select
+              [id]="'ds-track'"
+              [labelledBy]="'ds-track-label'"
+              [options]="trackOptions"
+              [value]="track()"
+              placeholder="Select track"
+              (valueChange)="track.set($event)"
+            />
+            @if (showErrors() && !track()) {
+              <span class="error-message">Select a track.</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="ds-record-count">Record count</label>
+          <input
+            id="ds-record-count"
+            type="number"
+            class="form-input"
+            [ngModel]="recordCount()"
+            (ngModelChange)="recordCount.set($event)"
+            placeholder="optional, e.g. 12480"
+          />
+        </div>
+      }
+
+      @if (currentStep() === 1) {
+        <h2 class="wizard-step__title">Standards &amp; Access</h2>
+        <p class="wizard-step__hint">How is this dataset coded, and who can request it?</p>
+
+        <div class="form-field">
+          <span class="form-label">Standards <span class="required">*</span></span>
+          <div class="chip-toggle-group">
+            @for (standard of standardChoices; track standard) {
+              <button
+                type="button"
+                class="chip-toggle"
+                [class.chip-toggle--active]="standards().includes(standard)"
+                (click)="toggleStandard(standard)"
+              >
+                {{ standard }}
+              </button>
+            }
+          </div>
+          @if (showErrors() && standards().length === 0) {
+            <span class="error-message">Select at least one standard.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <span class="form-label" id="ds-access-label">Access tier <span class="required">*</span></span>
+          <app-dropdown-select
+            [id]="'ds-access'"
+            [labelledBy]="'ds-access-label'"
+            [options]="accessOptions"
+            [value]="access()"
+            placeholder="Select access tier"
+            (valueChange)="access.set($event)"
+          />
+          @if (showErrors() && !access()) {
+            <span class="error-message">Select an access tier.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="ds-tags">Tags</label>
+          <input
+            id="ds-tags"
+            class="form-input"
+            [ngModel]="tagsInput()"
+            (ngModelChange)="tagsInput.set($event)"
+            placeholder="comma-separated, e.g. diabetes, longitudinal"
+          />
+          <span class="form-hint">{{ tags().length ? tags().join(' · ') : 'No tags yet' }}</span>
+        </div>
+
+        <div class="form-field">
+          <span class="form-label">Visibility</span>
+          <div class="chip-toggle-group">
+            <button type="button" class="chip-toggle" [class.chip-toggle--active]="visibility() === 'public'" (click)="setVisibility('public')">
+              Public
+            </button>
+            <button type="button" class="chip-toggle" [class.chip-toggle--active]="visibility() === 'private'" (click)="setVisibility('private')">
+              Private
+            </button>
+          </div>
+          <span class="form-hint">Private datasets are only visible to you and platform admins.</span>
+        </div>
+      }
+
+      @if (currentStep() === 2) {
+        <h2 class="wizard-step__title">Sample File</h2>
+        <p class="wizard-step__hint">Optional — attach a sample or schema file for reviewers.</p>
+        <app-file-dropzone (filesChange)="onFilesChange($event)" />
+      }
+
+      @if (currentStep() === 3) {
+        <h2 class="wizard-step__title">Review &amp; Submit</h2>
+        <p class="wizard-step__hint">Double check before this goes into the catalogue.</p>
+
+        <div class="review-list">
+          <div class="review-row"><span class="review-row__label">Title</span><span class="review-row__value">{{ title() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Description</span><span class="review-row__value">{{ description() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Federated node</span><span class="review-row__value">{{ nodeLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Track</span><span class="review-row__value">{{ trackLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Record count</span><span class="review-row__value">{{ recordCount() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Standards</span><span class="review-row__value">{{ standards().length ? standards().join(', ') : '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Access tier</span><span class="review-row__value">{{ accessLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Tags</span><span class="review-row__value">{{ tags().length ? tags().join(', ') : '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Visibility</span><span class="review-row__value">{{ visibility() === 'public' ? 'Public' : 'Private' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Sample files</span><span class="review-row__value">{{ fileCount() }} attached</span></div>
+        </div>
+        @if (submitError()) {
+          <span class="error-message">{{ submitError() }}</span>
+        }
+      }
+
+      <div class="wizard-actions">
+        @if (currentStep() > 0) {
+          <button type="button" class="wizard-btn wizard-btn--secondary" (click)="back()">&larr; Previous</button>
+        } @else {
+          <a routerLink="/onboarding" class="wizard-btn wizard-btn--secondary">&larr; Cancel</a>
+        }
+        @if (currentStep() < steps.length - 1) {
+          <button type="button" class="wizard-btn wizard-btn--primary" [disabled]="!canGoNext()" (click)="next()">Next &rarr;</button>
+        } @else {
+          <button type="button" class="wizard-btn wizard-btn--primary" [disabled]="submitting()" (click)="submit()">
+            {{ submitting() ? 'Submitting…' : 'Submit dataset' }}
+          </button>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="wizard-card wizard-success">
+      <div class="wizard-success__icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h2 class="wizard-success__title">{{ title() }} submitted for review</h2>
+      <p class="wizard-success__message">
+        This dataset is now published under {{ nodeLabel() }} and appears across Data Plane and Graph Explorer.
+        It's saved to the local PoC data store, not a real HDX federation backend.
+      </p>
+      @if (fileSaveError()) {
+        <span class="error-message">{{ fileSaveError() }}</span>
+      }
+      <div class="wizard-success__actions">
+        <button type="button" class="wizard-btn wizard-btn--secondary" (click)="addAnother()">Add another dataset</button>
+        <a routerLink="/data-plane" class="wizard-btn wizard-btn--primary">Back to Data Plane</a>
+      </div>
+    </div>
+  }
+</section>

@@ -1,0 +1,180 @@
+<section class="wizard-page">
+  <header class="plane-page__intro">
+    <h1>Onboard a Service</h1>
+    <p>Register a compute or data-processing service on the exchange, and the datasets it may operate on.</p>
+  </header>
+
+  @if (!submitted()) {
+    <app-wizard-stepper [steps]="steps" [current]="currentStep()" (stepSelect)="goToStep($event)" />
+
+    <div class="wizard-card">
+      @if (currentStep() === 0) {
+        <h2 class="wizard-step__title">Basic Info</h2>
+        <p class="wizard-step__hint">What does this service do?</p>
+
+        <div class="form-field">
+          <label class="form-label" for="svc-name">Service name <span class="required">*</span></label>
+          <input
+            id="svc-name"
+            class="form-input"
+            [class.error]="showErrors() && !name().trim()"
+            [ngModel]="name()"
+            (ngModelChange)="name.set($event)"
+            placeholder="e.g. Cohort Builder"
+          />
+          @if (showErrors() && !name().trim()) {
+            <span class="error-message">Service name is required.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="svc-description">Description <span class="required">*</span></label>
+          <textarea
+            id="svc-description"
+            class="form-textarea"
+            rows="3"
+            [class.error]="showErrors() && !description().trim()"
+            [ngModel]="description()"
+            (ngModelChange)="description.set($event)"
+            placeholder="What does this service do, and what does it need to run?"
+          ></textarea>
+          @if (showErrors() && !description().trim()) {
+            <span class="error-message">Description is required.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <span class="form-label" id="svc-category-label">Category <span class="required">*</span></span>
+          <app-dropdown-select
+            [id]="'svc-category'"
+            [labelledBy]="'svc-category-label'"
+            [options]="categoryOptions"
+            [value]="category()"
+            placeholder="Select category"
+            (valueChange)="category.set($event)"
+          />
+          @if (showErrors() && !category()) {
+            <span class="error-message">Select a category.</span>
+          }
+        </div>
+      }
+
+      @if (currentStep() === 1) {
+        <h2 class="wizard-step__title">Hosting &amp; Datasets</h2>
+        <p class="wizard-step__hint">Where does this service run, and what is it allowed to touch?</p>
+
+        <div class="form-field">
+          <span class="form-label" id="svc-host-label">Hosted by <span class="required">*</span></span>
+          <app-dropdown-select
+            [id]="'svc-host'"
+            [labelledBy]="'svc-host-label'"
+            [options]="hostOptions"
+            [value]="hostId()"
+            placeholder="Select host"
+            (valueChange)="hostId.set($event)"
+          />
+          @if (showErrors() && !hostId()) {
+            <span class="error-message">Select a host.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <span class="form-label">Registered against (datasets)</span>
+          <div class="chip-toggle-group">
+            @for (dataset of datasetChoices; track dataset.id) {
+              <button
+                type="button"
+                class="chip-toggle"
+                [class.chip-toggle--active]="operatesOn().includes(dataset.id)"
+                (click)="toggleDataset(dataset.id)"
+              >
+                {{ dataset.title }}
+              </button>
+            }
+          </div>
+          <span class="form-hint">Optional — can be left empty and registered against datasets later.</span>
+        </div>
+
+        <div class="form-field">
+          <span class="form-label">Visibility</span>
+          <div class="chip-toggle-group">
+            <button type="button" class="chip-toggle" [class.chip-toggle--active]="visibility() === 'public'" (click)="setVisibility('public')">
+              Public
+            </button>
+            <button type="button" class="chip-toggle" [class.chip-toggle--active]="visibility() === 'private'" (click)="setVisibility('private')">
+              Private
+            </button>
+          </div>
+          <span class="form-hint">Private services are only visible to you and platform admins.</span>
+        </div>
+      }
+
+      @if (currentStep() === 2) {
+        <h2 class="wizard-step__title">Review &amp; Submit</h2>
+        <p class="wizard-step__hint">Double check before this joins the service plane.</p>
+
+        <div class="review-list">
+          <div class="review-row"><span class="review-row__label">Service name</span><span class="review-row__value">{{ name() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Description</span><span class="review-row__value">{{ description() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Category</span><span class="review-row__value">{{ categoryLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Hosted by</span><span class="review-row__value">{{ hostLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Registered against</span><span class="review-row__value">{{ operatesOnTitles().length ? operatesOnTitles().join(', ') : 'None yet' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Visibility</span><span class="review-row__value">{{ visibility() === 'public' ? 'Public' : 'Private' }}</span></div>
+        </div>
+        @if (submitError()) {
+          <span class="error-message">{{ submitError() }}</span>
+        }
+      }
+
+      <div class="wizard-actions">
+        @if (currentStep() > 0) {
+          <button type="button" class="wizard-btn wizard-btn--secondary" (click)="back()">&larr; Previous</button>
+        } @else {
+          <a routerLink="/onboarding" class="wizard-btn wizard-btn--secondary">&larr; Cancel</a>
+        }
+        @if (currentStep() < steps.length - 1) {
+          <button type="button" class="wizard-btn wizard-btn--primary" [disabled]="!canGoNext()" (click)="next()">Next &rarr;</button>
+        } @else {
+          <button type="button" class="wizard-btn wizard-btn--primary" [disabled]="submitting()" (click)="submit()">
+            {{ submitting() ? 'Submitting…' : 'Submit service' }}
+          </button>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="wizard-card wizard-success">
+      <div class="wizard-success__icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h2 class="wizard-success__title">{{ name() }} submitted for review</h2>
+      <p class="wizard-success__message">
+        This service is now published under {{ hostLabel() }} and appears across Service Plane and Graph Explorer.
+        It's saved to the local PoC data store, not a real HDX federation backend.
+      </p>
+      <div class="wizard-success__actions">
+        <button type="button" class="wizard-btn wizard-btn--secondary" (click)="addAnother()">Add another service</button>
+        <a routerLink="/service-plane" class="wizard-btn wizard-btn--primary">Back to Service Plane</a>
+      </div>
+    </div>
+
+    <div class="wizard-card">
+      <h2 class="wizard-step__title">Attach an API spec <span class="form-hint">(optional)</span></h2>
+      <p class="wizard-step__hint">
+        Upload {{ name() }}'s <code>openapi.yaml</code> or <code>.json</code> spec to generate an endpoint and
+        schema diagram for it.
+      </p>
+
+      <app-spec-upload (specParsed)="onSpecParsed($event)" />
+
+      @if (specSaveError()) {
+        <span class="error-message">{{ specSaveError() }}</span>
+      }
+
+      @if (parsedSpec(); as spec) {
+        <app-spec-diagram-viewer [spec]="spec" />
+      }
+    </div>
+  }
+</section>

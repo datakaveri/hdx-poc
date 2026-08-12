@@ -1,0 +1,37 @@
+<section class="plane-page">
+  <header class="plane-page__intro plane-page__intro--with-action">
+    <div>
+      <h1>Federated Nodes</h1>
+      <p>
+        Every institution on the exchange keeps its own data — only metadata and pointers are shared with the
+        federated index. Select a node to see what it hosts.
+      </p>
+    </div>
+    <a routerLink="/onboarding/node" class="add-btn">+ Add Node</a>
+  </header>
+
+  <div class="plane-page__stats">
+    <div class="stat-tile">
+      <span class="stat-tile__value">{{ nodes.length }}</span>
+      <span class="stat-tile__label">Federated nodes</span>
+    </div>
+  </div>
+
+  <div class="node-grid">
+    @for (node of nodes; track node.id) {
+      <a class="node-card" [routerLink]="[node.id]">
+        <div class="node-card__badges">
+          <app-node-badge [archetype]="node.archetype" [status]="node.status" />
+        </div>
+        <h3 class="node-card__title">{{ node.name }}</h3>
+        <div class="node-card__meta">{{ node.institution }} &middot; {{ node.location }}</div>
+        <p class="node-card__description">{{ node.description }}</p>
+        <div class="node-card__footer">
+          <span>{{ datasetCount(node.id) }} datasets</span>
+          <span>{{ serviceCount(node.id) }} services</span>
+          <span class="node-card__cta">View datasets &rarr;</span>
+        </div>
+      </a>
+    }
+  </div>
+</section>

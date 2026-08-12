@@ -1,0 +1,8 @@
+<span class="node-badge" [class.node-badge--brownfield]="archetype() === 'brownfield'">
+  {{ archetypeLabel() }}
+</span>
+@if (status()) {
+  <span class="node-badge node-badge--status" [class]="'node-badge--' + status()">
+    {{ status() }}
+  </span>
+}

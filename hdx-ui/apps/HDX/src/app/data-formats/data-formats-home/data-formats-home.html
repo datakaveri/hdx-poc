@@ -1,0 +1,29 @@
+<section class="plane-page">
+  <header class="plane-page__intro">
+    <h1>Data Formats</h1>
+    <p>
+      Common clinical data models supported across the federation, with their FHIR StructureDefinition profiles and
+      worked example bundles.
+    </p>
+  </header>
+
+  <div class="format-grid">
+    @for (format of formats; track format.id) {
+      <a class="format-card" [routerLink]="[format.id]">
+        <span class="format-card__name">{{ format.name }}</span>
+        <span class="format-card__full-name">{{ format.fullName }}</span>
+        <p class="format-card__description">{{ format.description }}</p>
+        <div class="format-card__meta">
+          <span class="format-card__count">{{ format.resourceCount }} profiles</span>
+          <div class="format-card__standards">
+            @for (standard of format.standards; track standard) {
+              <span class="standard-chip">{{ standard }}</span>
+            }
+          </div>
+        </div>
+      </a>
+    } @empty {
+      <p class="empty-state">No data formats registered yet.</p>
+    }
+  </div>
+</section>

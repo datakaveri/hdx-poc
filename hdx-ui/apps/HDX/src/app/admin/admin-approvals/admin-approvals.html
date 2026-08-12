@@ -1,0 +1,43 @@
+<section class="approvals-page">
+  <header class="approvals-page__intro">
+    <h1>Pending Approvals</h1>
+    <p>Federated node requests waiting on platform admin sign-off. Approving grants the requester node_owner access.</p>
+  </header>
+
+  @if (loadError()) {
+    <div class="approvals-page__error">{{ loadError() }}</div>
+  }
+  @if (actionError()) {
+    <div class="approvals-page__error">{{ actionError() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="empty-state">Loading…</p>
+  } @else if (pendingNodes().length === 0) {
+    <p class="empty-state">No pending node requests right now.</p>
+  } @else {
+    <div class="approval-list">
+      @for (node of pendingNodes(); track node.id) {
+        <div class="approval-row">
+          <div class="approval-row__badges">
+            <app-node-badge [archetype]="node.archetype" [status]="node.status" />
+          </div>
+          <div class="approval-row__body">
+            <h3 class="approval-row__title">{{ node.name }}</h3>
+            <p class="approval-row__meta">{{ node.institution }} &middot; {{ node.location }}</p>
+            <p class="approval-row__description">{{ node.description }}</p>
+            <p class="approval-row__onboarded">Onboarding method: {{ node.onboardedVia }}</p>
+          </div>
+          <button
+            type="button"
+            class="approval-row__approve"
+            [disabled]="approvingId() === node.id"
+            (click)="approve(node)"
+          >
+            {{ approvingId() === node.id ? 'Approving…' : 'Approve' }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

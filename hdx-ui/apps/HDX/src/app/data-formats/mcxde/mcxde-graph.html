@@ -1,0 +1,85 @@
+<div class="mcxde">
+  <div class="mcxde__controls">
+    <button type="button" [disabled]="currentView() === 'master'" (click)="showMaster()">Overview</button>
+    <button type="button" (click)="fitGraph()">Fit graph</button>
+    <button type="button" (click)="zoomBy(1.25)">Zoom +</button>
+    <button type="button" (click)="zoomBy(0.8)">Zoom −</button>
+  </div>
+
+  <div class="mcxde__canvas">
+    <svg #graphSvg class="mcxde__svg" role="img" aria-label="Interactive diabetes clinical concept graph"></svg>
+
+    <div class="breadcrumb">
+      @if (currentView() === 'master') {
+        <strong>Overview</strong>
+      } @else {
+        <span>Overview</span><span>›</span><strong>{{ currentGraphTitle() }}</strong>
+      }
+    </div>
+
+    <div class="legend" role="group" aria-label="Toggle domain visibility">
+      @for (item of legendItems; track item.type) {
+        <button
+          type="button"
+          class="legend-item"
+          [class.legend-item--off]="hiddenTypes().has(item.type)"
+          [attr.aria-pressed]="!hiddenTypes().has(item.type)"
+          [title]="hiddenTypes().has(item.type) ? 'Show ' + item.label : 'Hide ' + item.label"
+          (click)="toggleType(item.type)"
+        >
+          <span class="swatch" [class]="'swatch--' + item.type"></span>{{ item.label }}
+        </button>
+      }
+    </div>
+
+    <div class="hint">
+      Click a colored domain node to open its detailed subgraph. Click the root node in a detailed view—or
+      <strong>Overview</strong>—to collapse back to the initial graph. Drag to pan; use the mouse wheel or buttons to zoom.
+    </div>
+
+    @if (activeSample(); as sample) {
+      <div class="fhir-modal-backdrop open" (click)="closeFHIRModal()">
+        <section class="fhir-modal" role="dialog" aria-modal="true" aria-labelledby="fhirModalTitle" (click)="$event.stopPropagation()">
+          <div class="fhir-modal-head">
+            <div>
+              <h2 id="fhirModalTitle" class="fhir-modal-title">{{ sample.title }}</h2>
+              <div class="fhir-modal-subtitle">
+                Illustrative <strong>mCODE-inspired</strong> FHIR R4 prototype — not an official HL7/mCODE diabetes artifact. Base
+                resource:
+                <a [href]="sample.baseUrl" target="_blank" rel="noopener noreferrer">{{ sample.resource }}</a
+                >.
+              </div>
+            </div>
+            <button #fhirCloseBtn class="fhir-close" type="button" aria-label="Close FHIR sample" (click)="closeFHIRModal()">×</button>
+          </div>
+          <div class="fhir-toolbar">
+            <div class="fhir-tabs" role="tablist" aria-label="FHIR sample views">
+              <button
+                class="fhir-tab"
+                [class.active]="activeFhirTab() === 'profile'"
+                type="button"
+                role="tab"
+                [attr.aria-selected]="activeFhirTab() === 'profile'"
+                (click)="setFHIRTab('profile')"
+              >
+                StructureDefinition
+              </button>
+              <button
+                class="fhir-tab"
+                [class.active]="activeFhirTab() === 'bundle'"
+                type="button"
+                role="tab"
+                [attr.aria-selected]="activeFhirTab() === 'bundle'"
+                (click)="setFHIRTab('bundle')"
+              >
+                Example Bundle
+              </button>
+            </div>
+            <button type="button" (click)="copyFhir()">{{ copyLabel() }}</button>
+          </div>
+          <div class="fhir-code-wrap"><pre class="fhir-code">{{ fhirCode() }}</pre></div>
+        </section>
+      </div>
+    }
+  </div>
+</div>

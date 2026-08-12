@@ -1,0 +1,34 @@
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles - Import order matters (ported from apps/IUDX in ui-dx) */
+@import './styles/variables.scss';
+@import './styles/canvas-variables.scss';
+@import './styles/onboarding-variables.scss';
+@import './styles/mixins.scss';
+@import './styles/checkbox-custom.scss';
+@import './styles/typography.scss';
+@import './styles/utilities.scss';
+@import './styles/animations.scss';
+@import './styles/dropdown-global.scss';
+@import './styles/accessibility-styles.scss';
+@import './styles/action-dropdown.scss';
+@import './styles/request-status-tabs.scss';
+@import './styles/onboarding-form.scss';
+
+/* PrimeNG styles */
+@import 'primeicons/primeicons.css';
+
+/* Global layout fixes */
+body {
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+/* App root container */
+app-root {
+  display: block;
+}

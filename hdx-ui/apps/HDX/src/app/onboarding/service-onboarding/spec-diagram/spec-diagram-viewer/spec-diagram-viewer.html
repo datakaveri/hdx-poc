@@ -1,0 +1,33 @@
+<app-graph-icon-defs />
+
+<div class="tabs" role="tablist">
+  <button class="tab" [class.on]="tab() === 'endpoints'" role="tab" [attr.aria-selected]="tab() === 'endpoints'" (click)="setTab('endpoints')">
+    Endpoint hierarchy
+  </button>
+  <button class="tab" [class.on]="tab() === 'schemas'" role="tab" [attr.aria-selected]="tab() === 'schemas'" (click)="setTab('schemas')">
+    Schema relationships
+  </button>
+</div>
+
+<div class="panel" [hidden]="tab() !== 'endpoints'">
+  @if (rings().length) {
+    <app-hierarchy-graph [rings]="rings()" emptyHint="Select a tag to open its operations." />
+  } @else {
+    <p class="spec-diagram-viewer__empty">This spec has no operations under its "paths" to graph.</p>
+  }
+</div>
+
+@if (tab() === 'schemas') {
+  <div class="panel">
+    @if (relEdges().length) {
+      <app-relationship-graph
+        [relNodes]="relNodes()"
+        [relEdges]="relEdges()"
+        [showCrossFilter]="false"
+        hint="Select a schema to isolate what it references, or a link to see the $ref between them."
+      />
+    } @else {
+      <p class="spec-diagram-viewer__empty">This spec has no schema-to-schema $ref links to graph.</p>
+    }
+  </div>
+}

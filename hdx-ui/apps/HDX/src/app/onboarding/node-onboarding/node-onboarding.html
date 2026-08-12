@@ -1,0 +1,178 @@
+<section class="wizard-page">
+  <header class="plane-page__intro">
+    <h1>Onboard a Federated Node</h1>
+    <p>Register a new institution onto the exchange. Its data stays where it is — only this record joins the index.</p>
+  </header>
+
+  @if (!submitted()) {
+    <app-wizard-stepper [steps]="steps" [current]="currentStep()" (stepSelect)="goToStep($event)" />
+
+    <div class="wizard-card">
+      @if (currentStep() === 0) {
+        <h2 class="wizard-step__title">Basic Info</h2>
+        <p class="wizard-step__hint">Who is joining the federation, and where are they?</p>
+
+        <div class="form-field">
+          <label class="form-label" for="node-name">Node name <span class="required">*</span></label>
+          <input
+            id="node-name"
+            class="form-input"
+            [class.error]="showErrors() && !name().trim()"
+            [ngModel]="name()"
+            (ngModelChange)="name.set($event)"
+            placeholder="e.g. Fortis Hospital Network"
+          />
+          @if (showErrors() && !name().trim()) {
+            <span class="error-message">Node name is required.</span>
+          }
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="node-institution">Institution <span class="required">*</span></label>
+            <input
+              id="node-institution"
+              class="form-input"
+              [class.error]="showErrors() && !institution().trim()"
+              [ngModel]="institution()"
+              (ngModelChange)="institution.set($event)"
+              placeholder="e.g. Fortis Healthcare Ltd."
+            />
+            @if (showErrors() && !institution().trim()) {
+              <span class="error-message">Institution is required.</span>
+            }
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="node-location">Location <span class="required">*</span></label>
+            <input
+              id="node-location"
+              class="form-input"
+              [class.error]="showErrors() && !location().trim()"
+              [ngModel]="location()"
+              (ngModelChange)="location.set($event)"
+              placeholder="e.g. Gurugram, HR"
+            />
+            @if (showErrors() && !location().trim()) {
+              <span class="error-message">Location is required.</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="node-description">Description <span class="required">*</span></label>
+          <textarea
+            id="node-description"
+            class="form-textarea"
+            rows="3"
+            [class.error]="showErrors() && !description().trim()"
+            [ngModel]="description()"
+            (ngModelChange)="description.set($event)"
+            placeholder="What data does this node hold, and what's already in place?"
+          ></textarea>
+          @if (showErrors() && !description().trim()) {
+            <span class="error-message">Description is required.</span>
+          }
+        </div>
+      }
+
+      @if (currentStep() === 1) {
+        <h2 class="wizard-step__title">Federation Details</h2>
+        <p class="wizard-step__hint">How does this node plug into the exchange?</p>
+
+        <div class="form-field">
+          <span class="form-label" id="node-archetype-label">Archetype <span class="required">*</span></span>
+          <app-dropdown-select
+            [id]="'node-archetype'"
+            [labelledBy]="'node-archetype-label'"
+            [options]="archetypeOptions"
+            [value]="archetype()"
+            placeholder="Select archetype"
+            (valueChange)="archetype.set($event)"
+          />
+          @if (showErrors() && !archetype()) {
+            <span class="error-message">Select an archetype.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="node-onboarded-via">Onboarding method <span class="required">*</span></label>
+          <input
+            id="node-onboarded-via"
+            class="form-input"
+            [class.error]="showErrors() && !onboardedVia().trim()"
+            [ngModel]="onboardedVia()"
+            (ngModelChange)="onboardedVia.set($event)"
+            placeholder="e.g. HDX Data Adaptor (agentic schema mapping, proxy at institutional boundary)"
+          />
+          <span class="form-hint">How the node's existing systems (or lack thereof) connect to the exchange.</span>
+          @if (showErrors() && !onboardedVia().trim()) {
+            <span class="error-message">Onboarding method is required.</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="node-contact">Technical contact email</label>
+          <input
+            id="node-contact"
+            type="email"
+            class="form-input"
+            [ngModel]="contactEmail()"
+            (ngModelChange)="contactEmail.set($event)"
+            placeholder="optional"
+          />
+        </div>
+      }
+
+      @if (currentStep() === 2) {
+        <h2 class="wizard-step__title">Review &amp; Submit</h2>
+        <p class="wizard-step__hint">Double check before this goes to the federated index.</p>
+
+        <div class="review-list">
+          <div class="review-row"><span class="review-row__label">Node name</span><span class="review-row__value">{{ name() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Institution</span><span class="review-row__value">{{ institution() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Location</span><span class="review-row__value">{{ location() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Description</span><span class="review-row__value">{{ description() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Archetype</span><span class="review-row__value">{{ archetypeLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Onboarding method</span><span class="review-row__value">{{ onboardedVia() || '—' }}</span></div>
+          <div class="review-row"><span class="review-row__label">Technical contact</span><span class="review-row__value">{{ contactEmail() || '—' }}</span></div>
+        </div>
+        @if (submitError()) {
+          <span class="error-message">{{ submitError() }}</span>
+        }
+      }
+
+      <div class="wizard-actions">
+        @if (currentStep() > 0) {
+          <button type="button" class="wizard-btn wizard-btn--secondary" (click)="back()">&larr; Previous</button>
+        } @else {
+          <a routerLink="/onboarding" class="wizard-btn wizard-btn--secondary">&larr; Cancel</a>
+        }
+        @if (currentStep() < steps.length - 1) {
+          <button type="button" class="wizard-btn wizard-btn--primary" [disabled]="!canGoNext()" (click)="next()">Next &rarr;</button>
+        } @else {
+          <button type="button" class="wizard-btn wizard-btn--primary" [disabled]="submitting()" (click)="submit()">
+            {{ submitting() ? 'Submitting…' : 'Submit node' }}
+          </button>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="wizard-card wizard-success">
+      <div class="wizard-success__icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h2 class="wizard-success__title">{{ name() }} submitted for approval</h2>
+      <p class="wizard-success__message">
+        A platform admin needs to approve this request before it joins the federated index. Once approved, you'll be
+        granted node_owner access and can manage datasets and services under it — track its status on your
+        <a routerLink="/profile">Profile</a> page.
+      </p>
+      <div class="wizard-success__actions">
+        <button type="button" class="wizard-btn wizard-btn--secondary" (click)="addAnother()">Add another node</button>
+        <a routerLink="/profile" class="wizard-btn wizard-btn--primary">Go to Profile</a>
+      </div>
+    </div>
+  }
+</section>

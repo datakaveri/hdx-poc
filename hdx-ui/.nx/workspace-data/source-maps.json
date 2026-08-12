@@ -1,0 +1,236 @@
+{
+  "apps/HDX": {
+    "root": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "$schema": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.defaultConfiguration": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.outputPath": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.browser": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.tsConfig": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.inlineStyleLanguage": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.assets": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.styles": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.budgets": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.outputHashing": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.optimization": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.extractLicenses": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.sourceMap": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.continuous": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.executor": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.defaultConfiguration": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.production": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.production.buildTarget": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.development": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.development.buildTarget": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve-static": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve-static.continuous": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve-static.executor": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve-static.options": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve-static.options.buildTarget": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve-static.options.staticFilePath": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve-static.options.spa": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+@if (format(); as format) {
+  <section class="format-detail">
+    <header class="format-detail__intro">
+      <a routerLink="/data-formats" class="format-detail__back">← Data Formats</a>
+      <h1>{{ format.fullName }}</h1>
+      <p>{{ format.description }}</p>
+    </header>
+
+    <div class="format-detail__graph">
+      @if (format.id === 'mcxde') {
+        <app-mcxde-graph />
+      }
+    </div>
+  </section>
+} @else {
+  <section class="format-detail">
+    <p class="empty-state">Unknown data format "{{ id() }}".</p>
+    <a routerLink="/data-formats">← Back to Data Formats</a>
+  </section>
+}

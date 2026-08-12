@@ -1,0 +1,71 @@
+@mixin tablet {
+    @media (min-width: 769px) and (max-width: 1024px) {
+      @content;
+    }
+  }
+
+@mixin flex(
+  $direction: row,
+  $align: stretch,
+  $justify: flex-start,
+  $wrap: nowrap,
+  $gap: null
+) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+
+  @if $gap != null {
+    gap: $gap;
+  }
+}
+  
+  @mixin desktop {
+    @media (min-width: 1025px) {
+      @content;
+    }
+  }
+
+  @mixin large-desktop {
+    @media (min-width: 1440px) {
+      @content;
+    }
+  }
+
+@mixin media-breakpoint-down($breakpoint) {
+  @if $breakpoint == md {
+    @media (max-width: 767.98px) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (max-width: 991.98px) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @media (max-width: 1199.98px) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-up($breakpoint) {
+  @if $breakpoint == md {
+    @media (min-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (min-width: 992px) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}

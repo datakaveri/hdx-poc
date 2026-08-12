@@ -1,0 +1,312 @@
+/**
+ * Global config and styles for custom dropdowns — IUDX navy theme.
+ * (contribution steps: metadata, additional-info, upload, preview-metadata, etc.)
+ * Single source of truth: trigger, panel, open-upward positioning, option row, checkmark.
+ * Mirrors MahaAgX `dropdown-global.scss` shape/behavior; colors use IUDX `--primary-color` navy.
+ */
+
+/* ========== Wrapper & trigger ========== */
+.custom-dropdown-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-dropdown-trigger {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem var(--spacing-lg);
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1a1a1a;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+
+  &:hover {
+    border-color: var(--primary-color);
+  }
+
+  &.open {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-color-10);
+  }
+
+  &.error {
+    border-color: #d32f2f;
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Permission chip: shared with contribution-setup step 1 (Access Policy / dataset onboarding) */
+  .permission-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1;
+
+    &.permission-chip--public,
+    &.permission-chip--restricted {
+      background: var(--badge-public-bg, var(--ob-primary-bg-soft));
+      color: var(--badge-public-text, var(--primary-color));
+    }
+
+    .permission-chip__icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      filter: brightness(0) saturate(100%) invert(18%) sepia(42%) saturate(2145%)
+        hue-rotate(210deg) brightness(92%) contrast(92%);
+    }
+
+    .chip-close-icon {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      color: var(--badge-public-text, var(--primary-color));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      opacity: 0.7;
+      margin-left: 2px;
+
+      &:hover {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .dropdown-arrow {
+    flex-shrink: 0;
+    margin-left: var(--spacing-sm);
+    stroke: #666;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.trigger-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  min-width: 0;
+  gap: var(--spacing-sm);
+}
+
+.placeholder {
+  color: #999;
+  flex: 1;
+  font-size: 0.9375rem;
+}
+
+.selected-value {
+  font-size: 0.9375rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex: 1;
+}
+
+.selected-value-name {
+  color: #333;
+}
+
+.selected-value-separator {
+  color: #999;
+  margin: 0 var(--spacing-xxs);
+}
+
+.selected-value-url {
+  color: #999;
+}
+
+.dropdown-arrow {
+  width: 12px;
+  height: 12px;
+  color: #666;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+/* ========== Panel (position from CSS variables) ========== */
+.custom-dropdown-panel {
+  position: absolute;
+  top: calc(100% + var(--dropdown-gap, 4px));
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: var(--dropdown-panel-max-height, 300px);
+  overflow-y: auto;
+  z-index: var(--z-dropdown, 1000);
+  animation: dropdownSlide 0.2s ease;
+
+  &.panel-open-upward {
+    top: auto;
+    bottom: calc(100% + var(--dropdown-gap, 4px));
+    animation: dropdownSlideUpward 0.2s ease;
+  }
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dropdownSlideUpward {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== Option row (no bg when selected) ========== */
+.dropdown-option {
+  padding: 0.75rem var(--spacing-lg);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+
+  &:hover {
+    background: var(--hover-bg);
+  }
+
+  &.selected {
+    background: transparent;
+  }
+
+  /* Multi-line option rows (e.g. resource server name + URL) */
+  &:has(.option-label-wrapper) {
+    align-items: flex-start;
+
+    .checkbox-wrapper {
+      margin-top: 0.125rem;
+    }
+  }
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Match Sort checkmark (asset-grid): CSS-only check */
+.checkbox-custom {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border-radius: 4px;
+  border: 2px solid #d1d5db;
+  flex-shrink: 0;
+  background: #ffffff;
+  box-sizing: border-box;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &.checked,
+  &:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 8px;
+      border: solid #ffffff;
+      border-width: 0 2px 2px 0;
+      transform: translate(-50%, -60%) rotate(45deg);
+    }
+  }
+
+  &:hover {
+    border-color: var(--primary-color);
+  }
+}
+
+.option-label {
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  color: #1a1a1a;
+  flex: 1;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  min-height: 18px;
+
+  .dropdown-option:hover & {
+    color: var(--primary-color);
+  }
+}
+
+.option-label-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
+}
+
+.option-label-name {
+  font-size: 0.9375rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.option-label-url {
+  font-size: 0.8125rem;
+  color: #666;
+}

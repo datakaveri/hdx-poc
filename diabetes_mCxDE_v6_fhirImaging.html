@@ -1,0 +1,3899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diabetes Common Clinical Model — Interactive Concept Graph</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #d8dee9;
+      --edge: #94a3b8;
+      --disease: #f5b36c;
+      --assessment: #8eb5f2;
+      --tech: #9bd39c;
+      --treatment: #f4df58;
+      --outcome: #dc9bec;
+      --patient: #79d5d3;
+      --context: #c9b4ea;
+      --external: #d8dde6;
+      --danger: #e87979;
+      --shadow: 0 12px 36px rgba(15, 23, 42, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .app {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+      min-height: 0;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+      z-index: 5;
+    }
+
+    .title-wrap { min-width: 0; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(18px, 2.1vw, 28px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .subtitle a {
+      color: #315f9b;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(49,95,155,0.35);
+    }
+
+    .subtitle a:hover {
+      color: #1f4b84;
+      border-bottom-color: currentColor;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 11px;
+      font-weight: 650;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+    }
+
+    button:hover { background: #f1f5f9; border-color: #b8c3d2; }
+    button:active { transform: translateY(1px); }
+    button:disabled { opacity: 0.45; cursor: default; }
+
+    main {
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    #graph {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(148,163,184,0.08), transparent 32%),
+        radial-gradient(circle at 78% 72%, rgba(148,163,184,0.07), transparent 32%),
+        var(--bg);
+    }
+
+    .legend {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, max-content);
+      gap: 6px 12px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .swatch { width: 12px; height: 12px; border-radius: 4px; border: 1px solid rgba(15,23,42,0.18); }
+
+    .hint {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      max-width: 300px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 6px 22px rgba(15, 23, 42, 0.08);
+      font-size: 12px;
+      color: var(--muted);
+      z-index: 3;
+    }
+
+    .breadcrumb strong { color: var(--text); }
+
+    .status {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .node rect {
+      stroke: rgba(30,41,59,0.34);
+      stroke-width: 1.2px;
+      filter: drop-shadow(0 3px 5px rgba(15,23,42,0.08));
+    }
+
+    .node text {
+      pointer-events: none;
+      user-select: none;
+      fill: #172033;
+    }
+
+    .node .label-main { font-weight: 700; }
+    .node .label-sub { fill: #55657a; font-weight: 520; }
+
+    .node.expandable { cursor: pointer; }
+    .node.expandable rect { stroke-width: 2px; }
+    .node.expandable:hover rect { stroke: #334155; }
+
+    .node.profile rect { fill-opacity: 0.88; }
+    .node.element rect { fill: #fff; stroke-dasharray: 0; }
+    .node.value rect { fill: #fbfdff; stroke-dasharray: 3 2; }
+
+    .edge {
+      fill: none;
+      stroke: var(--edge);
+      stroke-width: 1.45px;
+      opacity: 0.78;
+    }
+
+    .edge.support {
+      stroke-dasharray: 6 5;
+      opacity: 0.7;
+    }
+
+    .cross-edge {
+      fill: none;
+      stroke: #64748b;
+      stroke-width: 1.25px;
+      stroke-dasharray: 5 5;
+      opacity: 0.78;
+    }
+
+    .cross-label {
+      font-size: 10px;
+      fill: #64748b;
+      text-anchor: middle;
+      paint-order: stroke;
+      stroke: var(--bg);
+      stroke-width: 4px;
+      stroke-linejoin: round;
+    }
+
+    .click-badge circle {
+      fill: #fff;
+      stroke: rgba(30,41,59,0.45);
+      stroke-width: 1px;
+    }
+    .click-badge text {
+      font-size: 11px;
+      font-weight: 800;
+      text-anchor: middle;
+      dominant-baseline: central;
+      fill: #334155;
+      pointer-events: none;
+    }
+
+
+    .node.fhir-sample { cursor: pointer; }
+    .node.fhir-sample:hover rect { stroke: #334155; stroke-width: 2px; }
+
+    .json-badge rect {
+      fill: #ffffff;
+      stroke: rgba(30,41,59,0.45);
+      stroke-width: 1px;
+      filter: none;
+    }
+    .json-badge text {
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-anchor: middle;
+      dominant-baseline: central;
+      fill: #334155;
+      pointer-events: none;
+    }
+
+    .fhir-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.28);
+      backdrop-filter: blur(3px);
+      z-index: 20;
+    }
+
+    .fhir-modal-backdrop.open { display: flex; }
+
+    .fhir-modal {
+      width: min(980px, calc(100vw - 42px));
+      max-height: min(86vh, 920px);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 22px 70px rgba(15, 23, 42, 0.24);
+    }
+
+    .fhir-modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 17px 18px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fhir-modal-title { margin: 0; font-size: 18px; line-height: 1.2; }
+    .fhir-modal-subtitle {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+    .fhir-modal-subtitle a { color: #315f9b; text-decoration: none; }
+    .fhir-modal-subtitle a:hover { text-decoration: underline; }
+
+    .fhir-close {
+      flex: 0 0 auto;
+      min-width: 34px;
+      padding: 6px 9px;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .fhir-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fbfcfe;
+    }
+
+    .fhir-tabs { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+    .fhir-tab.active {
+      background: #172033;
+      border-color: #172033;
+      color: #fff;
+    }
+
+    .fhir-code-wrap {
+      min-height: 0;
+      overflow: auto;
+      background: #0f172a;
+    }
+
+    .fhir-code {
+      margin: 0;
+      padding: 18px 20px 28px;
+      color: #e5edf8;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre;
+      tab-size: 2;
+    }
+
+    @media (max-width: 620px) {
+      .fhir-modal-backdrop { padding: 10px; }
+      .fhir-modal { width: calc(100vw - 20px); max-height: 88vh; }
+      .fhir-modal-head { padding: 13px 13px 10px; }
+      .fhir-toolbar { align-items: flex-start; }
+      .fhir-code { padding: 14px; font-size: 11px; }
+    }
+
+    @media (max-width: 820px) {
+      header { align-items: flex-start; }
+      .subtitle { display: none; }
+      .legend { grid-template-columns: repeat(2, max-content); }
+      .hint { max-width: 220px; }
+    }
+
+    @media (max-width: 560px) {
+      header { padding: 10px 12px; }
+      .controls button { padding: 7px 8px; }
+      .legend { display: none; }
+      .hint { left: 12px; right: 12px; bottom: 10px; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="title-wrap">
+        <h1>Diabetes Common Clinical Model</h1>
+        <div class="subtitle">Interactive D3 concept graph · clinical model only · no FHIR resource assignments · Clinical reference: <a href="https://professional.diabetes.org/standards-of-care" target="_blank" rel="noopener noreferrer">ADA Standards of Care in Diabetes</a></div>
+      </div>
+      <div class="controls">
+        <button id="overviewBtn" type="button" disabled>Overview</button>
+        <button id="fitBtn" type="button">Fit graph</button>
+        <button id="zoomInBtn" type="button">Zoom +</button>
+        <button id="zoomOutBtn" type="button">Zoom −</button>
+      </div>
+    </header>
+
+    <main>
+      <svg id="graph" role="img" aria-label="Interactive diabetes clinical concept graph"></svg>
+      <div id="breadcrumb" class="breadcrumb"><strong>Overview</strong></div>
+      <div class="legend" aria-hidden="true">
+        <div class="legend-item"><span class="swatch" style="background:var(--disease)"></span>Disease</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--assessment)"></span>Assessment</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--tech)"></span>Monitoring / Tech</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--treatment)"></span>Treatment</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--outcome)"></span>Outcome</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--patient)"></span>Patient</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--context)"></span>Special context</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--external)"></span>External / common</div>
+      </div>
+      <div class="hint">Click a colored domain node to open its detailed subgraph. Click the root node in a detailed view—or <strong>Overview</strong>—to collapse back to the initial graph. Drag to pan; use the mouse wheel or buttons to zoom.</div>
+      <div id="status" class="status">Loading D3 graph…</div>
+
+      <div id="fhirModalBackdrop" class="fhir-modal-backdrop" aria-hidden="true">
+        <section class="fhir-modal" role="dialog" aria-modal="true" aria-labelledby="fhirModalTitle">
+          <div class="fhir-modal-head">
+            <div>
+              <h2 id="fhirModalTitle" class="fhir-modal-title">FHIR sample</h2>
+              <div id="fhirModalSubtitle" class="fhir-modal-subtitle"></div>
+            </div>
+            <button id="fhirCloseBtn" class="fhir-close" type="button" aria-label="Close FHIR sample">×</button>
+          </div>
+          <div class="fhir-toolbar">
+            <div class="fhir-tabs" role="tablist" aria-label="FHIR sample views">
+              <button id="profileTabBtn" class="fhir-tab active" type="button" role="tab" aria-selected="true">StructureDefinition</button>
+              <button id="bundleTabBtn" class="fhir-tab" type="button" role="tab" aria-selected="false">Example Bundle</button>
+            </div>
+            <button id="copyFhirBtn" type="button">Copy JSON</button>
+          </div>
+          <div class="fhir-code-wrap"><pre id="fhirCode" class="fhir-code"></pre></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script>
+    (() => {
+      "use strict";
+
+      const statusEl = document.getElementById("status");
+      if (!window.d3) {
+        statusEl.textContent = "D3 could not be loaded. Please open this file while connected to the internet.";
+        return;
+      }
+
+      const d3 = window.d3;
+      const svg = d3.select("#graph");
+      const breadcrumb = document.getElementById("breadcrumb");
+      const overviewBtn = document.getElementById("overviewBtn");
+      const fitBtn = document.getElementById("fitBtn");
+      const zoomInBtn = document.getElementById("zoomInBtn");
+      const zoomOutBtn = document.getElementById("zoomOutBtn");
+      const fhirModalBackdrop = document.getElementById("fhirModalBackdrop");
+      const fhirModalTitle = document.getElementById("fhirModalTitle");
+      const fhirModalSubtitle = document.getElementById("fhirModalSubtitle");
+      const fhirCloseBtn = document.getElementById("fhirCloseBtn");
+      const profileTabBtn = document.getElementById("profileTabBtn");
+      const bundleTabBtn = document.getElementById("bundleTabBtn");
+      const copyFhirBtn = document.getElementById("copyFhirBtn");
+      const fhirCode = document.getElementById("fhirCode");
+
+      const fhirSamples = {
+  "diabetesCondition": {
+    "title": "Diabetes Condition",
+    "resource": "Condition",
+    "baseUrl": "https://hl7.org/fhir/R4/condition.html",
+    "profile": {
+      "resourceType": "StructureDefinition",
+      "id": "dccm-diabetes-condition",
+      "url": "https://example.org/fhir/StructureDefinition/dccm-diabetes-condition",
+      "version": "0.1.0",
+      "name": "DiabetesCondition",
+      "title": "Diabetes Condition Profile",
+      "status": "draft",
+      "experimental": true,
+      "date": "2026-08-11",
+      "publisher": "Illustrative Diabetes Common Clinical Model",
+      "description": "An mCODE-inspired FHIR R4 profile for representing an asserted diabetes diagnosis or condition. This prototype constrains the base Condition resource and marks the clinical status, verification status, diabetes code, patient, onset, recorded date, supporting evidence, and notes as key interoperable elements.",
+      "purpose": "Prototype only. It demonstrates how a diabetes clinical-model box can be expressed as a constrained FHIR R4 resource in the same profile-oriented style used by mCODE.",
+      "fhirVersion": "4.0.1",
+      "kind": "resource",
+      "abstract": false,
+      "type": "Condition",
+      "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Condition",
+      "derivation": "constraint",
+      "differential": {
+        "element": [
+          {
+            "id": "Condition",
+            "path": "Condition"
+          },
+          {
+            "id": "Condition.clinicalStatus",
+            "path": "Condition.clinicalStatus",
+            "min": 1,
+            "mustSupport": true
+          },
+          {
+            "id": "Condition.verificationStatus",
+            "path": "Condition.verificationStatus",
+            "min": 1,
+            "mustSupport": true
+          },
+          {
+            "id": "Condition.category",
+            "path": "Condition.category",
+            "mustSupport": true
+          },
+          {
+            "id": "Condition.code",
+            "path": "Condition.code",
+            "min": 1,
+            "mustSupport": true
+          },
+          {
+            "id": "Condition.subject",
+            "path": "Condition.subject",
+            "min": 1,
+            "mustSupport": true,
+            "type": [
+              {
+                "code": "Reference",
+                "targetProfile": [
+                  "http://hl7.org/fhir/StructureDefinition/Patient"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "Condition.onset[x]",
+            "path": "Condition.onset[x]",
+            "mustSupport": true
+          },
+          {
+            "id": "Condition.recordedDate",
+            "path": "Condition.recordedDate",
+            "mustSupport": true
+          },
+          {
+            "id": "Condition.evidence",
+            "path": "Condition.evidence",
+            "mustSupport": true
+          },
+          {
+            "id": "Condition.note",
+            "path": "Condition.note",
+            "mustSupport": true
+          }
+        ]
+      }
+    },
+    "bundle": {
+      "resourceType": "Bundle",
+      "id": "diabetes-condition-example-bundle",
+      "type": "collection",
+      "entry": [
+        {
+          "fullUrl": "https://example.org/fhir/Patient/diabetes-example",
+          "resource": {
+            "resourceType": "Patient",
+            "id": "diabetes-example",
+            "name": [
+              {
+                "use": "official",
+                "family": "Example",
+                "given": [
+                  "Asha"
+                ]
+              }
+            ],
+            "gender": "female",
+            "birthDate": "1972-05-14"
+          }
+        },
+        {
+          "fullUrl": "https://example.org/fhir/Observation/hba1c-supporting-example",
+          "resource": {
+            "resourceType": "Observation",
+            "id": "hba1c-supporting-example",
+            "status": "final",
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "laboratory",
+                    "display": "Laboratory"
+                  }
+                ]
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "4548-4",
+                  "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+                }
+              ],
+              "text": "HbA1c"
+            },
+            "subject": {
+              "reference": "Patient/diabetes-example"
+            },
+            "effectiveDateTime": "2026-07-28T09:15:00+05:30",
+            "valueQuantity": {
+              "value": 7.2,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          }
+        },
+        {
+          "fullUrl": "https://example.org/fhir/Condition/diabetes-condition-example",
+          "resource": {
+            "resourceType": "Condition",
+            "id": "diabetes-condition-example",
+            "meta": {
+              "profile": [
+                "https://example.org/fhir/StructureDefinition/dccm-diabetes-condition"
+              ]
+            },
+            "clinicalStatus": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                  "code": "active",
+                  "display": "Active"
+                }
+              ]
+            },
+            "verificationStatus": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                  "code": "confirmed",
+                  "display": "Confirmed"
+                }
+              ]
+            },
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                    "code": "problem-list-item",
+                    "display": "Problem List Item"
+                  }
+                ]
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "44054006",
+                  "display": "Type 2 diabetes mellitus"
+                }
+              ],
+              "text": "Type 2 diabetes mellitus"
+            },
+            "subject": {
+              "reference": "Patient/diabetes-example"
+            },
+            "onsetDateTime": "2018-03-12",
+            "recordedDate": "2018-03-12",
+            "evidence": [
+              {
+                "detail": [
+                  {
+                    "reference": "Observation/hba1c-supporting-example",
+                    "display": "HbA1c supporting diagnostic assessment"
+                  }
+                ]
+              }
+            ],
+            "note": [
+              {
+                "text": "Example only: classification, etiology, disease course, and complications can be represented by linked resources in the wider diabetes clinical model."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "glycemicAssessment": {
+    "title": "Glycemic Assessment",
+    "resource": "Observation",
+    "baseUrl": "https://hl7.org/fhir/R4/observation.html",
+    "profile": {
+      "resourceType": "StructureDefinition",
+      "id": "dccm-glycemic-assessment",
+      "url": "https://example.org/fhir/StructureDefinition/dccm-glycemic-assessment",
+      "version": "0.1.0",
+      "name": "GlycemicAssessment",
+      "title": "Glycemic Assessment Profile",
+      "status": "draft",
+      "experimental": true,
+      "date": "2026-08-11",
+      "publisher": "Illustrative Diabetes Common Clinical Model",
+      "description": "An mCODE-inspired FHIR R4 profile for diabetes-related glycemic observations. It uses the base Observation resource for coded measurements such as HbA1c and can also support structured summary components for glucose-monitoring assessments.",
+      "purpose": "Prototype only. It demonstrates how the Glycemic Assessment box can be represented through a constrained FHIR R4 Observation profile.",
+      "fhirVersion": "4.0.1",
+      "kind": "resource",
+      "abstract": false,
+      "type": "Observation",
+      "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Observation",
+      "derivation": "constraint",
+      "differential": {
+        "element": [
+          {
+            "id": "Observation",
+            "path": "Observation"
+          },
+          {
+            "id": "Observation.status",
+            "path": "Observation.status",
+            "min": 1,
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.category",
+            "path": "Observation.category",
+            "min": 1,
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.code",
+            "path": "Observation.code",
+            "min": 1,
+            "mustSupport": true,
+            "binding": {
+              "strength": "preferred",
+              "description": "Use a LOINC code when an appropriate laboratory or quantitative glycemic observation code exists."
+            }
+          },
+          {
+            "id": "Observation.subject",
+            "path": "Observation.subject",
+            "min": 1,
+            "mustSupport": true,
+            "type": [
+              {
+                "code": "Reference",
+                "targetProfile": [
+                  "http://hl7.org/fhir/StructureDefinition/Patient"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "Observation.effective[x]",
+            "path": "Observation.effective[x]",
+            "min": 1,
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.value[x]",
+            "path": "Observation.value[x]",
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.interpretation",
+            "path": "Observation.interpretation",
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.referenceRange",
+            "path": "Observation.referenceRange",
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.component",
+            "path": "Observation.component",
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.component.code",
+            "path": "Observation.component.code",
+            "min": 1,
+            "mustSupport": true
+          },
+          {
+            "id": "Observation.component.value[x]",
+            "path": "Observation.component.value[x]",
+            "mustSupport": true
+          }
+        ]
+      }
+    },
+    "bundle": {
+      "resourceType": "Bundle",
+      "id": "glycemic-assessment-example-bundle",
+      "type": "collection",
+      "entry": [
+        {
+          "fullUrl": "https://example.org/fhir/Patient/glycemic-example",
+          "resource": {
+            "resourceType": "Patient",
+            "id": "glycemic-example",
+            "name": [
+              {
+                "use": "official",
+                "family": "Example",
+                "given": [
+                  "Asha"
+                ]
+              }
+            ],
+            "gender": "female",
+            "birthDate": "1972-05-14"
+          }
+        },
+        {
+          "fullUrl": "https://example.org/fhir/Observation/glycemic-assessment-example",
+          "resource": {
+            "resourceType": "Observation",
+            "id": "glycemic-assessment-example",
+            "meta": {
+              "profile": [
+                "https://example.org/fhir/StructureDefinition/dccm-glycemic-assessment"
+              ]
+            },
+            "status": "final",
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "laboratory",
+                    "display": "Laboratory"
+                  }
+                ]
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "4548-4",
+                  "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+                }
+              ],
+              "text": "HbA1c"
+            },
+            "subject": {
+              "reference": "Patient/glycemic-example"
+            },
+            "effectiveDateTime": "2026-07-28T09:15:00+05:30",
+            "valueQuantity": {
+              "value": 7.2,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "H",
+                    "display": "High"
+                  }
+                ]
+              }
+            ],
+            "referenceRange": [
+              {
+                "high": {
+                  "value": 6.5,
+                  "unit": "%",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "%"
+                },
+                "text": "Illustrative reference boundary for this example only"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "continuousGlucoseMonitoring": {
+  "title": "Continuous Glucose Monitoring",
+  "resource": "Observation",
+  "baseUrl": "https://hl7.org/fhir/R4/observation.html",
+  "profile": {
+    "resourceType": "StructureDefinition",
+    "id": "dccm-continuous-glucose-monitoring",
+    "url": "https://example.org/fhir/StructureDefinition/dccm-continuous-glucose-monitoring",
+    "version": "0.1.0",
+    "name": "ContinuousGlucoseMonitoring",
+    "title": "Continuous Glucose Monitoring Profile",
+    "status": "draft",
+    "experimental": true,
+    "date": "2026-08-11",
+    "publisher": "Illustrative Diabetes Common Clinical Model",
+    "description": "An mCODE-inspired FHIR R4 profile for a continuous glucose monitoring (CGM) summary. The core summary is represented as an Observation with a reporting period, method, device, and structured components for sensor data sufficiency, mean glucose, GMI, time in/below/above range, glucose variability, and clinically relevant glucose patterns. The patient's CGM use start/stop period is represented by a related DeviceUseStatement in the example Bundle.",
+    "purpose": "Prototype only. It demonstrates how every child concept under the Continuous Glucose Monitoring box can be represented using standard FHIR R4 elements and a related device-use resource, following the profile-oriented pattern used by mCODE.",
+    "fhirVersion": "4.0.1",
+    "kind": "resource",
+    "abstract": false,
+    "type": "Observation",
+    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Observation",
+    "derivation": "constraint",
+    "differential": {
+      "element": [
+        {
+          "id": "Observation",
+          "path": "Observation"
+        },
+        {
+          "id": "Observation.status",
+          "path": "Observation.status",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.category",
+          "path": "Observation.category",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.code",
+          "path": "Observation.code",
+          "min": 1,
+          "mustSupport": true,
+          "binding": {
+            "strength": "preferred",
+            "description": "Prefer LOINC for CGM summary/panel observations when an appropriate code exists."
+          }
+        },
+        {
+          "id": "Observation.subject",
+          "path": "Observation.subject",
+          "min": 1,
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/Patient"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Observation.effective[x]",
+          "path": "Observation.effective[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.method",
+          "path": "Observation.method",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.device",
+          "path": "Observation.device",
+          "min": 1,
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/Device"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Observation.component",
+          "path": "Observation.component",
+          "min": 1,
+          "mustSupport": true,
+          "slicing": {
+            "discriminator": [
+              {
+                "type": "pattern",
+                "path": "code"
+              }
+            ],
+            "ordered": false,
+            "rules": "open"
+          }
+        },
+        {
+          "id": "Observation.component:sensorWear",
+          "path": "Observation.component",
+          "sliceName": "sensorWear",
+          "min": 0,
+          "max": "1",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:sensorWear.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                "code": "sensor-wear-data-sufficiency"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:sensorWear.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:meanGlucose",
+          "path": "Observation.component",
+          "sliceName": "meanGlucose",
+          "min": 0,
+          "max": "1",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:meanGlucose.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "97507-8"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:meanGlucose.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:gmi",
+          "path": "Observation.component",
+          "sliceName": "gmi",
+          "min": 0,
+          "max": "1",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:gmi.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "97506-0"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:gmi.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:tir",
+          "path": "Observation.component",
+          "sliceName": "tir",
+          "min": 0,
+          "max": "1",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:tir.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "97510-2"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:tir.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:tbr",
+          "path": "Observation.component",
+          "sliceName": "tbr",
+          "min": 0,
+          "max": "1",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:tbr.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                "code": "time-below-range-total"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:tbr.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:tar",
+          "path": "Observation.component",
+          "sliceName": "tar",
+          "min": 0,
+          "max": "1",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:tar.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                "code": "time-above-range-total"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:tar.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:variability",
+          "path": "Observation.component",
+          "sliceName": "variability",
+          "min": 0,
+          "max": "1",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:variability.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "104638-2"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:variability.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:patterns",
+          "path": "Observation.component",
+          "sliceName": "patterns",
+          "min": 0,
+          "max": "*",
+          "mustSupport": true
+        },
+        {
+          "id": "Observation.component:patterns.code",
+          "path": "Observation.component.code",
+          "min": 1,
+          "patternCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                "code": "glucose-event-pattern"
+              }
+            ]
+          }
+        },
+        {
+          "id": "Observation.component:patterns.value[x]",
+          "path": "Observation.component.value[x]",
+          "min": 1,
+          "mustSupport": true
+        }
+      ]
+    }
+  },
+  "bundle": {
+    "resourceType": "Bundle",
+    "id": "continuous-glucose-monitoring-example-bundle",
+    "type": "collection",
+    "entry": [
+      {
+        "fullUrl": "https://example.org/fhir/Patient/cgm-example",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "cgm-example",
+          "name": [
+            {
+              "use": "official",
+              "family": "Example",
+              "given": [
+                "Asha"
+              ]
+            }
+          ],
+          "gender": "female",
+          "birthDate": "1972-05-14"
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Device/cgm-device-example",
+        "resource": {
+          "resourceType": "Device",
+          "id": "cgm-device-example",
+          "status": "active",
+          "deviceName": [
+            {
+              "name": "Illustrative CGM sensor",
+              "type": "user-friendly-name"
+            }
+          ],
+          "type": {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/dccm-device-type",
+                "code": "continuous-glucose-monitor",
+                "display": "Continuous glucose monitor"
+              }
+            ],
+            "text": "Continuous glucose monitor"
+          },
+          "patient": {
+            "reference": "Patient/cgm-example"
+          }
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/DeviceUseStatement/cgm-use-example",
+        "resource": {
+          "resourceType": "DeviceUseStatement",
+          "id": "cgm-use-example",
+          "status": "active",
+          "subject": {
+            "reference": "Patient/cgm-example"
+          },
+          "timingPeriod": {
+            "start": "2026-06-01",
+            "end": "2026-08-11"
+          },
+          "recordedOn": "2026-08-11T08:45:00+05:30",
+          "device": {
+            "reference": "Device/cgm-device-example"
+          },
+          "note": [
+            {
+              "text": "Represents the graph child 'Use Start / Stop'."
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Observation/cgm-summary-example",
+        "resource": {
+          "resourceType": "Observation",
+          "id": "cgm-summary-example",
+          "meta": {
+            "profile": [
+              "https://example.org/fhir/StructureDefinition/dccm-continuous-glucose-monitoring"
+            ]
+          },
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                  "code": "laboratory",
+                  "display": "Laboratory"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "106793-3",
+                "display": "Continuous glucose monitoring time in ranges panel"
+              }
+            ],
+            "text": "Continuous glucose monitoring summary"
+          },
+          "subject": {
+            "reference": "Patient/cgm-example"
+          },
+          "effectivePeriod": {
+            "start": "2026-07-28T00:00:00+05:30",
+            "end": "2026-08-10T23:59:59+05:30"
+          },
+          "issued": "2026-08-11T08:30:00+05:30",
+          "method": {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/dccm-monitoring-method",
+                "code": "cgm",
+                "display": "Continuous glucose monitoring"
+              }
+            ],
+            "text": "Continuous glucose monitoring"
+          },
+          "device": {
+            "reference": "Device/cgm-device-example",
+            "display": "Illustrative CGM sensor"
+          },
+          "component": [
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                    "code": "sensor-wear-data-sufficiency",
+                    "display": "Sensor wear / data sufficiency"
+                  }
+                ]
+              },
+              "valueQuantity": {
+                "value": 96,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+              }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "97507-8",
+                    "display": "Average glucose [Mass/volume] in Interstitial fluid during Reporting Period"
+                  }
+                ]
+              },
+              "valueQuantity": {
+                "value": 154,
+                "unit": "mg/dL",
+                "system": "http://unitsofmeasure.org",
+                "code": "mg/dL"
+              }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "97506-0",
+                    "display": "Glucose management indicator"
+                  }
+                ]
+              },
+              "valueQuantity": {
+                "value": 7.0,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+              }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "97510-2",
+                    "display": "Glucose measurements in range out of Total glucose measurements during reporting period"
+                  }
+                ],
+                "text": "Time in Range (70-180 mg/dL)"
+              },
+              "valueQuantity": {
+                "value": 72,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+              }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                    "code": "time-below-range-total",
+                    "display": "Time Below Range"
+                  }
+                ],
+                "text": "Time Below Range (<70 mg/dL)"
+              },
+              "valueQuantity": {
+                "value": 3,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+              }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                    "code": "time-above-range-total",
+                    "display": "Time Above Range"
+                  }
+                ],
+                "text": "Time Above Range (>180 mg/dL)"
+              },
+              "valueQuantity": {
+                "value": 25,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+              }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "104638-2",
+                    "display": "Glucose standard deviation/Glucose mean in Reporting Period Interstitial fluid by calculation"
+                  }
+                ],
+                "text": "Glucose variability (coefficient of variation)"
+              },
+              "valueQuantity": {
+                "value": 34,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+              }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                    "code": "glucose-event-pattern",
+                    "display": "Glucose event / pattern"
+                  }
+                ]
+              },
+              "valueString": "Repeated post-prandial hyperglycemia after the evening meal; no prolonged nocturnal hypoglycemia."
+            }
+          ],
+          "note": [
+            {
+              "text": "Graph coverage: device/method = Observation.device + method; use start/stop = DeviceUseStatement.timingPeriod; reporting period = effectivePeriod; all remaining CGM child metrics are represented as components."
+            }
+          ]
+        }
+      }
+    ]
+  }
+},
+  "diabetesManagementPlan": {
+  "title": "Diabetes Management Plan",
+  "resource": "CarePlan",
+  "baseUrl": "https://hl7.org/fhir/R4/careplan.html",
+  "profile": {
+    "resourceType": "StructureDefinition",
+    "id": "dccm-diabetes-management-plan",
+    "url": "https://example.org/fhir/StructureDefinition/dccm-diabetes-management-plan",
+    "version": "0.1.0",
+    "name": "DiabetesManagementPlan",
+    "title": "Diabetes Management Plan Profile",
+    "status": "draft",
+    "experimental": true,
+    "date": "2026-08-11",
+    "publisher": "Illustrative Diabetes Common Clinical Model",
+    "description": "An mCODE-inspired FHIR R4 profile for a patient-specific diabetes management plan. Glycemic and weight goals are represented through Goal references, while monitoring, medication, lifestyle, hypoglycemia-safety, sick-day/ketone, referral, and follow-up plans are represented as CarePlan activities.",
+    "purpose": "Prototype only. It demonstrates how every child concept under the Diabetes Management Plan box can be represented using the FHIR R4 CarePlan and Goal resources while retaining a profile-first design similar to mCODE.",
+    "fhirVersion": "4.0.1",
+    "kind": "resource",
+    "abstract": false,
+    "type": "CarePlan",
+    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/CarePlan",
+    "derivation": "constraint",
+    "differential": {
+      "element": [
+        {
+          "id": "CarePlan",
+          "path": "CarePlan"
+        },
+        {
+          "id": "CarePlan.status",
+          "path": "CarePlan.status",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.intent",
+          "path": "CarePlan.intent",
+          "min": 1,
+          "mustSupport": true,
+          "fixedCode": "plan"
+        },
+        {
+          "id": "CarePlan.category",
+          "path": "CarePlan.category",
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.title",
+          "path": "CarePlan.title",
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.subject",
+          "path": "CarePlan.subject",
+          "min": 1,
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/Patient"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CarePlan.period",
+          "path": "CarePlan.period",
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.addresses",
+          "path": "CarePlan.addresses",
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/Condition"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CarePlan.goal",
+          "path": "CarePlan.goal",
+          "min": 1,
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/Goal"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CarePlan.activity",
+          "path": "CarePlan.activity",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.activity.detail",
+          "path": "CarePlan.activity.detail",
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.activity.detail.kind",
+          "path": "CarePlan.activity.detail.kind",
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.activity.detail.code",
+          "path": "CarePlan.activity.detail.code",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.activity.detail.status",
+          "path": "CarePlan.activity.detail.status",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.activity.detail.goal",
+          "path": "CarePlan.activity.detail.goal",
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.activity.detail.scheduled[x]",
+          "path": "CarePlan.activity.detail.scheduled[x]",
+          "mustSupport": true
+        },
+        {
+          "id": "CarePlan.activity.detail.description",
+          "path": "CarePlan.activity.detail.description",
+          "mustSupport": true
+        }
+      ]
+    }
+  },
+  "bundle": {
+    "resourceType": "Bundle",
+    "id": "diabetes-management-plan-example-bundle",
+    "type": "collection",
+    "entry": [
+      {
+        "fullUrl": "https://example.org/fhir/Patient/careplan-example",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "careplan-example",
+          "name": [
+            {
+              "use": "official",
+              "family": "Example",
+              "given": [
+                "Asha"
+              ]
+            }
+          ],
+          "gender": "female",
+          "birthDate": "1972-05-14"
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Condition/careplan-diabetes-condition",
+        "resource": {
+          "resourceType": "Condition",
+          "id": "careplan-diabetes-condition",
+          "clinicalStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                "code": "active",
+                "display": "Active"
+              }
+            ]
+          },
+          "verificationStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                "code": "confirmed",
+                "display": "Confirmed"
+              }
+            ]
+          },
+          "code": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "44054006",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/careplan-example"
+          }
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Goal/glycemic-goal-example",
+        "resource": {
+          "resourceType": "Goal",
+          "id": "glycemic-goal-example",
+          "lifecycleStatus": "active",
+          "description": {
+            "text": "Individual glycemic goal: HbA1c less than 7.0% unless revised through shared decision-making."
+          },
+          "subject": {
+            "reference": "Patient/careplan-example"
+          },
+          "target": [
+            {
+              "measure": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "detailQuantity": {
+                "value": 7.0,
+                "comparator": "<",
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Goal/weight-goal-example",
+        "resource": {
+          "resourceType": "Goal",
+          "id": "weight-goal-example",
+          "lifecycleStatus": "active",
+          "description": {
+            "text": "Weight goal: gradual 5% reduction from baseline over six months."
+          },
+          "subject": {
+            "reference": "Patient/careplan-example"
+          },
+          "target": [
+            {
+              "detailString": "5% reduction from baseline",
+              "dueDate": "2027-02-11"
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/CarePlan/diabetes-management-plan-example",
+        "resource": {
+          "resourceType": "CarePlan",
+          "id": "diabetes-management-plan-example",
+          "meta": {
+            "profile": [
+              "https://example.org/fhir/StructureDefinition/dccm-diabetes-management-plan"
+            ]
+          },
+          "status": "active",
+          "intent": "plan",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/dccm-careplan-category",
+                  "code": "diabetes-management",
+                  "display": "Diabetes management"
+                }
+              ],
+              "text": "Diabetes management plan"
+            }
+          ],
+          "title": "Individualized diabetes management plan",
+          "subject": {
+            "reference": "Patient/careplan-example"
+          },
+          "period": {
+            "start": "2026-08-11",
+            "end": "2027-02-11"
+          },
+          "addresses": [
+            {
+              "reference": "Condition/careplan-diabetes-condition"
+            }
+          ],
+          "goal": [
+            {
+              "reference": "Goal/glycemic-goal-example",
+              "display": "Glycemic Goals"
+            },
+            {
+              "reference": "Goal/weight-goal-example",
+              "display": "Weight Goals"
+            }
+          ],
+          "activity": [
+            {
+              "detail": {
+                "kind": "ServiceRequest",
+                "code": {
+                  "coding": [
+                    {
+                      "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                      "code": "monitoring-plan",
+                      "display": "Monitoring Plan"
+                    }
+                  ]
+                },
+                "status": "in-progress",
+                "scheduledTiming": {
+                  "repeat": {
+                    "frequency": 1,
+                    "period": 3,
+                    "periodUnit": "mo"
+                  }
+                },
+                "description": "Review HbA1c at least every three months and review home glucose/CGM data as clinically indicated."
+              }
+            },
+            {
+              "detail": {
+                "kind": "MedicationRequest",
+                "code": {
+                  "coding": [
+                    {
+                      "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                      "code": "medication-plan",
+                      "display": "Medication Plan"
+                    }
+                  ]
+                },
+                "status": "in-progress",
+                "goal": [
+                  {
+                    "reference": "Goal/glycemic-goal-example"
+                  }
+                ],
+                "description": "Continue individualized glucose-lowering therapy; reassess efficacy, tolerance, hypoglycemia risk, and cardiorenal indications at follow-up."
+              }
+            },
+            {
+              "detail": {
+                "kind": "ServiceRequest",
+                "code": {
+                  "coding": [
+                    {
+                      "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                      "code": "lifestyle-plan",
+                      "display": "Lifestyle Plan"
+                    }
+                  ]
+                },
+                "status": "in-progress",
+                "goal": [
+                  {
+                    "reference": "Goal/glycemic-goal-example"
+                  },
+                  {
+                    "reference": "Goal/weight-goal-example"
+                  }
+                ],
+                "description": "Individualized nutrition, physical activity, sleep, and behavioral goals with periodic review."
+              }
+            },
+            {
+              "detail": {
+                "kind": "Task",
+                "code": {
+                  "coding": [
+                    {
+                      "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                      "code": "hypoglycemia-safety-plan",
+                      "display": "Hypoglycemia Safety Plan"
+                    }
+                  ]
+                },
+                "status": "in-progress",
+                "description": "Recognize and treat hypoglycemia promptly; maintain access to fast-acting carbohydrate and prescribed rescue therapy when indicated."
+              }
+            },
+            {
+              "detail": {
+                "kind": "Task",
+                "code": {
+                  "coding": [
+                    {
+                      "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                      "code": "sick-day-ketone-plan",
+                      "display": "Sick-Day / Ketone Plan"
+                    }
+                  ]
+                },
+                "status": "in-progress",
+                "description": "During acute illness, intensify glucose monitoring, maintain hydration, follow medication instructions, and check ketones when clinically indicated."
+              }
+            },
+            {
+              "detail": {
+                "kind": "ServiceRequest",
+                "code": {
+                  "coding": [
+                    {
+                      "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                      "code": "referral-plan",
+                      "display": "Referral Plan"
+                    }
+                  ]
+                },
+                "status": "scheduled",
+                "description": "Refer to diabetes education, nutrition, eye, kidney, foot, behavioral-health, or other services according to assessed need."
+              }
+            },
+            {
+              "detail": {
+                "kind": "Appointment",
+                "code": {
+                  "coding": [
+                    {
+                      "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                      "code": "follow-up-plan",
+                      "display": "Follow-Up Plan"
+                    }
+                  ]
+                },
+                "status": "scheduled",
+                "scheduledPeriod": {
+                  "start": "2026-11-01",
+                  "end": "2026-11-30"
+                },
+                "description": "Follow-up within approximately three months, earlier if glycemia, treatment tolerance, or safety concerns require review."
+              }
+            }
+          ],
+          "note": [
+            {
+              "text": "Graph coverage: Glycemic Goals and Weight Goals are Goal resources; Monitoring, Medication, Lifestyle, Hypoglycemia Safety, Sick-Day/Ketone, Referral, and Follow-Up plans are CarePlan activities."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+,
+  "eyeHealthAssessment": {
+  "title": "Eye Health Assessment",
+  "resource": "DiagnosticReport",
+  "baseUrl": "https://hl7.org/fhir/R4/diagnosticreport.html",
+  "profile": {
+    "resourceType": "StructureDefinition",
+    "id": "dccm-eye-health-assessment",
+    "url": "https://example.org/fhir/StructureDefinition/dccm-eye-health-assessment",
+    "version": "0.1.0",
+    "name": "EyeHealthAssessment",
+    "title": "Eye Health Assessment Profile",
+    "status": "draft",
+    "experimental": true,
+    "date": "2026-08-11",
+    "publisher": "Illustrative Diabetes Common Clinical Model",
+    "description": "An mCODE-inspired FHIR R4 profile for a diabetes eye health assessment. DiagnosticReport is used as the assessment/report container, with atomic eye findings represented by linked Observation resources and DICOM eye imaging represented by linked ImagingStudy resources. ImagingStudy carries DICOM study, series, instance, laterality, and retrieval metadata rather than embedding the diagnostic pixel data itself.",
+    "purpose": "Prototype only. It demonstrates how the Eye Health Assessment clinical-model box can be expressed using a constrained FHIR R4 DiagnosticReport while linking structured observations, ophthalmic imaging, a rendered key image, and follow-up planning.",
+    "fhirVersion": "4.0.1",
+    "kind": "resource",
+    "abstract": false,
+    "type": "DiagnosticReport",
+    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/DiagnosticReport",
+    "derivation": "constraint",
+    "differential": {
+      "element": [
+        {
+          "id": "DiagnosticReport",
+          "path": "DiagnosticReport"
+        },
+        {
+          "id": "DiagnosticReport.basedOn",
+          "path": "DiagnosticReport.basedOn",
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.status",
+          "path": "DiagnosticReport.status",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.code",
+          "path": "DiagnosticReport.code",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.subject",
+          "path": "DiagnosticReport.subject",
+          "min": 1,
+          "max": "1",
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/Patient"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DiagnosticReport.effective[x]",
+          "path": "DiagnosticReport.effective[x]",
+          "min": 1,
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.performer",
+          "path": "DiagnosticReport.performer",
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.resultsInterpreter",
+          "path": "DiagnosticReport.resultsInterpreter",
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.result",
+          "path": "DiagnosticReport.result",
+          "min": 1,
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/Observation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DiagnosticReport.imagingStudy",
+          "path": "DiagnosticReport.imagingStudy",
+          "mustSupport": true,
+          "type": [
+            {
+              "code": "Reference",
+              "targetProfile": [
+                "http://hl7.org/fhir/StructureDefinition/ImagingStudy"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DiagnosticReport.media",
+          "path": "DiagnosticReport.media",
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.conclusion",
+          "path": "DiagnosticReport.conclusion",
+          "mustSupport": true
+        },
+        {
+          "id": "DiagnosticReport.presentedForm",
+          "path": "DiagnosticReport.presentedForm",
+          "mustSupport": true
+        }
+      ]
+    }
+  },
+  "bundle": {
+    "resourceType": "Bundle",
+    "id": "eye-health-assessment-example-bundle",
+    "type": "collection",
+    "entry": [
+      {
+        "fullUrl": "https://example.org/fhir/Patient/diabetes-eye-example",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "diabetes-eye-example",
+          "name": [
+            {
+              "use": "official",
+              "family": "Example",
+              "given": [
+                "Asha"
+              ]
+            }
+          ],
+          "gender": "female",
+          "birthDate": "1972-05-14"
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Practitioner/ophthalmologist-example",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "ophthalmologist-example",
+          "name": [
+            {
+              "family": "Rao",
+              "given": [
+                "Mira"
+              ],
+              "prefix": [
+                "Dr"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/ServiceRequest/eye-exam-order",
+        "resource": {
+          "resourceType": "ServiceRequest",
+          "id": "eye-exam-order",
+          "status": "completed",
+          "intent": "order",
+          "priority": "routine",
+          "code": {
+            "text": "Diabetes eye examination with bilateral macular optical coherence tomography (OCT)"
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "authoredOn": "2026-08-01",
+          "requester": {
+            "reference": "Practitioner/ophthalmologist-example"
+          },
+          "note": [
+            {
+              "text": "Illustrative order/request fulfilled by the eye examination and OCT imaging study in this bundle."
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Endpoint/ophthalmology-dicomweb",
+        "resource": {
+          "resourceType": "Endpoint",
+          "id": "ophthalmology-dicomweb",
+          "status": "active",
+          "connectionType": {
+            "system": "http://terminology.hl7.org/CodeSystem/endpoint-connection-type",
+            "code": "dicom-wado-rs",
+            "display": "DICOM WADO-RS"
+          },
+          "name": "Illustrative ophthalmology DICOMweb endpoint",
+          "payloadType": [
+            {
+              "text": "DICOM ophthalmic imaging"
+            }
+          ],
+          "payloadMimeType": [
+            "application/dicom"
+          ],
+          "address": "https://example.org/dicomweb"
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/ImagingStudy/retinal-oct-study",
+        "resource": {
+          "resourceType": "ImagingStudy",
+          "id": "retinal-oct-study",
+          "identifier": [
+            {
+              "system": "urn:dicom:uid",
+              "value": "urn:oid:2.16.124.113543.1154777499.20260811.1"
+            }
+          ],
+          "status": "available",
+          "modality": [
+            {
+              "system": "http://dicom.nema.org/resources/ontology/DCM",
+              "code": "OPT",
+              "display": "Ophthalmic Tomography"
+            }
+          ],
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "started": "2026-08-11T08:40:00+05:30",
+          "basedOn": [
+            {
+              "reference": "ServiceRequest/eye-exam-order"
+            }
+          ],
+          "interpreter": [
+            {
+              "reference": "Practitioner/ophthalmologist-example"
+            }
+          ],
+          "endpoint": [
+            {
+              "reference": "Endpoint/ophthalmology-dicomweb"
+            }
+          ],
+          "numberOfSeries": 2,
+          "numberOfInstances": 2,
+          "description": "Bilateral macular optical coherence tomography (OCT)",
+          "note": [
+            {
+              "text": "The diagnostic scan pixels are not embedded in this ImagingStudy resource. The DICOM study remains in the imaging archive and is retrievable through the referenced WADO-RS endpoint."
+            }
+          ],
+          "series": [
+            {
+              "uid": "2.16.124.113543.1154777499.20260811.1.1",
+              "number": 1,
+              "modality": {
+                "system": "http://dicom.nema.org/resources/ontology/DCM",
+                "code": "OPT",
+                "display": "Ophthalmic Tomography"
+              },
+              "description": "Right-eye macular OCT",
+              "numberOfInstances": 1,
+              "endpoint": [
+                {
+                  "reference": "Endpoint/ophthalmology-dicomweb"
+                }
+              ],
+              "bodySite": {
+                "text": "Retina"
+              },
+              "laterality": {
+                "system": "http://snomed.info/sct",
+                "code": "419465000",
+                "display": "Unilateral right"
+              },
+              "started": "2026-08-11T08:40:00+05:30",
+              "instance": [
+                {
+                  "uid": "2.16.124.113543.1154777499.20260811.1.1.1",
+                  "sopClass": {
+                    "system": "urn:ietf:rfc:3986",
+                    "code": "urn:oid:1.2.840.10008.5.1.4.1.1.77.1.5.4",
+                    "display": "Ophthalmic Tomography Image Storage"
+                  },
+                  "number": 1,
+                  "title": "Right macular OCT volume"
+                }
+              ]
+            },
+            {
+              "uid": "2.16.124.113543.1154777499.20260811.1.2",
+              "number": 2,
+              "modality": {
+                "system": "http://dicom.nema.org/resources/ontology/DCM",
+                "code": "OPT",
+                "display": "Ophthalmic Tomography"
+              },
+              "description": "Left-eye macular OCT",
+              "numberOfInstances": 1,
+              "endpoint": [
+                {
+                  "reference": "Endpoint/ophthalmology-dicomweb"
+                }
+              ],
+              "bodySite": {
+                "text": "Retina"
+              },
+              "laterality": {
+                "system": "http://snomed.info/sct",
+                "code": "419161000",
+                "display": "Unilateral left"
+              },
+              "started": "2026-08-11T08:42:00+05:30",
+              "instance": [
+                {
+                  "uid": "2.16.124.113543.1154777499.20260811.1.2.1",
+                  "sopClass": {
+                    "system": "urn:ietf:rfc:3986",
+                    "code": "urn:oid:1.2.840.10008.5.1.4.1.1.77.1.5.4",
+                    "display": "Ophthalmic Tomography Image Storage"
+                  },
+                  "number": 1,
+                  "title": "Left macular OCT volume"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Observation/right-visual-acuity",
+        "resource": {
+          "resourceType": "Observation",
+          "id": "right-visual-acuity",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                  "code": "exam",
+                  "display": "Exam"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "65893-0",
+                "display": "Visual acuity best corrected Right eye"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "effectiveDateTime": "2026-08-11T08:30:00+05:30",
+          "performer": [
+            {
+              "reference": "Practitioner/ophthalmologist-example"
+            }
+          ],
+          "method": {
+            "text": "Best-corrected Snellen visual acuity"
+          },
+          "valueRatio": {
+            "numerator": {
+              "value": 20,
+              "unit": "ft",
+              "system": "http://unitsofmeasure.org",
+              "code": "[ft_us]"
+            },
+            "denominator": {
+              "value": 20,
+              "unit": "ft",
+              "system": "http://unitsofmeasure.org",
+              "code": "[ft_us]"
+            }
+          },
+          "note": [
+            {
+              "text": "Right-eye best-corrected visual acuity: 20/20."
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Observation/left-visual-acuity",
+        "resource": {
+          "resourceType": "Observation",
+          "id": "left-visual-acuity",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                  "code": "exam",
+                  "display": "Exam"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "65897-1",
+                "display": "Visual acuity best corrected Left eye"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "effectiveDateTime": "2026-08-11T08:30:00+05:30",
+          "performer": [
+            {
+              "reference": "Practitioner/ophthalmologist-example"
+            }
+          ],
+          "method": {
+            "text": "Best-corrected Snellen visual acuity"
+          },
+          "valueRatio": {
+            "numerator": {
+              "value": 20,
+              "unit": "ft",
+              "system": "http://unitsofmeasure.org",
+              "code": "[ft_us]"
+            },
+            "denominator": {
+              "value": 25,
+              "unit": "ft",
+              "system": "http://unitsofmeasure.org",
+              "code": "[ft_us]"
+            }
+          },
+          "note": [
+            {
+              "text": "Left-eye best-corrected visual acuity: 20/25."
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Observation/right-retinal-oct-finding",
+        "resource": {
+          "resourceType": "Observation",
+          "id": "right-retinal-oct-finding",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                  "code": "imaging",
+                  "display": "Imaging"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "79818-1",
+                "display": "Study observation Right retina by OCT"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "effectiveDateTime": "2026-08-11T08:40:00+05:30",
+          "performer": [
+            {
+              "reference": "Practitioner/ophthalmologist-example"
+            }
+          ],
+          "method": {
+            "text": "Optical coherence tomography (OCT)"
+          },
+          "bodySite": {
+            "text": "Right retina"
+          },
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "LA24809-8",
+                "display": "No abnormal findings"
+              }
+            ],
+            "text": "No abnormal findings"
+          },
+          "derivedFrom": [
+            {
+              "reference": "ImagingStudy/retinal-oct-study"
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Observation/right-macular-thickness",
+        "resource": {
+          "resourceType": "Observation",
+          "id": "right-macular-thickness",
+          "status": "final",
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                  "code": "imaging",
+                  "display": "Imaging"
+                }
+              ]
+            }
+          ],
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "57108-3",
+                "display": "Macular grid.center point thickness by OCT"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "effectiveDateTime": "2026-08-11T08:40:00+05:30",
+          "performer": [
+            {
+              "reference": "Practitioner/ophthalmologist-example"
+            }
+          ],
+          "method": {
+            "text": "Optical coherence tomography (OCT)"
+          },
+          "bodySite": {
+            "text": "Right macula"
+          },
+          "valueQuantity": {
+            "value": 258,
+            "unit": "um",
+            "system": "http://unitsofmeasure.org",
+            "code": "um"
+          },
+          "derivedFrom": [
+            {
+              "reference": "ImagingStudy/retinal-oct-study"
+            }
+          ],
+          "note": [
+            {
+              "text": "Illustrative quantitative macular OCT finding; no intraretinal or subretinal fluid described."
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/Media/oct-key-image-right",
+        "resource": {
+          "resourceType": "Media",
+          "id": "oct-key-image-right",
+          "status": "completed",
+          "type": {
+            "text": "image"
+          },
+          "modality": {
+            "coding": [
+              {
+                "system": "http://dicom.nema.org/resources/ontology/DCM",
+                "code": "OPT",
+                "display": "Ophthalmic Tomography"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "createdDateTime": "2026-08-11T08:40:00+05:30",
+          "operator": {
+            "reference": "Practitioner/ophthalmologist-example"
+          },
+          "bodySite": {
+            "text": "Right retina / macula"
+          },
+          "content": {
+            "contentType": "image/jpeg",
+            "url": "https://example.org/dicomweb/studies/2.16.124.113543.1154777499.20260811.1/series/2.16.124.113543.1154777499.20260811.1.1/instances/2.16.124.113543.1154777499.20260811.1.1.1/rendered",
+            "title": "Rendered right-eye macular OCT key image"
+          },
+          "note": [
+            {
+              "text": "Illustrative rendered key image. The full diagnostic DICOM study is referenced separately by ImagingStudy."
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/DiagnosticReport/eye-health-assessment",
+        "resource": {
+          "resourceType": "DiagnosticReport",
+          "id": "eye-health-assessment",
+          "meta": {
+            "profile": [
+              "https://example.org/fhir/StructureDefinition/dccm-eye-health-assessment"
+            ]
+          },
+          "basedOn": [
+            {
+              "reference": "ServiceRequest/eye-exam-order"
+            }
+          ],
+          "status": "final",
+          "category": [
+            {
+              "text": "Ophthalmology"
+            }
+          ],
+          "code": {
+            "text": "Diabetes eye health assessment with bilateral macular OCT"
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "effectiveDateTime": "2026-08-11T08:30:00+05:30",
+          "issued": "2026-08-11T09:05:00+05:30",
+          "performer": [
+            {
+              "reference": "Practitioner/ophthalmologist-example"
+            }
+          ],
+          "resultsInterpreter": [
+            {
+              "reference": "Practitioner/ophthalmologist-example"
+            }
+          ],
+          "result": [
+            {
+              "reference": "Observation/right-visual-acuity"
+            },
+            {
+              "reference": "Observation/left-visual-acuity"
+            },
+            {
+              "reference": "Observation/right-retinal-oct-finding"
+            },
+            {
+              "reference": "Observation/right-macular-thickness"
+            }
+          ],
+          "imagingStudy": [
+            {
+              "reference": "ImagingStudy/retinal-oct-study"
+            }
+          ],
+          "media": [
+            {
+              "comment": "Rendered key image from the right-eye macular OCT; full DICOM study is available through ImagingStudy.",
+              "link": {
+                "reference": "Media/oct-key-image-right"
+              }
+            }
+          ],
+          "conclusion": "Best-corrected visual acuity is 20/20 right and 20/25 left. The illustrative OCT assessment records no abnormal right-retinal finding and a right macular center-point thickness of 258 um. Repeat diabetic eye examination in approximately 12 months unless clinically indicated sooner.",
+          "presentedForm": [
+            {
+              "contentType": "application/pdf",
+              "url": "https://example.org/reports/eye-health-assessment.pdf",
+              "title": "Illustrative ophthalmology report"
+            }
+          ],
+          "note": [
+            {
+              "text": "Graph coverage: Exam Method is represented by the report code and Observation.method; Exam Date by DiagnosticReport.effectiveDateTime; Visual Acuity by right/left LOINC Observations; Retinal Findings and Macular Findings by OCT-derived Observations; Laterality by laterality-specific observations and ImagingStudy.series.laterality; Referral / Follow-Up by the linked ServiceRequest. The eye scan itself is represented by ImagingStudy plus a WADO-RS Endpoint, with an optional rendered key image represented by Media."
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "https://example.org/fhir/ServiceRequest/eye-follow-up",
+        "resource": {
+          "resourceType": "ServiceRequest",
+          "id": "eye-follow-up",
+          "status": "active",
+          "intent": "plan",
+          "priority": "routine",
+          "code": {
+            "text": "Repeat diabetes eye examination with retinal imaging"
+          },
+          "subject": {
+            "reference": "Patient/diabetes-eye-example"
+          },
+          "occurrencePeriod": {
+            "start": "2027-08-01",
+            "end": "2027-08-31"
+          },
+          "authoredOn": "2026-08-11",
+          "requester": {
+            "reference": "Practitioner/ophthalmologist-example"
+          },
+          "reasonReference": [
+            {
+              "reference": "DiagnosticReport/eye-health-assessment"
+            }
+          ],
+          "note": [
+            {
+              "text": "Graph child mapping: Referral / Follow-Up."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}};
+      let activeFhirSampleKey = null;
+      let activeFhirTab = "profile";
+
+      const color = {
+        patient: css("--patient"),
+        disease: css("--disease"),
+        assessment: css("--assessment"),
+        tech: css("--tech"),
+        treatment: css("--treatment"),
+        outcome: css("--outcome"),
+        context: css("--context"),
+        external: css("--external")
+      };
+
+      function css(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      }
+
+      const master = {
+        id: "patient",
+        name: "Diabetes Patient",
+        type: "patient",
+        children: [
+          {
+            id: "disease",
+            name: "Disease",
+            type: "disease",
+            expandable: "disease",
+            children: [
+              { id: "dc", name: "Diabetes Condition", type: "disease", fhirSample: "diabetesCondition" },
+              { id: "dclass", name: "Diabetes Classification", type: "disease" },
+              { id: "dxa", name: "Diagnostic Assessment", type: "disease" },
+              { id: "eta", name: "Etiology Assessment", type: "disease" },
+              { id: "dstate", name: "Disease State / Course", type: "disease" },
+              { id: "t1stage", name: "Type 1 Diabetes Stage", type: "disease" },
+              { id: "predm", name: "Prediabetes / High-Risk Glycemia", type: "disease" },
+              { id: "dac", name: "Diabetes-Associated Complication", type: "disease", expandable: "complications" },
+              { id: "kdd", name: "Kidney Disease in Diabetes", type: "disease" },
+              { id: "ret", name: "Diabetic Retinopathy", type: "disease" },
+              { id: "neuro", name: "Diabetic Neuropathy", type: "disease" },
+              { id: "footd", name: "Diabetes-Related Foot Disease", type: "disease" }
+            ]
+          },
+          {
+            id: "assessment",
+            name: "Assessment",
+            type: "assessment",
+            expandable: "assessment",
+            children: [
+              { id: "glya", name: "Glycemic Assessment", type: "assessment", fhirSample: "glycemicAssessment" },
+              { id: "hyprisk", name: "Hypoglycemia Risk Assessment", type: "assessment" },
+              { id: "kha", name: "Kidney Health Assessment", type: "assessment" },
+              { id: "eye", name: "Eye Health Assessment", type: "assessment", fhirSample: "eyeHealthAssessment" },
+              { id: "neura", name: "Neuropathy Assessment", type: "assessment" },
+              { id: "footr", name: "Foot Risk Assessment", type: "assessment" },
+              { id: "cvra", name: "Cardiovascular / Cardiorenal Risk", type: "assessment" },
+              { id: "waa", name: "Weight & Adiposity Assessment", type: "assessment" },
+              { id: "comorb", name: "Comorbidity Assessment", type: "assessment" },
+              { id: "self", name: "Self-Management Assessment", type: "assessment" },
+              { id: "psy", name: "Psychosocial / Behavioral Health", type: "assessment" },
+              { id: "func", name: "Functional & Cognitive Assessment", type: "assessment" },
+              { id: "soc", name: "Social Needs & Access Assessment", type: "assessment" },
+              { id: "repro", name: "Reproductive / Pregnancy Assessment", type: "assessment" }
+            ]
+          },
+          {
+            id: "tech",
+            name: "Monitoring & Technology",
+            type: "tech",
+            expandable: "tech",
+            children: [
+              { id: "bgm", name: "Blood Glucose Monitoring", type: "tech" },
+              { id: "cgm", name: "Continuous Glucose Monitoring", type: "tech", fhirSample: "continuousGlucoseMonitoring" },
+              { id: "ket", name: "Ketone Monitoring", type: "tech" },
+              { id: "idd", name: "Insulin Delivery Device", type: "tech" },
+              { id: "aid", name: "Automated Insulin Delivery", type: "tech" }
+            ]
+          },
+          {
+            id: "treatment",
+            name: "Treatment",
+            type: "treatment",
+            expandable: "treatment",
+            children: [
+              { id: "care", name: "Diabetes Management Plan", type: "treatment", fhirSample: "diabetesManagementPlan" },
+              { id: "medtx", name: "Medication Therapy", type: "treatment" },
+              { id: "medadm", name: "Medication Administration", type: "treatment" },
+              { id: "insreg", name: "Insulin Regimen", type: "treatment" },
+              { id: "life", name: "Lifestyle & Behavioral Therapy", type: "treatment" },
+              { id: "dsmes", name: "DSM Education & Support", type: "treatment" },
+              { id: "wgttx", name: "Weight Management Intervention", type: "treatment" },
+              { id: "proc", name: "Diabetes / Metabolic Procedure", type: "treatment" }
+            ]
+          },
+          {
+            id: "outcome",
+            name: "Outcomes",
+            type: "outcome",
+            expandable: "outcome",
+            children: [
+              { id: "glyst", name: "Glycemic Status", type: "outcome" },
+              { id: "hypo", name: "Hypoglycemia Event", type: "outcome" },
+              { id: "hgc", name: "Hyperglycemic Crisis", type: "outcome" },
+              { id: "compst", name: "Complication Status", type: "outcome" },
+              { id: "rem", name: "Remission Status", type: "outcome" },
+              { id: "txresp", name: "Treatment Response", type: "outcome" },
+              { id: "pro", name: "Patient-Reported Outcome", type: "outcome" }
+            ]
+          },
+          {
+            id: "context",
+            name: "Special Clinical Contexts",
+            type: "context",
+            expandable: "context",
+            children: [
+              { id: "preg", name: "Diabetes in Pregnancy", type: "context" },
+              { id: "ped", name: "Pediatric Diabetes", type: "context" },
+              { id: "older", name: "Older Adult Diabetes", type: "context" },
+              { id: "inpat", name: "Inpatient Diabetes", type: "context" }
+            ]
+          },
+          {
+            id: "external",
+            name: "External / Common Clinical Concepts",
+            type: "external",
+            expandable: "external"
+          }
+        ]
+      };
+
+      const detailGraphs = {
+        disease: {
+          title: "Disease",
+          type: "disease",
+          data: {
+            id: "disease_root", name: "Disease", type: "disease", rootClickable: true,
+            children: [
+              node("dc2", "Diabetes Condition", "disease", [
+                leaf("dc_date", "Diagnosis / Asserted Date"), leaf("dc_onset", "Onset Date / Estimated Onset"),
+                leaf("dc_status", "Clinical Status"), leaf("dc_duration", "Disease Duration"),
+                leaf("dc_classref", "Classification"), leaf("dc_etioref", "Etiology"),
+                leaf("dc_comp", "Related Complication(s)")
+              ], null, "diabetesCondition"),
+              node("dclass2", "Diabetes Classification", "disease", [
+                node("dclass_type", "Diabetes Type", "element", [
+                  value("t1d", "Type 1 Diabetes"), value("t2d", "Type 2 Diabetes"), value("gdm", "Gestational Diabetes"),
+                  value("mono", "Monogenic Diabetes"), value("exo", "Exocrine Pancreatic Diabetes"),
+                  value("drug", "Drug / Chemical-Induced Diabetes"), value("otherdm", "Other Specific Diabetes"),
+                  value("uncdm", "Uncertain / Mixed Classification")
+                ]),
+                leaf("dclass_cert", "Classification Certainty"), leaf("dclass_pheno", "Clinical Phenotype")
+              ]),
+              node("dxa2", "Diabetes Diagnostic Assessment", "disease", [
+                node("dx_method", "Diagnostic Method", "element", [
+                  value("dx_a1c", "A1C Evidence"), value("dx_fpg", "Fasting Plasma Glucose"),
+                  value("dx_ogtt", "Oral Glucose Tolerance"), value("dx_random", "Random Plasma Glucose"),
+                  value("dx_other", "Other Diagnostic Evidence")
+                ]),
+                leaf("dx_date", "Assessment Date"), leaf("dx_sym", "Symptoms / Clinical Context"),
+                leaf("dx_confirm", "Confirmation Status"), leaf("dx_interp", "Interpretation")
+              ]),
+              node("eta2", "Diabetes Etiology Assessment", "disease", [
+                leaf("eta_auto", "Autoimmune Evidence"), leaf("eta_beta", "Beta-Cell Function"),
+                leaf("eta_gen", "Genetic Evidence"), leaf("eta_panc", "Pancreatic Disease / Injury"),
+                leaf("eta_med", "Medication / Exposure"), leaf("eta_pheno", "Insulin Resistance / Phenotype"),
+                leaf("eta_other", "Other Etiologic Evidence")
+              ]),
+              node("dstate2", "Diabetes Disease State / Course", "disease", [
+                leaf("ds_state", "Disease State"),
+                node("ds_traj", "Disease Trajectory", "element", [value("ds_stable", "Stable"), value("ds_improve", "Improving"), value("ds_progress", "Progressing")]),
+                leaf("ds_duration", "Duration"), leaf("ds_prog", "Progression"),
+                leaf("ds_remission", "Remission / Recurrence"), leaf("ds_date", "Assessment Date")
+              ]),
+              node("t1stage2", "Type 1 Diabetes Stage", "disease", [
+                node("t1_stage", "Stage", "element", [value("t1_s1", "Stage 1"), value("t1_s2", "Stage 2"), value("t1_s3", "Stage 3")]),
+                leaf("t1_ab", "Islet Autoantibody Status"), leaf("t1_gly", "Glycemic State"),
+                leaf("t1_sym", "Symptoms"), leaf("t1_date", "Stage Date")
+              ]),
+              node("predm2", "Prediabetes / High-Risk Glycemia", "disease", [
+                leaf("pre_crit", "Diagnostic Criteria"), leaf("pre_date", "Assessment Date"),
+                leaf("pre_risk", "Progression Risk"), leaf("pre_traj", "Trajectory"), leaf("pre_status", "Current Status")
+              ]),
+              node("dac2", "Diabetes-Associated Complication", "disease", [
+                leaf("dac_type", "Complication Type"), leaf("dac_onset", "Onset Date"), leaf("dac_status", "Clinical Status"),
+                leaf("dac_sev", "Severity"), leaf("dac_attr", "Diabetes Attribution"), leaf("dac_evid", "Supporting Evidence")
+              ], "complications")
+            ]
+          },
+          crossLinks: [
+            ["dclass2", "dc2", "classifies"], ["dxa2", "dc2", "supports diagnosis"],
+            ["eta2", "dclass2", "supports classification"], ["dstate2", "dc2", "describes course"],
+            ["t1stage2", "dstate2", "specialized state"], ["predm2", "dc2", "may progress to"],
+            ["dc2", "dac2", "may have"]
+          ]
+        },
+
+        complications: {
+          title: "Diabetes Complications",
+          type: "disease",
+          data: {
+            id: "comp_root", name: "Diabetes-Associated Complication", type: "disease", rootClickable: true,
+            children: [
+              node("kdd2", "Kidney Disease in Diabetes", "disease", [
+                leaf("kd_ckd", "CKD Status"), leaf("kd_gfr", "GFR Category"), leaf("kd_alb", "Albuminuria Category"),
+                leaf("kd_prog", "Progression"), leaf("kd_kf", "Kidney Failure"),
+                leaf("kd_krt", "Kidney Replacement Therapy"), leaf("kd_etio", "Etiology / Attribution")
+              ]),
+              node("ret2", "Diabetic Retinopathy", "disease", [
+                leaf("ret_type", "Retinopathy Type"), leaf("ret_sev", "Severity / Stage"), leaf("ret_lat", "Laterality"),
+                leaf("ret_dme", "Macular Edema"), leaf("ret_vt", "Vision-Threatening Status"), leaf("ret_tx", "Treatment Status")
+              ]),
+              node("neuro2", "Diabetic Neuropathy", "disease", [
+                leaf("n_type", "Neuropathy Type"), leaf("n_site", "Body Site"), leaf("n_sym", "Symptoms"),
+                leaf("n_sev", "Severity"), leaf("n_lops", "Loss of Protective Sensation"), leaf("n_comp", "Associated Complication")
+              ]),
+              node("footd2", "Diabetes-Related Foot Disease", "disease", [
+                leaf("fd_ulcer", "Ulcer"), leaf("fd_inf", "Infection"), leaf("fd_isch", "Ischemia / PAD"),
+                leaf("fd_char", "Charcot Neuroarthropathy"), leaf("fd_amp", "Amputation"), leaf("fd_lat", "Laterality"),
+                leaf("fd_loc", "Location"), leaf("fd_sev", "Severity"), leaf("fd_heal", "Healing Status")
+              ])
+            ]
+          },
+          crossLinks: []
+        },
+
+        assessment: {
+          title: "Assessment",
+          type: "assessment",
+          data: {
+            id: "assessment_root", name: "Assessment", type: "assessment", rootClickable: true,
+            children: [
+              node("glya2", "Glycemic Assessment", "assessment", [
+                leaf("ga_period", "Assessment Period"), leaf("ga_a1c", "A1C"), leaf("ga_bgm", "BGM Summary"),
+                node("ga_cgm", "CGM Summary", "element", [
+                  value("ga_mean", "Mean Glucose"), value("ga_gmi", "Glucose Management Indicator"),
+                  value("ga_tir", "Time in Range"), value("ga_tbr", "Time Below Range"),
+                  value("ga_tar", "Time Above Range"), value("ga_var", "Glucose Variability")
+                ]),
+                leaf("ga_alt", "Alternative Glycemic Marker"), leaf("ga_target", "Individual Glycemic Target"), leaf("ga_trend", "Glycemic Trend")
+              ], null, "glycemicAssessment"),
+              node("hyprisk2", "Hypoglycemia Risk Assessment", "assessment", [
+                leaf("hr_prior", "Prior Hypoglycemia"), leaf("hr_aware", "Hypoglycemia Awareness"),
+                leaf("hr_med", "Medication-Related Risk"), leaf("hr_renal", "Kidney / Liver Risk"),
+                leaf("hr_cog", "Cognitive / Functional Risk"), leaf("hr_food", "Food / Social Risk"),
+                leaf("hr_rescue", "Rescue Preparedness"), leaf("hr_level", "Overall Risk")
+              ]),
+              node("kha2", "Kidney Health Assessment", "assessment", [
+                leaf("kh_creat", "Serum Creatinine"), leaf("kh_egfr", "eGFR"), leaf("kh_uacr", "Urine Albumin-to-Creatinine Ratio"),
+                leaf("kh_gfr", "GFR Category"), leaf("kh_alb", "Albuminuria Category"), leaf("kh_trend", "Kidney Function Trend"), leaf("kh_date", "Assessment Date")
+              ]),
+              node("eye2", "Eye Health Assessment", "assessment", [
+                leaf("ey_method", "Exam Method"), leaf("ey_date", "Exam Date"), leaf("ey_va", "Visual Acuity"),
+                leaf("ey_ret", "Retinal Findings"), leaf("ey_lat", "Laterality"), leaf("ey_mac", "Macular Findings"), leaf("ey_ref", "Referral / Follow-Up")
+              ], null, "eyeHealthAssessment"),
+              node("neura2", "Neuropathy Assessment", "assessment", [
+                leaf("na_sym", "Neuropathic Symptoms"), leaf("na_mono", "Monofilament"), leaf("na_vib", "Vibration"),
+                leaf("na_reflex", "Reflexes"), leaf("na_sens", "Other Sensory Testing"), leaf("na_auto", "Autonomic Findings"), leaf("na_date", "Assessment Date")
+              ]),
+              node("footr2", "Foot Risk Assessment", "assessment", [
+                leaf("fr_skin", "Skin Integrity"), leaf("fr_def", "Deformity"), leaf("fr_lops", "Protective Sensation"),
+                leaf("fr_pulse", "Pedal Pulses / Perfusion"), leaf("fr_ulcer", "Prior Ulcer"), leaf("fr_amp", "Prior Amputation"),
+                leaf("fr_risk", "Foot Risk Category"), leaf("fr_freq", "Recommended Follow-Up")
+              ]),
+              node("cvra2", "Cardiovascular / Cardiorenal Risk Assessment", "assessment", [
+                leaf("cv_bp", "Blood Pressure"), leaf("cv_lip", "Lipids"), leaf("cv_smoke", "Tobacco Exposure"),
+                leaf("cv_ascvd", "ASCVD History"), leaf("cv_hf", "Heart Failure"), leaf("cv_ckd", "Kidney Disease"),
+                leaf("cv_risk", "Calculated / Clinical Risk"), leaf("cv_date", "Assessment Date")
+              ]),
+              node("waa2", "Weight & Adiposity Assessment", "assessment", [
+                leaf("wa_weight", "Weight"), leaf("wa_bmi", "BMI"), leaf("wa_waist", "Waist Circumference"),
+                leaf("wa_traj", "Weight Trajectory"), leaf("wa_target", "Weight Goal"), leaf("wa_clin", "Clinical Significance")
+              ]),
+              node("comorb2", "Comorbidity Assessment", "assessment", [
+                leaf("co_present", "Condition Present"), leaf("co_absent", "Condition Absent"), leaf("co_status", "Condition Status"),
+                leaf("co_relev", "Clinical Relevance"), leaf("co_method", "Assessment Method")
+              ]),
+              node("self2", "Diabetes Self-Management Assessment", "assessment", [
+                leaf("sm_med", "Medication-Taking"), leaf("sm_mon", "Glucose Monitoring"), leaf("sm_nut", "Nutrition Skills"),
+                leaf("sm_act", "Physical Activity"), leaf("sm_ins", "Insulin Skills"), leaf("sm_dev", "Device Skills"),
+                leaf("sm_hypo", "Hypoglycemia Skills"), leaf("sm_sick", "Sick-Day / Ketone Skills"), leaf("sm_dsmes", "DSMES Need")
+              ]),
+              node("psy2", "Psychosocial / Behavioral Health Assessment", "assessment", [
+                leaf("ps_dist", "Diabetes Distress"), leaf("ps_dep", "Depressive Symptoms"), leaf("ps_anx", "Anxiety"),
+                leaf("ps_eat", "Disordered Eating"), leaf("ps_fear", "Fear of Hypoglycemia"), leaf("ps_burden", "Treatment Burden"), leaf("ps_support", "Psychosocial Support")
+              ]),
+              node("func2", "Functional & Cognitive Assessment", "assessment", [
+                leaf("fu_cog", "Cognition"), leaf("fu_adl", "Activities of Daily Living"), leaf("fu_iadl", "Instrumental ADLs"),
+                leaf("fu_frail", "Frailty"), leaf("fu_fall", "Falls / Mobility"), leaf("fu_self", "Self-Management Capacity"), leaf("fu_care", "Caregiver Support")
+              ]),
+              node("soc2", "Social Needs & Access Assessment", "assessment", [
+                leaf("so_food", "Food Security"), leaf("so_hous", "Housing Stability"), leaf("so_fin", "Financial Strain"),
+                leaf("so_cov", "Coverage / Insurance"), leaf("so_med", "Medication Access"), leaf("so_sup", "Device / Supply Access"),
+                leaf("so_lit", "Health Literacy"), leaf("so_lang", "Language Needs"), leaf("so_trans", "Transportation"), leaf("so_support", "Social Support")
+              ]),
+              node("repro2", "Reproductive / Pregnancy Assessment", "assessment", [
+                leaf("rp_status", "Pregnancy Status"), leaf("rp_intent", "Pregnancy Intention"), leaf("rp_contra", "Contraception"),
+                leaf("rp_precon", "Preconception Status"), leaf("rp_ga", "Gestational Age"), leaf("rp_post", "Postpartum Status")
+              ])
+            ]
+          },
+          crossLinks: []
+        },
+
+        tech: {
+          title: "Monitoring & Technology",
+          type: "tech",
+          data: {
+            id: "tech_root", name: "Monitoring & Technology", type: "tech", rootClickable: true,
+            children: [
+              node("bgm2", "Blood Glucose Monitoring", "tech", [
+                leaf("bg_method", "Monitoring Method"), leaf("bg_device", "Device"), leaf("bg_time", "Date / Time"),
+                node("bg_context", "Measurement Context", "element", [value("bg_fast", "Fasting"), value("bg_pre", "Pre-Meal"), value("bg_post", "Post-Meal"), value("bg_bed", "Bedtime"), value("bg_other", "Other Context")]),
+                leaf("bg_value", "Glucose Result")
+              ]),
+              node("cgm2", "Continuous Glucose Monitoring", "tech", [
+                leaf("cg_device", "CGM Device / Method"), leaf("cg_start", "Use Start / Stop"), leaf("cg_period", "Reporting Period"),
+                leaf("cg_wear", "Sensor Wear / Data Sufficiency"), leaf("cg_mean", "Mean Glucose"), leaf("cg_gmi", "GMI"),
+                leaf("cg_tir", "Time in Range"), leaf("cg_tbr", "Time Below Range"), leaf("cg_tar", "Time Above Range"),
+                leaf("cg_cv", "Glucose Variability"), leaf("cg_events", "Glucose Events / Patterns")
+              ], null, "continuousGlucoseMonitoring"),
+              node("ket2", "Ketone Monitoring", "tech", [
+                leaf("ke_type", "Blood / Urine"), leaf("ke_method", "Method"), leaf("ke_value", "Ketone Result"),
+                leaf("ke_time", "Date / Time"), leaf("ke_context", "Clinical Context"), leaf("ke_interp", "Interpretation")
+              ]),
+              node("idd2", "Insulin Delivery Device", "tech", [
+                leaf("id_type", "Device Type"), leaf("id_ins", "Insulin"), leaf("id_start", "Start / Stop"),
+                leaf("id_basal", "Basal Settings"), leaf("id_bolus", "Bolus Settings"), leaf("id_icr", "Insulin-to-Carbohydrate Ratio"),
+                leaf("id_isf", "Insulin Sensitivity / Correction Factor"), leaf("id_target", "Target Glucose"), leaf("id_status", "Device Status")
+              ]),
+              node("aid2", "Automated Insulin Delivery", "tech", [
+                leaf("ai_system", "AID System"), leaf("ai_mode", "Automation Mode"), leaf("ai_cgm", "CGM Integration"),
+                leaf("ai_target", "Algorithm Target"), leaf("ai_auto", "Time in Automation"), leaf("ai_deliv", "Insulin Delivery Summary"), leaf("ai_exit", "Override / Exit Information")
+              ])
+            ]
+          },
+          crossLinks: [["cgm2", "aid2", "sensor input"], ["idd2", "aid2", "delivery platform"]]
+        },
+
+        treatment: {
+          title: "Treatment",
+          type: "treatment",
+          data: {
+            id: "treatment_root", name: "Treatment", type: "treatment", rootClickable: true,
+            children: [
+              node("care2", "Diabetes Management Plan", "treatment", [
+                leaf("cp_gly", "Glycemic Goals"), leaf("cp_weight", "Weight Goals"), leaf("cp_mon", "Monitoring Plan"),
+                leaf("cp_med", "Medication Plan"), leaf("cp_life", "Lifestyle Plan"), leaf("cp_hypo", "Hypoglycemia Safety Plan"),
+                leaf("cp_sick", "Sick-Day / Ketone Plan"), leaf("cp_ref", "Referral Plan"), leaf("cp_follow", "Follow-Up Plan")
+              ], null, "diabetesManagementPlan"),
+              node("medtx2", "Diabetes-Related Medication Therapy", "treatment", [
+                leaf("mt_med", "Medication"), leaf("mt_reason", "Indication / Reason"),
+                node("mt_intent", "Treatment Intent", "element", [value("mt_gly", "Glycemic"), value("mt_weight", "Weight"), value("mt_cv", "Cardiovascular"), value("mt_renal", "Kidney"), value("mt_other", "Other")]),
+                leaf("mt_dose", "Dose"), leaf("mt_route", "Route"), leaf("mt_freq", "Frequency"), leaf("mt_start", "Start Date"),
+                leaf("mt_status", "Status"), leaf("mt_change", "Reason for Start / Change / Stop"), leaf("mt_ae", "Adverse Effects / Tolerance")
+              ]),
+              node("medadm2", "Diabetes-Related Medication Administration", "treatment", [
+                leaf("ma_med", "Medication"), leaf("ma_dose", "Dose"), leaf("ma_route", "Route"), leaf("ma_time", "Administration Time"),
+                leaf("ma_status", "Status"), leaf("ma_reason", "Status Reason")
+              ]),
+              node("insreg2", "Insulin Regimen", "treatment", [
+                leaf("ir_basal", "Basal Insulin"), leaf("ir_prand", "Prandial Insulin"), leaf("ir_corr", "Correction Insulin"),
+                leaf("ir_tdd", "Total Daily Dose"), leaf("ir_icr", "Insulin-to-Carbohydrate Ratio"), leaf("ir_isf", "Correction Factor"),
+                leaf("ir_target", "Target Glucose"), leaf("ir_method", "Delivery Method"), leaf("ir_sched", "Timing / Schedule")
+              ]),
+              node("life2", "Lifestyle & Behavioral Therapy", "treatment", [
+                leaf("lt_nut", "Nutrition Therapy"), leaf("lt_act", "Physical Activity"), leaf("lt_sleep", "Sleep / Lifestyle"),
+                leaf("lt_behav", "Behavioral Strategies"), leaf("lt_goal", "Goal"), leaf("lt_freq", "Frequency / Duration"), leaf("lt_status", "Participation / Status")
+              ]),
+              node("dsmes2", "Diabetes Self-Management Education & Support", "treatment", [
+                leaf("de_topic", "Education Topic"), leaf("de_goal", "Learning Goal"), leaf("de_method", "Education Method"),
+                leaf("de_med", "Medication Skills"), leaf("de_mon", "Monitoring Skills"), leaf("de_nut", "Nutrition Skills"),
+                leaf("de_hypo", "Hypoglycemia Skills"), leaf("de_sick", "Sick-Day Skills"), leaf("de_device", "Technology / Device Training"),
+                leaf("de_result", "Understanding / Completion")
+              ]),
+              node("wgttx2", "Weight Management Intervention", "treatment", [
+                leaf("wt_strategy", "Treatment Strategy"), leaf("wt_target", "Weight Target"), leaf("wt_life", "Lifestyle Component"),
+                leaf("wt_med", "Medication Component"), leaf("wt_proc", "Procedure Component"), leaf("wt_response", "Response")
+              ]),
+              node("proc2", "Diabetes / Metabolic Procedure", "treatment", [
+                leaf("pr_type", "Procedure Type"), leaf("pr_reason", "Indication"), leaf("pr_date", "Procedure Date"), leaf("pr_status", "Status"), leaf("pr_out", "Outcome")
+              ])
+            ]
+          },
+          crossLinks: [
+            ["care2", "medtx2", "includes"], ["care2", "insreg2", "includes"], ["care2", "life2", "includes"],
+            ["care2", "dsmes2", "includes"], ["care2", "wgttx2", "includes"], ["care2", "proc2", "includes"],
+            ["medtx2", "medadm2", "may result in"]
+          ]
+        },
+
+        outcome: {
+          title: "Outcomes",
+          type: "outcome",
+          data: {
+            id: "outcome_root", name: "Outcomes", type: "outcome", rootClickable: true,
+            children: [
+              node("glyst2", "Glycemic Status", "outcome", [
+                leaf("gs_period", "Assessment Period"), leaf("gs_evid", "Evidence Type"), leaf("gs_target", "Target"),
+                leaf("gs_ach", "Target Achievement"), leaf("gs_trend", "Trend")
+              ]),
+              node("hypo2", "Hypoglycemia Event", "outcome", [
+                leaf("he_time", "Date / Time"), leaf("he_glu", "Glucose Value"), leaf("he_level", "Severity / Level"),
+                leaf("he_sym", "Symptoms"), leaf("he_assist", "Assistance Required"), leaf("he_treat", "Treatment Given"),
+                leaf("he_cause", "Precipitating Factor"), leaf("he_out", "Outcome")
+              ]),
+              node("hgc2", "Hyperglycemic Crisis", "outcome", [
+                node("hc_type", "Crisis Type", "element", [value("hc_dka", "DKA"), value("hc_hhs", "HHS"), value("hc_mix", "Mixed DKA / HHS")]),
+                leaf("hc_date", "Date / Time"), leaf("hc_glu", "Glucose"), leaf("hc_ket", "Ketosis"), leaf("hc_acid", "Acid-Base Status"),
+                leaf("hc_osm", "Osmolality / Hydration"), leaf("hc_sev", "Severity"), leaf("hc_cause", "Precipitating Factor"),
+                leaf("hc_setting", "Care Setting"), leaf("hc_res", "Resolution")
+              ]),
+              node("compst2", "Diabetes Complication Status", "outcome", [
+                leaf("cs_ref", "Complication Reference"), leaf("cs_evid", "Evidence"), leaf("cs_state", "Status"),
+                node("cs_trend", "Trend", "element", [value("cs_stable", "Stable"), value("cs_improve", "Improving"), value("cs_prog", "Progressing"), value("cs_res", "Resolved / Recurrent")]),
+                leaf("cs_date", "Assessment Date")
+              ]),
+              node("rem2", "Diabetes Remission Status", "outcome", [
+                leaf("rm_status", "Remission Status"), leaf("rm_start", "Start Date"), leaf("rm_gly", "Glycemic Evidence"),
+                leaf("rm_med", "Glucose-Lowering Medication Status"), leaf("rm_duration", "Duration"), leaf("rm_rec", "Recurrence")
+              ]),
+              node("txresp2", "Treatment Response", "outcome", [
+                node("tr_domain", "Response Domain", "element", [value("tr_gly", "Glycemic"), value("tr_weight", "Weight"), value("tr_cv", "Cardiovascular"), value("tr_kid", "Kidney"), value("tr_sym", "Symptoms / Function")]),
+                leaf("tr_base", "Baseline"), leaf("tr_follow", "Follow-Up"), leaf("tr_change", "Change / Response"), leaf("tr_tol", "Tolerance / Safety")
+              ]),
+              node("pro2", "Patient-Reported Diabetes Outcome", "outcome", [
+                leaf("po_qol", "Quality of Life"), leaf("po_sat", "Treatment Satisfaction"), leaf("po_burden", "Treatment Burden"),
+                leaf("po_dist", "Diabetes Distress"), leaf("po_func", "Daily Function"), leaf("po_date", "Assessment Date")
+              ])
+            ]
+          },
+          crossLinks: []
+        },
+
+        context: {
+          title: "Special Clinical Contexts",
+          type: "context",
+          data: {
+            id: "context_root", name: "Special Clinical Contexts", type: "context", rootClickable: true,
+            children: [
+              node("preg2", "Diabetes in Pregnancy", "context", [
+                leaf("pg_type", "Preexisting Diabetes / GDM"), leaf("pg_ga", "Gestational Age"), leaf("pg_pre", "Preconception Care"),
+                leaf("pg_target", "Pregnancy Glycemic Targets"), leaf("pg_med", "Pregnancy Medication Safety"), leaf("pg_fetal", "Maternal / Fetal Monitoring"),
+                leaf("pg_del", "Delivery Context"), leaf("pg_post", "Postpartum Follow-Up")
+              ]),
+              node("ped2", "Pediatric Diabetes", "context", [
+                leaf("pd_grow", "Growth / Puberty"), leaf("pd_care", "Parent / Caregiver Role"), leaf("pd_school", "School / Day-Care Context"),
+                leaf("pd_psy", "Developmental / Psychosocial Needs"), leaf("pd_trans", "Transition to Adult Care"), leaf("pd_target", "Age-Appropriate Targets")
+              ]),
+              node("older2", "Older Adult Diabetes", "context", [
+                leaf("oa_cog", "Cognitive Status"), leaf("oa_func", "Functional Status"), leaf("oa_frail", "Frailty"),
+                leaf("oa_hypo", "Hypoglycemia Vulnerability"), leaf("oa_poly", "Polypharmacy"), leaf("oa_burden", "Treatment Burden"),
+                leaf("oa_support", "Caregiver / Social Support"), leaf("oa_simpl", "Treatment Simplification")
+              ]),
+              node("inpat2", "Inpatient Diabetes", "context", [
+                leaf("ip_type", "Known Diabetes / Stress Hyperglycemia"), leaf("ip_adm", "Admission Context"), leaf("ip_nut", "Nutrition Status"),
+                leaf("ip_gly", "Inpatient Glycemic Status"), leaf("ip_mon", "Monitoring Plan"), leaf("ip_ins", "Insulin / Medication Plan"),
+                leaf("ip_crisis", "DKA / HHS"), leaf("ip_trans", "Discharge / Transition Plan")
+              ])
+            ]
+          },
+          crossLinks: []
+        },
+
+        external: {
+          title: "External / Common Clinical Concepts",
+          type: "external",
+          data: {
+            id: "external_root", name: "External / Common Clinical Concepts", type: "external", rootClickable: true,
+            children: [
+              node("ext_v", "Vitals & Anthropometrics", "external", [
+                leaf("ex_bp", "Blood Pressure"), leaf("ex_height", "Height"), leaf("ex_weight", "Weight"), leaf("ex_bmi", "BMI"), leaf("ex_waist", "Waist Circumference")
+              ]),
+              node("ext_lab", "Laboratory Data", "external", [
+                leaf("ex_a1c", "A1C"), leaf("ex_glu", "Plasma Glucose"), leaf("ex_lipid", "Lipid Panel"), leaf("ex_creat", "Creatinine"),
+                leaf("ex_egfr", "eGFR"), leaf("ex_uacr", "Urine Albumin / UACR"), leaf("ex_elec", "Electrolytes"),
+                leaf("ex_bmp", "BMP / CMP"), leaf("ex_liver", "Liver Tests")
+              ]),
+              node("ext_cond", "General Conditions", "external", [
+                leaf("ex_htn", "Hypertension"), leaf("ex_dyslip", "Dyslipidemia"), leaf("ex_obes", "Obesity"), leaf("ex_ascvd", "ASCVD"),
+                leaf("ex_hf", "Heart Failure"), leaf("ex_ckd", "Chronic Kidney Disease"), leaf("ex_masld", "MASLD"), leaf("ex_osa", "Sleep Apnea"),
+                leaf("ex_thy", "Thyroid Disease"), leaf("ex_celiac", "Celiac Disease"), leaf("ex_mh", "Mental Health Conditions")
+              ]),
+              node("ext_soc", "General Patient Context", "external", [
+                leaf("ex_preg", "Pregnancy Status"), leaf("ex_tob", "Tobacco Use"), leaf("ex_meds", "General Medication List"),
+                leaf("ex_allergy", "Allergy / Intolerance"), leaf("ex_imm", "Immunization Status")
+              ])
+            ]
+          },
+          crossLinks: []
+        }
+      };
+
+      function node(id, name, type, children, expandable = null, fhirSample = null) {
+        return { id, name, type, children, expandable, fhirSample };
+      }
+      function leaf(id, name) { return { id, name, type: "element" }; }
+      function value(id, name) { return { id, name, type: "value" }; }
+
+      let currentView = "master";
+      let currentGraphKey = null;
+      let renderBounds = null;
+
+      const viewport = svg.append("g").attr("class", "viewport");
+      const zoom = d3.zoom()
+        .scaleExtent([0.22, 2.6])
+        .on("zoom", (event) => viewport.attr("transform", event.transform));
+      svg.call(zoom);
+
+      overviewBtn.addEventListener("click", showMaster);
+      fitBtn.addEventListener("click", fitGraph);
+      zoomInBtn.addEventListener("click", () => svg.transition().duration(180).call(zoom.scaleBy, 1.25));
+      zoomOutBtn.addEventListener("click", () => svg.transition().duration(180).call(zoom.scaleBy, 0.8));
+
+
+      fhirCloseBtn.addEventListener("click", closeFHIRModal);
+      fhirModalBackdrop.addEventListener("click", (event) => {
+        if (event.target === fhirModalBackdrop) closeFHIRModal();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && fhirModalBackdrop.classList.contains("open")) closeFHIRModal();
+      });
+      profileTabBtn.addEventListener("click", () => setFHIRTab("profile"));
+      bundleTabBtn.addEventListener("click", () => setFHIRTab("bundle"));
+      copyFhirBtn.addEventListener("click", async () => {
+        if (!fhirCode.textContent) return;
+        const original = copyFhirBtn.textContent;
+        try {
+          await navigator.clipboard.writeText(fhirCode.textContent);
+          copyFhirBtn.textContent = "Copied";
+        } catch (_) {
+          const range = document.createRange();
+          range.selectNodeContents(fhirCode);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          copyFhirBtn.textContent = "Select / copy";
+        }
+        setTimeout(() => { copyFhirBtn.textContent = original; }, 1200);
+      });
+
+      window.addEventListener("resize", () => {
+        clearTimeout(window.__diabetesGraphResizeTimer);
+        window.__diabetesGraphResizeTimer = setTimeout(() => {
+          if (currentView === "master") renderMaster(false);
+          else renderDetail(currentGraphKey, false);
+        }, 120);
+      });
+
+      function showMaster() {
+        currentView = "master";
+        currentGraphKey = null;
+        overviewBtn.disabled = true;
+        breadcrumb.innerHTML = "<strong>Overview</strong>";
+        renderMaster(true);
+      }
+
+      function openDetail(key) {
+        if (!detailGraphs[key]) return;
+        currentView = "detail";
+        currentGraphKey = key;
+        overviewBtn.disabled = false;
+        breadcrumb.innerHTML = `<span>Overview</span><span>›</span><strong>${escapeHtml(detailGraphs[key].title)}</strong>`;
+        renderDetail(key, true);
+      }
+
+      function clearGraph() {
+        viewport.selectAll("*").remove();
+      }
+
+      function renderMaster(animate) {
+        clearGraph();
+        statusEl.style.display = "none";
+
+        // Poster-style overview: each domain gets its own generous zone around
+        // the central patient. This preserves every profile from the master graph
+        // without forcing 50+ cards onto a single radial ring.
+        const layoutWidth = 3650;
+        const layoutHeight = 2050;
+        const cx = 1675;
+        const cy = 1060;
+
+        const root = d3.hierarchy(master);
+        const categories = root.children || [];
+        root.x = cx;
+        root.y = cy;
+
+        // Only node positions are explicit. Category enclosures are calculated
+        // from the actual node extents below, so every pale box fully contains
+        // its category content and remains correct as the model evolves.
+        const zones = {
+          disease: {
+            catX: 900, catY: 820,
+            gridX: 190, gridY: 180, cols: 3, gapX: 260, gapY: 118
+          },
+          assessment: {
+            catX: 2190, catY: 830,
+            gridX: 2300, gridY: 170, cols: 3, gapX: 250, gapY: 108
+          },
+          external: {
+            catX: 1675, catY: 260,
+            gridX: 0, gridY: 0, cols: 1, gapX: 0, gapY: 0
+          },
+          context: {
+            catX: 660, catY: 1320,
+            gridX: 200, gridY: 1460, cols: 2, gapX: 295, gapY: 130
+          },
+          tech: {
+            catX: 1280, catY: 1480,
+            gridX: 1100, gridY: 1625, cols: 3, gapX: 260, gapY: 125
+          },
+          outcome: {
+            catX: 2290, catY: 1480,
+            gridX: 2080, gridY: 1625, cols: 3, gapX: 290, gapY: 118
+          },
+          treatment: {
+            catX: 3220, catY: 1360,
+            gridX: 3100, gridY: 1510, cols: 2, gapX: 260, gapY: 120
+          }
+        };
+
+        const profileNodes = [];
+        categories.forEach(cat => {
+          const zone = zones[cat.data.id];
+          if (!zone) return;
+          cat.x = zone.catX;
+          cat.y = zone.catY;
+
+          (cat.children || []).forEach((kid, i) => {
+            const col = i % zone.cols;
+            const row = Math.floor(i / zone.cols);
+            kid.x = zone.gridX + col * zone.gapX;
+            kid.y = zone.gridY + row * zone.gapY;
+            profileNodes.push(kid);
+          });
+        });
+
+        function masterNodeSize(d) {
+          if (d.depth === 0) return { w: 310, h: 102 };
+          if (d.depth === 1) return { w: 258, h: 72 };
+          return { w: 218, h: 52 };
+        }
+
+        function categoryEnclosure(cat) {
+          const members = [cat, ...(cat.children || [])];
+          let minX = Infinity;
+          let minY = Infinity;
+          let maxX = -Infinity;
+          let maxY = -Infinity;
+
+          members.forEach(n => {
+            const size = masterNodeSize(n);
+            minX = Math.min(minX, n.x - size.w / 2);
+            maxX = Math.max(maxX, n.x + size.w / 2);
+            minY = Math.min(minY, n.y - size.h / 2);
+            maxY = Math.max(maxY, n.y + size.h / 2);
+          });
+
+          const padX = cat.data.id === "external" ? 48 : 58;
+          const padY = cat.data.id === "external" ? 42 : 56;
+          return {
+            x: minX - padX,
+            y: minY - padY,
+            w: (maxX - minX) + padX * 2,
+            h: (maxY - minY) + padY * 2
+          };
+        }
+
+        const enclosureById = new Map(
+          categories.map(cat => [cat.data.id, categoryEnclosure(cat)])
+        );
+
+        // Development guard: warn if a future content/layout edit removes the
+        // intended gutter between any two category enclosures.
+        const enclosureEntries = Array.from(enclosureById.entries());
+        for (let i = 0; i < enclosureEntries.length; i += 1) {
+          for (let j = i + 1; j < enclosureEntries.length; j += 1) {
+            const [aId, a] = enclosureEntries[i];
+            const [bId, b] = enclosureEntries[j];
+            const tooClose = !(
+              a.x + a.w + 18 < b.x ||
+              b.x + b.w + 18 < a.x ||
+              a.y + a.h + 18 < b.y ||
+              b.y + b.h + 18 < a.y
+            );
+            if (tooClose) {
+              console.warn(`Overview category enclosures are too close: ${aId} / ${bId}`);
+            }
+          }
+        }
+
+        const zoneLayer = viewport.append("g").attr("class", "domain-zones");
+        categories.forEach(cat => {
+          const z = enclosureById.get(cat.data.id);
+          if (!z) return;
+          zoneLayer.append("rect")
+            .attr("x", z.x)
+            .attr("y", z.y)
+            .attr("width", z.w)
+            .attr("height", z.h)
+            .attr("rx", 30)
+            .attr("ry", 30)
+            .attr("fill", color[cat.data.type] || color.external)
+            .attr("fill-opacity", cat.data.id === "external" ? 0.075 : 0.05)
+            .attr("stroke", color[cat.data.type] || color.external)
+            .attr("stroke-opacity", 0.34)
+            .attr("stroke-width", 1.5);
+        });
+
+        const links = [];
+        categories.forEach(cat => links.push({
+          source: root,
+          target: cat,
+          cls: cat.data.id === "external" ? "support" : ""
+        }));
+        categories.forEach(cat => (cat.children || []).forEach(kid => {
+          links.push({ source: cat, target: kid, cls: "" });
+        }));
+
+        const edgeLayer = viewport.append("g").attr("class", "edges");
+        edgeLayer.selectAll("path")
+          .data(links)
+          .join("path")
+          .attr("class", d => `edge ${d.cls || ""}`)
+          .attr("d", d => curvedNodeLink(d.source, d.target, masterNodeSize));
+
+        const allNodes = [root, ...categories, ...profileNodes];
+        const nodeLayer = viewport.append("g").attr("class", "nodes");
+        const groups = nodeLayer.selectAll("g.node")
+          .data(allNodes, d => d.data.id)
+          .join("g")
+          .attr("class", d => `node ${nodeClass(d)} ${isExpandable(d) ? "expandable" : ""} ${hasFHIRSample(d) ? "fhir-sample" : ""}`)
+          .attr("transform", d => `translate(${d.x},${d.y})`)
+          .attr("role", d => (isExpandable(d) || hasFHIRSample(d)) ? "button" : null)
+          .attr("tabindex", d => (isExpandable(d) || hasFHIRSample(d)) ? 0 : null)
+          .attr("aria-label", d => hasFHIRSample(d) ? `Open FHIR JSON example for ${d.data.name}` : isExpandable(d) ? `Open ${d.data.name} details` : d.data.name);
+
+        addNodeRectsAndText(groups, d => {
+          const size = masterNodeSize(d);
+          if (d.depth === 0) return { ...size, r: 23, font: 24 };
+          if (d.depth === 1) return { ...size, r: 17, font: 17 };
+          return { ...size, r: 14, font: 13.4 };
+        });
+
+        groups.filter(isExpandable)
+          .on("click", (event, d) => {
+            event.stopPropagation();
+            openDetail(d.data.expandable);
+          })
+          .on("keydown", (event, d) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              openDetail(d.data.expandable);
+            }
+          });
+
+        groups.filter(isExpandable).call(addClickBadge);
+
+        groups.filter(hasFHIRSample)
+          .on("click.fhir", (event, d) => {
+            event.stopPropagation();
+            openFHIRSample(d.data.fhirSample);
+          })
+          .on("keydown.fhir", (event, d) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              openFHIRSample(d.data.fhirSample);
+            }
+          })
+          .call(addJsonBadge);
+
+        if (animate) {
+          zoneLayer.attr("opacity", 0).transition().duration(260).attr("opacity", 1);
+          groups.attr("opacity", 0).transition().duration(300).attr("opacity", 1);
+          edgeLayer.attr("opacity", 0).transition().duration(300).attr("opacity", 1);
+        }
+
+        renderBounds = { x: 0, y: 0, width: layoutWidth, height: layoutHeight };
+        requestAnimationFrame(fitGraph);
+      }
+
+      function renderDetail(key, animate) {
+        clearGraph();
+        statusEl.style.display = "none";
+
+        const graph = detailGraphs[key];
+        if (!graph) return;
+
+        const width = Math.max(1050, svg.node().clientWidth || 1200);
+        const height = Math.max(760, svg.node().clientHeight || 800);
+
+        const root = d3.hierarchy(graph.data);
+        const nodeCount = root.descendants().length;
+        const leafCount = root.leaves().length;
+        const layoutHeight = Math.max(height - 120, Math.min(2400, 42 * leafCount + 110));
+        const maxDepth = d3.max(root.descendants(), d => d.depth) || 1;
+        const layoutWidth = Math.max(width - 180, 900 + Math.max(0, maxDepth - 2) * 230);
+
+        const tree = d3.tree()
+          .size([layoutHeight, layoutWidth - 320])
+          .separation((a, b) => a.parent === b.parent ? 1.05 : 1.3);
+        tree(root);
+
+        // D3 tree uses x as vertical and y as horizontal. Offset into canvas.
+        root.descendants().forEach(d => {
+          d._x = d.y + 130;
+          d._y = d.x + 70;
+        });
+
+        function detailNodeSize(d) {
+          if (d.depth === 0) return { w: 205, h: 60, r: 16, font: 16 };
+          if (d.depth === 1) return { w: 220, h: 46, r: 13, font: 12 };
+          if (d.depth === 2) return { w: 196, h: 34, r: 10, font: 10.5 };
+          return { w: 180, h: 31, r: 10, font: 9.5 };
+        }
+
+        // Tree edges connect to the visible card boundaries rather than to the
+        // node centres. This keeps lines from appearing to run through cards.
+        const linkGen = d3.linkHorizontal()
+          .x(d => d.x)
+          .y(d => d.y);
+
+        const edgeLayer = viewport.append("g").attr("class", "edges");
+        edgeLayer.selectAll("path")
+          .data(root.links())
+          .join("path")
+          .attr("class", "edge")
+          .attr("d", d => {
+            const ss = detailNodeSize(d.source);
+            const ts = detailNodeSize(d.target);
+            return linkGen({
+              source: { x: d.source._x + ss.w / 2, y: d.source._y },
+              target: { x: d.target._x - ts.w / 2, y: d.target._y }
+            });
+          });
+
+        const byId = new Map(root.descendants().map(d => [d.data.id, d]));
+        const crossLayer = viewport.append("g").attr("class", "cross-links");
+
+        // Cross-links are semantic relationships between profile cards. Anchor
+        // each relationship on the two *facing* card edges (bottom of the upper
+        // card / top of the lower card). Adjacent cards get the shortest direct
+        // connection. Longer relationships briefly leave the card vertically,
+        // move into a clearly separated lane to the left, then re-enter at the
+        // facing edge of the destination card. This keeps endpoints intuitive
+        // while preventing a long dotted line from cutting through intervening
+        // cards.
+        const crossSpecs = (graph.crossLinks || []).map(([from, to, label], idx) => {
+          const a = byId.get(from);
+          const b = byId.get(to);
+          if (!a || !b) return null;
+          const upper = a._y <= b._y ? a : b;
+          const lower = a._y <= b._y ? b : a;
+          const upperSize = detailNodeSize(upper);
+          const lowerSize = detailNodeSize(lower);
+          const upperAnchorY = upper._y + upperSize.h / 2;
+          const lowerAnchorY = lower._y - lowerSize.h / 2;
+          const gap = Math.max(0, lowerAnchorY - upperAnchorY);
+          const intervening = root.descendants().filter(n =>
+            n.depth === upper.depth &&
+            n !== upper && n !== lower &&
+            n._y > upper._y && n._y < lower._y
+          ).length;
+          return {
+            a, b, upper, lower, label, idx, gap, intervening,
+            upperSize, lowerSize,
+            direct: intervening === 0
+          };
+        }).filter(Boolean);
+
+        // Long links are given spacious, deterministic lanes. The longest
+        // relationships sit furthest left; shorter ones remain closer to the
+        // cards. This avoids the nearly-overlapping bundle seen previously.
+        const routed = crossSpecs.filter(s => !s.direct)
+          .sort((p, q) => (q.intervening - p.intervening) || (q.gap - p.gap) || (p.idx - q.idx));
+        routed.forEach((s, laneIndex) => { s.laneIndex = laneIndex; });
+
+        // Give every relationship its own attachment point when several dotted
+        // lines meet the same card edge. Direct adjacent links stay near the
+        // centre; longer routed links occupy distinct points across the left
+        // portion of the facing edge, matching the side on which their lanes run.
+        const anchorGroups = new Map();
+        function registerAnchor(spec, node, side, size) {
+          const key = `${node.data.id}:${side}`;
+          if (!anchorGroups.has(key)) anchorGroups.set(key, []);
+          anchorGroups.get(key).push({ spec, node, side, size });
+        }
+        crossSpecs.forEach(spec => {
+          registerAnchor(spec, spec.upper, "bottom", spec.upperSize);
+          registerAnchor(spec, spec.lower, "top", spec.lowerSize);
+        });
+
+        anchorGroups.forEach(items => {
+          const directItems = items.filter(i => i.spec.direct);
+          const routedItems = items.filter(i => !i.spec.direct)
+            .sort((a, b) => (a.spec.laneIndex - b.spec.laneIndex) || (a.spec.idx - b.spec.idx));
+
+          directItems.forEach((item, i) => {
+            // Normally there is only one direct relation per side. If there are
+            // more, fan them gently around the centre rather than stacking them.
+            item.spec[`${item.node.data.id}_${item.side}_offset`] =
+              (i - (directItems.length - 1) / 2) * 22;
+          });
+
+          const usable = items[0].size.w * 0.31;
+          routedItems.forEach((item, i) => {
+            const t = routedItems.length === 1 ? 0.5 : i / (routedItems.length - 1);
+            // Keep routed attachment points predominantly on the left half so
+            // their short connector stubs do not cross one another unnecessarily.
+            item.spec[`${item.node.data.id}_${item.side}_offset`] =
+              -usable + t * (usable * 0.82);
+          });
+        });
+
+        crossSpecs.forEach(spec => {
+          const { upper, lower, label, direct } = spec;
+          const upperOffset = spec[`${upper.data.id}_bottom_offset`] || 0;
+          const lowerOffset = spec[`${lower.data.id}_top_offset`] || 0;
+          const upperAnchor = {
+            x: upper._x + upperOffset,
+            y: upper._y + spec.upperSize.h / 2
+          };
+          const lowerAnchor = {
+            x: lower._x + lowerOffset,
+            y: lower._y - spec.lowerSize.h / 2
+          };
+
+          let pathD;
+          let labelX;
+          let labelY;
+          let labelRotation = 0;
+
+          if (direct) {
+            // The nearest points of adjacent cards are their facing top/bottom
+            // edges, so simply connect those points.
+            pathD = `M${upperAnchor.x},${upperAnchor.y} L${lowerAnchor.x},${lowerAnchor.y}`;
+            labelX = upperAnchor.x - 8;
+            labelY = (upperAnchor.y + lowerAnchor.y) / 2;
+            labelRotation = -90;
+          } else {
+            const leftEdge = Math.min(
+              upper._x - spec.upperSize.w / 2,
+              lower._x - spec.lowerSize.w / 2
+            );
+            const laneX = leftEdge - 34 - spec.laneIndex * 30;
+            const stub = 18;
+            const radius = 12;
+            const startStubY = upperAnchor.y + stub;
+            const endStubY = lowerAnchor.y - stub;
+
+            // Rounded orthogonal route: leave the closest edge vertically,
+            // peel left into a dedicated lane, travel past intervening cards,
+            // then return to the closest edge of the destination card.
+            pathD = [
+              `M${upperAnchor.x},${upperAnchor.y}`,
+              `L${upperAnchor.x},${startStubY - radius}`,
+              `Q${upperAnchor.x},${startStubY} ${upperAnchor.x - radius},${startStubY}`,
+              `L${laneX + radius},${startStubY}`,
+              `Q${laneX},${startStubY} ${laneX},${startStubY + radius}`,
+              `L${laneX},${endStubY - radius}`,
+              `Q${laneX},${endStubY} ${laneX + radius},${endStubY}`,
+              `L${lowerAnchor.x - radius},${endStubY}`,
+              `Q${lowerAnchor.x},${endStubY} ${lowerAnchor.x},${endStubY + radius}`,
+              `L${lowerAnchor.x},${lowerAnchor.y}`
+            ].join(" ");
+
+            labelX = laneX - 6;
+            labelY = (startStubY + endStubY) / 2;
+            labelRotation = -90;
+          }
+
+          crossLayer.append("path")
+            .attr("class", "cross-edge")
+            .attr("d", pathD);
+
+          crossLayer.append("text")
+            .attr("class", "cross-label")
+            .attr("x", labelX)
+            .attr("y", labelY)
+            .attr("transform", `rotate(${labelRotation} ${labelX} ${labelY})`)
+            .text(label);
+        });
+
+        const nodeLayer = viewport.append("g").attr("class", "nodes");
+        const groups = nodeLayer.selectAll("g.node")
+          .data(root.descendants(), d => d.data.id)
+          .join("g")
+          .attr("class", d => `node ${nodeClass(d)} ${(d.depth === 0 || d.data.expandable) ? "expandable" : ""} ${hasFHIRSample(d) ? "fhir-sample" : ""}`)
+          .attr("transform", d => `translate(${d._x},${d._y})`)
+          .attr("role", d => (d.depth === 0 || d.data.expandable || hasFHIRSample(d)) ? "button" : null)
+          .attr("tabindex", d => (d.depth === 0 || d.data.expandable || hasFHIRSample(d)) ? 0 : null)
+          .attr("aria-label", d => hasFHIRSample(d) ? `Open FHIR JSON example for ${d.data.name}` : d.depth === 0 ? "Return to overview" : d.data.expandable ? `Open ${d.data.name} details` : d.data.name);
+
+        addNodeRectsAndText(groups, detailNodeSize);
+
+        groups.filter(d => d.depth === 0)
+          .on("click", (event) => { event.stopPropagation(); showMaster(); });
+
+        groups.filter(d => d.data.expandable)
+          .on("click", (event, d) => { event.stopPropagation(); openDetail(d.data.expandable); });
+
+        groups.filter(d => d.depth === 0 || d.data.expandable).call(addClickBadge);
+
+        groups.filter(hasFHIRSample)
+          .on("click.fhir", (event, d) => {
+            event.stopPropagation();
+            openFHIRSample(d.data.fhirSample);
+          })
+          .on("keydown.fhir", (event, d) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              openFHIRSample(d.data.fhirSample);
+            }
+          })
+          .call(addJsonBadge);
+
+        if (animate) {
+          groups.attr("opacity", 0).transition().duration(280).attr("opacity", 1);
+          edgeLayer.attr("opacity", 0).transition().duration(280).attr("opacity", 1);
+          crossLayer.attr("opacity", 0).transition().delay(100).duration(280).attr("opacity", 1);
+        }
+
+        renderBounds = { x: 20, y: 20, width: layoutWidth, height: layoutHeight + 130 };
+        requestAnimationFrame(fitGraph);
+      }
+
+      function addNodeRectsAndText(selection, sizeFn) {
+        selection.each(function(d) {
+          const g = d3.select(this);
+          const s = sizeFn(d);
+          const fill = nodeFill(d);
+
+          g.append("rect")
+            .attr("x", -s.w / 2)
+            .attr("y", -s.h / 2)
+            .attr("width", s.w)
+            .attr("height", s.h)
+            .attr("rx", s.r)
+            .attr("ry", s.r)
+            .attr("fill", fill);
+
+          const lines = wrapLabel(d.data.name, s.w - 22, s.font, d.depth <= 1 ? 2 : 2);
+          const text = g.append("text")
+            .attr("text-anchor", "middle")
+            .attr("class", d.depth <= 1 ? "label-main" : "label-sub")
+            .style("font-size", `${s.font}px`);
+
+          const lineHeight = s.font * 1.16;
+          const y0 = -((lines.length - 1) * lineHeight) / 2 + 1;
+          lines.forEach((line, i) => {
+            text.append("tspan")
+              .attr("x", 0)
+              .attr("y", y0 + i * lineHeight)
+              .text(line);
+          });
+        });
+      }
+
+      function addClickBadge(selection) {
+        selection.each(function(d) {
+          const g = d3.select(this);
+          const bbox = this.getBBox();
+          const badge = g.append("g").attr("class", "click-badge")
+            .attr("transform", `translate(${bbox.x + bbox.width - 7},${bbox.y + 7})`);
+          badge.append("circle").attr("r", 8);
+          badge.append("text").text("+");
+        });
+      }
+
+      function addJsonBadge(selection) {
+        selection.each(function() {
+          const g = d3.select(this);
+          const bbox = this.getBBox();
+          const badge = g.append("g")
+            .attr("class", "json-badge")
+            .attr("transform", `translate(${bbox.x + bbox.width - 24},${bbox.y + 9})`);
+          badge.append("rect")
+            .attr("x", -18)
+            .attr("y", -8)
+            .attr("width", 36)
+            .attr("height", 16)
+            .attr("rx", 6)
+            .attr("ry", 6);
+          badge.append("text").text("JSON");
+        });
+      }
+
+      function hasFHIRSample(d) {
+        return Boolean(d.data.fhirSample && fhirSamples[d.data.fhirSample]);
+      }
+
+      function openFHIRSample(key) {
+        if (!fhirSamples[key]) return;
+        activeFhirSampleKey = key;
+        activeFhirTab = "profile";
+        fhirModalBackdrop.classList.add("open");
+        fhirModalBackdrop.setAttribute("aria-hidden", "false");
+        renderFHIRModal();
+        requestAnimationFrame(() => fhirCloseBtn.focus());
+      }
+
+      function closeFHIRModal() {
+        fhirModalBackdrop.classList.remove("open");
+        fhirModalBackdrop.setAttribute("aria-hidden", "true");
+      }
+
+      function setFHIRTab(tab) {
+        activeFhirTab = tab === "bundle" ? "bundle" : "profile";
+        renderFHIRModal();
+      }
+
+      function renderFHIRModal() {
+        const sample = fhirSamples[activeFhirSampleKey];
+        if (!sample) return;
+        const isProfile = activeFhirTab === "profile";
+        profileTabBtn.classList.toggle("active", isProfile);
+        bundleTabBtn.classList.toggle("active", !isProfile);
+        profileTabBtn.setAttribute("aria-selected", isProfile ? "true" : "false");
+        bundleTabBtn.setAttribute("aria-selected", isProfile ? "false" : "true");
+        fhirModalTitle.textContent = sample.title;
+        fhirModalSubtitle.innerHTML = `Illustrative <strong>mCODE-inspired</strong> FHIR R4 prototype — not an official HL7/mCODE diabetes artifact. Base resource: <a href="${sample.baseUrl}" target="_blank" rel="noopener noreferrer">${sample.resource}</a>.`;
+        fhirCode.textContent = JSON.stringify(isProfile ? sample.profile : sample.bundle, null, 2);
+      }
+
+      function nodeClass(d) {
+        if (d.data.type === "element") return "element";
+        if (d.data.type === "value") return "value";
+        return "profile";
+      }
+
+      function nodeFill(d) {
+        if (d.data.type === "element" || d.data.type === "value") return "#ffffff";
+        return color[d.data.type] || color.external;
+      }
+
+      function isExpandable(d) {
+        return Boolean(d.data.expandable);
+      }
+
+      function curvedLink(x1, y1, x2, y2) {
+        const mx = (x1 + x2) / 2;
+        const my = (y1 + y2) / 2;
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const length = Math.max(1, Math.hypot(dx, dy));
+        const offset = Math.min(28, length * 0.07);
+        const nx = -dy / length;
+        const ny = dx / length;
+        return `M${x1},${y1} Q${mx + nx * offset},${my + ny * offset} ${x2},${y2}`;
+      }
+
+      function rectEdgePoint(node, toward, sizeFn) {
+        const s = sizeFn(node);
+        const dx = toward.x - node.x;
+        const dy = toward.y - node.y;
+        if (dx === 0 && dy === 0) return { x: node.x, y: node.y };
+
+        const halfW = s.w / 2;
+        const halfH = s.h / 2;
+        const scaleX = dx === 0 ? Infinity : halfW / Math.abs(dx);
+        const scaleY = dy === 0 ? Infinity : halfH / Math.abs(dy);
+        const t = Math.min(scaleX, scaleY);
+        return { x: node.x + dx * t, y: node.y + dy * t };
+      }
+
+      function curvedNodeLink(source, target, sizeFn) {
+        const start = rectEdgePoint(source, target, sizeFn);
+        const end = rectEdgePoint(target, source, sizeFn);
+        return curvedLink(start.x, start.y, end.x, end.y);
+      }
+
+      function wrapLabel(text, maxWidth, fontSize, maxLines) {
+        const approxChar = fontSize * 0.56;
+        const maxChars = Math.max(8, Math.floor(maxWidth / approxChar));
+        const words = String(text).split(/\s+/);
+        const lines = [];
+        let line = "";
+        for (const word of words) {
+          const candidate = line ? `${line} ${word}` : word;
+          if (candidate.length <= maxChars || !line) {
+            line = candidate;
+          } else {
+            lines.push(line);
+            line = word;
+          }
+        }
+        if (line) lines.push(line);
+        if (lines.length <= maxLines) return lines;
+        const kept = lines.slice(0, maxLines);
+        kept[maxLines - 1] = kept[maxLines - 1].replace(/[.,;:]?$/, "") + "…";
+        return kept;
+      }
+
+      function fitGraph() {
+        if (!renderBounds) return;
+        const svgNode = svg.node();
+        const vw = svgNode.clientWidth || 1200;
+        const vh = svgNode.clientHeight || 800;
+        const padX = currentView === "master" ? 55 : 75;
+        const padY = currentView === "master" ? 55 : 75;
+        const scale = Math.min(
+          1.28,
+          (vw - padX * 2) / renderBounds.width,
+          (vh - padY * 2) / renderBounds.height
+        );
+        const tx = (vw - renderBounds.width * scale) / 2 - renderBounds.x * scale;
+        const ty = (vh - renderBounds.height * scale) / 2 - renderBounds.y * scale;
+        svg.transition().duration(320).call(
+          zoom.transform,
+          d3.zoomIdentity.translate(tx, ty).scale(scale)
+        );
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>'"]/g, c => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+        }[c]));
+      }
+
+      // Initial view: master graph only.
+      renderMaster(false);
+    })();
+  </script>
+</body>
+</html>

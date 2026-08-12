@@ -1,0 +1,55 @@
+<section class="plane-page">
+  <header class="plane-page__intro plane-page__intro--with-action">
+    <div>
+      <h1>Service Plane</h1>
+      <p>
+        Compute and data-processing services registered alongside datasets on the exchange. Every job — no-code,
+        sandbox, or MLOps — routes through the TEE enclave chokepoint before it ever touches node-local data.
+      </p>
+    </div>
+    <a routerLink="/onboarding/service" class="add-btn">+ Add Service</a>
+  </header>
+
+  <div class="category-filter">
+    <button
+      class="category-chip"
+      [class.category-chip--active]="selectedCategory() === 'all'"
+      (click)="selectedCategory.set('all')"
+    >
+      All services
+    </button>
+    @for (category of categories; track category) {
+      <button
+        class="category-chip"
+        [class.category-chip--active]="selectedCategory() === category"
+        (click)="selectedCategory.set(category)"
+      >
+        <i [class]="categoryMeta(category).icon"></i>
+        {{ categoryMeta(category).label }}
+      </button>
+    }
+  </div>
+
+  <div class="service-grid">
+    @for (service of filteredServices(); track service.id) {
+      <p-card styleClass="service-card">
+        <div class="service-card__header">
+          <i [class]="categoryMeta(service.category).icon"></i>
+          <span class="service-card__host">{{ hostLabel(service.nodeId) }}</span>
+        </div>
+        <h3 class="service-card__title">{{ service.name }}</h3>
+        <p class="service-card__description">{{ service.description }}</p>
+        @if (service.operatesOn.length) {
+          <div class="service-card__operates-on">
+            <span class="service-card__operates-on-label">Registered against:</span>
+            @for (ds of datasetsFor(service.operatesOn); track ds.id) {
+              <a class="dataset-chip" [routerLink]="['/datasets', ds.id]">{{ ds.title }}</a>
+            }
+          </div>
+        }
+      </p-card>
+    } @empty {
+      <p class="empty-state">No services in this category yet.</p>
+    }
+  </div>
+</section>

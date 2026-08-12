@@ -1,0 +1,131 @@
+[33m❯[39m Building...
+[32m✔[39m Building...
+[37m[1mInitial chunk files[22m[2m | [22m[1mNames[22m                [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m[39m
+[37m[32mmain-YTJMBZSS.js[39m[37m   [2m | [22m[2mmain[22m                 [2m | [22m[36m179.04 kB[39m[37m[2m | [22m               [36m33.20 kB[39m[37m[39m
+[37m[32mchunk-K2HB56EG.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m[36m149.61 kB[39m[37m[2m | [22m               [36m44.93 kB[39m[37m[39m
+[37m[32mchunk-JGUGUS26.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m[36m113.93 kB[39m[37m[2m | [22m               [36m29.12 kB[39m[37m[39m
+[37m[32mstyles-DNSX34KD.css[39m[37m[2m | [22m[2mstyles[22m               [2m | [22m [36m49.68 kB[39m[37m[2m | [22m                [36m9.13 kB[39m[37m[39m
+[37m[32mchunk-46IGOSAM.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m [36m31.57 kB[39m[37m[2m | [22m                [36m9.68 kB[39m[37m[39m
+[37m[32mchunk-MOYTLJDK.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m  [36m1.54 kB[39m[37m[2m | [22m              [36m495 bytes[39m[37m[39m
+[37m[39m
+[37m[1m [22m                  [2m | [22m[1mInitial total[22m        [2m | [22m[1m525.38 kB[22m[2m | [22m              [1m126.56 kB[22m[39m
+[37m[39m
+[37m[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m[39m
+[37m[32mchunk-NOSFLC24.js[39m[37m  [2m | [22m[2mdata-formats-routes[22m  [2m | [22m[36m151.96 kB[39m[37m[2m | [22m               [36m38.21 kB[39m[37m[39m
+[37m[32mchunk-N2NM6PGO.js[39m[37m  [2m | [22m[2monboarding-routes[22m    [2m | [22m[36m118.72 kB[39m[37m[2m | [22m               [36m26.81 kB[39m[37m[39m
+[37m[32mchunk-IRPH4SBF.js[39m[37m  [2m | [22m[2mbrowser[22m              [2m | [22m [36m67.59 kB[39m[37m[2m | [22m               [36m17.73 kB[39m[37m[39m
+[37m[32mchunk-EK4MX3WJ.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m [36m25.38 kB[39m[37m[2m | [22m                [36m5.86 kB[39m[37m[39m
+[37m[32mchunk-CBRZBGTM.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m[39m[37m [36m15.35 kB[39m[37m[2m | [22m                [36m4.56 kB[39m[37m[39m
+[37m[32mchunk-2IQPC5KD.js[39m[37m  [2m | [22m[2mnodes-routes[22m         [2m | [22m [36m11.36 kB[39m[37m[2m | [22m                [36m2.75 kB[39m[37m[39m
+[37m[32mchunk-RIT4K54H.js[39m[37m  [2m | [22m[2mdata-plane-routes[22m    [2m | [22m  [36m7.30 kB[39m[37m[2m | [22m                [36m2.31 kB[39m[37m[39m
+[37m[32mchunk-XJN7D5LI.js[39m[37m  [2m | [22m[2mservice-plane-routes[22m [2m | [22m  [36m6.88 kB[39m[37m[2m | [22m                [36m2.26 kB[39m[37m[39m
+[37m[32mchunk-56D6D44P.js[39m[37m  [2m | [22m[2mdatasets-routes[22m      [2m | [22m  [36m6.07 kB[39m[37m[2m | [22m                [36m1.85 kB[39m[37m[39m
+[37m[32mchunk-2Y6NXHGP.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m  [36m5.92 kB[39m[37m[2m | [22m                [36m1.80 kB[39m[37m[39m
+[37m[32mchunk-GRXO3CKJ.js[39m[37m  [2m | [22m[2mgraph-explorer-routes[22m[2m | [22m  [36m4.66 kB[39m[37m[2m | [22m                [36m1.70 kB[39m[37m[39m
+[37m[32mchunk-QLEB2ENR.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m  [36m2.97 kB[39m[37m[2m | [22m                [36m1.19 kB[39m[37m[39m
+[37m[32mchunk-QR67DSGX.js[39m[37m  [2m | [22m[2m-[22m                    [2m | [22m  [36m1.57 kB[39m[37m[2m | [22m              [36m637 bytes[39m[37m[39m
+[37m[39m
+[37mApplication bundle generation complete. [4.576 seconds][39m
+[37m[39m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1m8 repetitive deprecation warnings omitted.[39m[22m
+[1m[33mRun in verbose mode to see all warnings.[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  null[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:7:8:[39m[22m
+[1m[33m[37m      7 │ @import [32m[37m'./styles/variables.scss';[39m[22m
+[1m[33m        ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:8:8:[39m[22m
+[1m[33m[37m      8 │ @import [32m[37m'./styles/canvas-variables.scss';[39m[22m
+[1m[33m        ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:9:8:[39m[22m
+[1m[33m[37m      9 │ @import [32m[37m'./styles/onboarding-variables.scss';[39m[22m
+[1m[33m        ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/[39m[22m[1m[33mglobal:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:10:8:[39m[22m
+[1m[33m[37m      10 │ @import [32m[37m'./styles/mixins.scss';[39m[22m
+[1m[33m         ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:11:8:[39m[22m
+[1m[33m[37m      11 │ @import [32m[37m'./styles/checkbox-custom.scss';[39m[22m
+[1m[33m         ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[37mOutput location: /home/amarthya/IUDX/HDX/hdx-ui/dist/apps/HDX[39m
+[37m[39m

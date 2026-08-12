@@ -1,0 +1,121 @@
+/* Matches apps/IUDX header.component.scss's "scrolled/light-bg" look — this app has no
+   transparent-hero homepage, so the header is always in that state (no fixed/scroll logic). */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 0.75rem 0;
+}
+
+.header--container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-xl);
+}
+
+.header--logo {
+  flex-shrink: 0;
+}
+
+.logo--link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.logo--wordmark {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+  color: var(--primary-color);
+  font-family: var(--font-family-heading);
+}
+
+.logo--tagline {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.header--nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+}
+
+.nav--menu {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav--item {
+  margin: 0;
+}
+
+.nav--link {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.625rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--secondary-color);
+  }
+
+  &.nav--link-active {
+    background: var(--secondary-color-15);
+    color: var(--secondary-color);
+    font-weight: 600;
+  }
+}
+
+.header--user {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.user--name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.user--logout {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 0.625rem;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+}

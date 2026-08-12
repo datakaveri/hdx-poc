@@ -1,0 +1,163 @@
+.plane-page {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__intro {
+    margin-bottom: var(--spacing-lg);
+
+    h1 {
+      margin: 0 0 var(--spacing-xs);
+      font-size: 1.6rem;
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-secondary);
+      max-width: 720px;
+    }
+  }
+
+  &__stats {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__filters {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+  }
+}
+
+.filter-dropdown {
+  display: block;
+  width: 15rem;
+  max-width: 100%;
+}
+
+.stat-tile {
+  background: var(--primary-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+}
+
+.dataset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.dataset-card {
+  height: 100%;
+  position: relative;
+  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* IUDX gradient-ring hover effect: masked gradient border fades in, card lifts */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(180deg, var(--primary-cyan), var(--secondary-color));
+    -webkit-mask: linear-gradient(var(--primary-white) 0 0) content-box, linear-gradient(var(--primary-white) 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-0.5rem);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &__node {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  &__node-name {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  &__title {
+    display: block;
+    margin: 0 0 var(--spacing-xs);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+  }
+
+  &__description {
+    margin: 0 0 var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  &__count {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  &__standards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+}
+
+.standard-chip {
+  font-size: 0.7rem;
+  padding: 0.15rem var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background: var(--bg-gray-100);
+  color: var(--text-gray-600);
+  border: 1px solid var(--border-color);
+}
+
+.empty-state {
+  color: var(--text-secondary);
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--spacing-xl) 0;
+}

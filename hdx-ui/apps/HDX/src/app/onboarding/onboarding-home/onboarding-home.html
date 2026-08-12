@@ -1,0 +1,17 @@
+<section class="plane-page">
+  <header class="plane-page__intro">
+    <h1>Onboarding</h1>
+    <p>Bring a new node, dataset, or service onto the exchange. Submissions are saved to a local PoC data store, not a real HDX federation backend.</p>
+  </header>
+
+  <div class="onboarding-grid">
+    @for (option of options; track option.path) {
+      <a class="onboarding-card" [routerLink]="option.path">
+        <div class="onboarding-card__icon"><i [class]="option.icon"></i></div>
+        <h3 class="onboarding-card__title">{{ option.title }}</h3>
+        <p class="onboarding-card__description">{{ option.description }}</p>
+        <span class="onboarding-card__cta">Start &rarr;</span>
+      </a>
+    }
+  </div>
+</section>

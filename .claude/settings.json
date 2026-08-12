@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -viE \"deprecat|sass|import rules|automated migrator|angular-sass|^\\\\s*$|╵|╷|│\")",
+      "Bash(curl -s -o /dev/null -w \"ui:%{http_code}\\\\n\" http://localhost:4300)",
+      "Bash(curl -s -o /dev/null -w \"api:%{http_code}\\\\n\" http://localhost:3333/services)"
+    ]
+  }
+}

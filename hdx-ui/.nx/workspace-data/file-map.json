@@ -1,0 +1,753 @@
+{
+  "version": "6.0",
+  "nxVersion": "22.3.3",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".dockerignore",
+        "hash": "2073981285448265782"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "17220150374688031734"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "5407418692668764289"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "16884713733442577066"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "16580176367767759361"
+      },
+      {
+        "file": "README.md",
+        "hash": "12124127641081497020"
+      },
+      {
+        "file": "db.json",
+        "hash": "4872456715349106775"
+      },
+      {
+        "file": "eslint.config.mjs",
+        "hash": "12926286793420397906"
+      },
+      {
+        "file": "nginx.conf",
+        "hash": "8242598377411315148"
+      },
+      {
+        "file": "nx.json",
+        "hash": "3622832125365172715"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "1961120102638551262"
+      },
+      {
+        "file": "package.json",
+        "hash": "5126229519689077467"
+      },
+      {
+        "file": "postcss.config.js",
+        "hash": "8055263870272897227"
+      },
+      {
+        "file": "tailwind.config.js",
+        "hash": "11659399796490381101"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "16936441711144470533"
+      }
+    ],
+    "projectFileMap": {
+      "HDX": [
+        {
+          "file": "apps/HDX/eslint.config.mjs",
+          "hash": "16756400681144203361",
+          "deps": [
+            "npm:@nx/eslint-plugin"
+          ]
+        },
+        {
+          "file": "apps/HDX/project.json",
+          "hash": "14796603194220295648"
+        },
+        {
+          "file": "apps/HDX/public/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/HDX/src/app/admin/admin-approvals/admin-approvals.html",
+          "hash": "4306644681031090604"
+        },
+        {
+          "file": "apps/HDX/src/app/admin/admin-approvals/admin-approvals.scss",
+          "hash": "9652337855232769816"
+        },
+        {
+          "file": "apps/HDX/src/app/admin/admin-approvals/admin-approvals.ts",
+          "hash": "744854063470382335",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/admin/admin.routes.ts",
+          "hash": "5008280946614557084",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/app.config.ts",
+          "hash": "11346291017013311209",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:@angular/platform-browser",
+            "npm:primeng",
+            "npm:keycloak-angular",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/app.html",
+          "hash": "13031455657074607094"
+        },
+        {
+          "file": "apps/HDX/src/app/app.routes.ts",
+          "hash": "2482050459870578533",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/app.scss",
+          "hash": "8149708599711138272"
+        },
+        {
+          "file": "apps/HDX/src/app/app.spec.ts",
+          "hash": "14550377082525871208",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/app.ts",
+          "hash": "9359869286636932179",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-format-detail/data-format-detail.html",
+          "hash": "14453492093372973611"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-format-detail/data-format-detail.scss",
+          "hash": "11334533871159126104"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-format-detail/data-format-detail.ts",
+          "hash": "10603182248281758089",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-formats-home/data-formats-home.html",
+          "hash": "8703427041580507736"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-formats-home/data-formats-home.scss",
+          "hash": "14052693105001928558"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-formats-home/data-formats-home.ts",
+          "hash": "11324130567870853480",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-formats.data.ts",
+          "hash": "4407464545608370809"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/data-formats.routes.ts",
+          "hash": "13334622016587518152",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/mcxde/mcxde-fhir-samples.ts",
+          "hash": "6916961987057686293"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/mcxde/mcxde-graph-data.ts",
+          "hash": "6201843091710947665"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/mcxde/mcxde-graph.html",
+          "hash": "11731044786533546006"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/mcxde/mcxde-graph.scss",
+          "hash": "2167697054212080734"
+        },
+        {
+          "file": "apps/HDX/src/app/data-formats/mcxde/mcxde-graph.ts",
+          "hash": "11829897804217472737",
+          "deps": [
+            "npm:@angular/core",
+            "npm:d3"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/data-plane/data-plane-home/data-plane-home.html",
+          "hash": "9034607747150366601"
+        },
+        {
+          "file": "apps/HDX/src/app/data-plane/data-plane-home/data-plane-home.scss",
+          "hash": "12881810904811734106"
+        },
+        {
+          "file": "apps/HDX/src/app/data-plane/data-plane-home/data-plane-home.ts",
+          "hash": "2860969442427216101",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/data-plane/data-plane.routes.ts",
+          "hash": "16382078797180948462",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/datasets/dataset-detail/dataset-detail.html",
+          "hash": "15836586167108218665"
+        },
+        {
+          "file": "apps/HDX/src/app/datasets/dataset-detail/dataset-detail.scss",
+          "hash": "5164042799176308311"
+        },
+        {
+          "file": "apps/HDX/src/app/datasets/dataset-detail/dataset-detail.ts",
+          "hash": "8488874131651601266",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/datasets/datasets.routes.ts",
+          "hash": "12425000808302207979",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/graph-data.ts",
+          "hash": "4884451869678181249"
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/graph-explorer-home/graph-explorer-home.html",
+          "hash": "14135303903733721317"
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/graph-explorer-home/graph-explorer-home.scss",
+          "hash": "18153605423616840368"
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/graph-explorer-home/graph-explorer-home.ts",
+          "hash": "15541238946386409057",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/graph-explorer.routes.ts",
+          "hash": "3776200565150911742",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/graph-icons.ts",
+          "hash": "16117914549013560959",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/hierarchy-graph/hierarchy-graph.html",
+          "hash": "3368437146145566083"
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/hierarchy-graph/hierarchy-graph.scss",
+          "hash": "10459094144045107536"
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/hierarchy-graph/hierarchy-graph.ts",
+          "hash": "9864968474090653832",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/relationship-graph/relationship-graph.html",
+          "hash": "13402416308182357312"
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/relationship-graph/relationship-graph.scss",
+          "hash": "15497088778037368895"
+        },
+        {
+          "file": "apps/HDX/src/app/graph-explorer/relationship-graph/relationship-graph.ts",
+          "hash": "4221639548761389058",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/hdx-theme-preset.ts",
+          "hash": "16770880079064658741",
+          "deps": [
+            "npm:@primeuix/themes"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/nodes/node-detail/node-detail.html",
+          "hash": "18325538553770296320"
+        },
+        {
+          "file": "apps/HDX/src/app/nodes/node-detail/node-detail.scss",
+          "hash": "11142903133501352906"
+        },
+        {
+          "file": "apps/HDX/src/app/nodes/node-detail/node-detail.ts",
+          "hash": "10638079316326941183",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/nodes/nodes-list/nodes-list.html",
+          "hash": "12744275337196809631"
+        },
+        {
+          "file": "apps/HDX/src/app/nodes/nodes-list/nodes-list.scss",
+          "hash": "1413133980536875960"
+        },
+        {
+          "file": "apps/HDX/src/app/nodes/nodes-list/nodes-list.ts",
+          "hash": "3221807885526073925",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/nodes/nodes.routes.ts",
+          "hash": "12279390583439351521",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/dataset-onboarding/dataset-onboarding.html",
+          "hash": "18421595875438691193"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/dataset-onboarding/dataset-onboarding.scss",
+          "hash": "7147453055495740210"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/dataset-onboarding/dataset-onboarding.ts",
+          "hash": "4512608510305025413",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/node-onboarding/node-onboarding.html",
+          "hash": "9385763128493900487"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/node-onboarding/node-onboarding.scss",
+          "hash": "7147453055495740210"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/node-onboarding/node-onboarding.ts",
+          "hash": "3082751761243301522",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/onboarding-home/onboarding-home.html",
+          "hash": "2044494028824836365"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/onboarding-home/onboarding-home.scss",
+          "hash": "16746356146595966258"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/onboarding-home/onboarding-home.ts",
+          "hash": "8407566248198860480",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/onboarding.routes.ts",
+          "hash": "8754729198368765688",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/service-onboarding.html",
+          "hash": "2438312453281815017"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/service-onboarding.scss",
+          "hash": "7147453055495740210"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/service-onboarding.ts",
+          "hash": "3338337689035136737",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/openapi-parser.ts",
+          "hash": "6832342963732758844",
+          "deps": [
+            "npm:js-yaml"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/spec-diagram-viewer/spec-diagram-viewer.html",
+          "hash": "2062222039285827194"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/spec-diagram-viewer/spec-diagram-viewer.scss",
+          "hash": "10220113312696514292"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/spec-diagram-viewer/spec-diagram-viewer.ts",
+          "hash": "5843652630979492916",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/spec-graph-data.ts",
+          "hash": "409539268085804005"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/spec-upload/spec-upload.html",
+          "hash": "5214516853527875569"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/spec-upload/spec-upload.scss",
+          "hash": "7246523392847050062"
+        },
+        {
+          "file": "apps/HDX/src/app/onboarding/service-onboarding/spec-diagram/spec-upload/spec-upload.ts",
+          "hash": "4356803262558687559",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/profile/profile-home/profile-home.html",
+          "hash": "500085615487355030"
+        },
+        {
+          "file": "apps/HDX/src/app/profile/profile-home/profile-home.scss",
+          "hash": "543808592270117593"
+        },
+        {
+          "file": "apps/HDX/src/app/profile/profile-home/profile-home.ts",
+          "hash": "2026582228075757776",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/profile/profile.routes.ts",
+          "hash": "7755814388607408038",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/service-plane/service-plane-home/service-plane-home.html",
+          "hash": "13515907194727354828"
+        },
+        {
+          "file": "apps/HDX/src/app/service-plane/service-plane-home/service-plane-home.scss",
+          "hash": "10543055692959654684"
+        },
+        {
+          "file": "apps/HDX/src/app/service-plane/service-plane-home/service-plane-home.ts",
+          "hash": "12208599199521277508",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/service-plane/service-plane.routes.ts",
+          "hash": "7397181916856065210",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/app-header/app-header.html",
+          "hash": "942078506868726303"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/app-header/app-header.scss",
+          "hash": "4417420455342600554"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/app-header/app-header.ts",
+          "hash": "2141041159120872795",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:keycloak-js"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/dropdown-select/dropdown-select.html",
+          "hash": "13206243657493448764"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/dropdown-select/dropdown-select.ts",
+          "hash": "6982461754674882649",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/file-dropzone/file-dropzone.html",
+          "hash": "1748905563594791427"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/file-dropzone/file-dropzone.ts",
+          "hash": "753059322820522660",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/node-badge/node-badge.html",
+          "hash": "9401429336968386368"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/node-badge/node-badge.scss",
+          "hash": "17889464325217586688"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/node-badge/node-badge.ts",
+          "hash": "9427971777392994132",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/wizard-stepper/wizard-stepper.html",
+          "hash": "11315760645324254820"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/wizard-stepper/wizard-stepper.scss",
+          "hash": "12871715017484680782"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/components/wizard-stepper/wizard-stepper.ts",
+          "hash": "16086725859616928979",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/models/dataset.model.ts",
+          "hash": "1127400502572437530"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/models/federated-node.model.ts",
+          "hash": "2851369642506921221"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/models/index.ts",
+          "hash": "17093707454047724163"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/models/service-offering.model.ts",
+          "hash": "13724138919606938883"
+        },
+        {
+          "file": "apps/HDX/src/app/shared/services/auth.service.ts",
+          "hash": "5871406559158054256",
+          "deps": [
+            "npm:@angular/core",
+            "npm:keycloak-angular",
+            "npm:keycloak-js"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/services/file-upload.service.ts",
+          "hash": "14823187775426386575",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/app/shared/services/mock-data.service.ts",
+          "hash": "13184254884983330467",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/environments/environment.ts",
+          "hash": "1768836180913916372"
+        },
+        {
+          "file": "apps/HDX/src/index.html",
+          "hash": "15752205654757421092"
+        },
+        {
+          "file": "apps/HDX/src/main.ts",
+          "hash": "15785314756255130597",
+          "deps": [
+            "npm:zone.js",
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "apps/HDX/src/styles.scss",
+          "hash": "8522313005351132357"
+        },
+        {
+          "file": "apps/HDX/src/styles/accessibility-styles.scss",
+          "hash": "13398979596484382795"
+        },
+        {
+          "file": "apps/HDX/src/styles/action-dropdown.scss",
+          "hash": "7376579334452673905"
+        },
+        {
+          "file": "apps/HDX/src/styles/animations.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/HDX/src/styles/canvas-variables.scss",
+          "hash": "5490043857358053349"
+        },
+        {
+          "file": "apps/HDX/src/styles/checkbox-custom.scss",
+          "hash": "12397749730490202610"
+        },
+        {
+          "file": "apps/HDX/src/styles/dropdown-global.scss",
+          "hash": "16468700323262123771"
+        },
+        {
+          "file": "apps/HDX/src/styles/mixins.scss",
+          "hash": "8940545571705036655"
+        },
+        {
+          "file": "apps/HDX/src/styles/onboarding-form.scss",
+          "hash": "9298219158161927448"
+        },
+        {
+          "file": "apps/HDX/src/styles/onboarding-variables.scss",
+          "hash": "7905418441121815860"
+        },
+        {
+          "file": "apps/HDX/src/styles/request-status-tabs.scss",
+          "hash": "5335470367857911618"
+        },
+        {
+          "file": "apps/HDX/src/styles/typography.scss",
+          "hash": "17301623805565575537"
+        },
+        {
+          "file": "apps/HDX/src/styles/utilities.scss",
+          "hash": "2670294455201114257"
+        },
+        {
+          "file": "apps/HDX/src/styles/variables.scss",
+          "hash": "2677915327794289997"
+        },
+        {
+          "file": "apps/HDX/tsconfig.app.json",
+          "hash": "18236407445202082987"
+        },
+        {
+          "file": "apps/HDX/tsconfig.json",
+          "hash": "16004134237605501702"
+        },
+        {
+          "file": "apps/HDX/tsconfig.spec.json",
+          "hash": "13919890687900665478"
+        }
+      ]
+    }
+  },
+  "externalNodesHash": "14204396778127605610"
+}

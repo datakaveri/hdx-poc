@@ -1,0 +1,31 @@
+/**
+ * Table action menus (fixed overlay + in-row menus).
+ * Width follows label content; JS only sets position, not width.
+ */
+.action-dropdown-overlay,
+.action-dropdown-menu {
+  width: max-content !important;
+  min-width: max-content;
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
+}
+
+.action-dropdown-overlay .dropdown-list,
+.action-dropdown-menu .dropdown-list {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.action-dropdown-overlay .dropdown-item,
+.action-dropdown-menu .dropdown-item {
+  display: block;
+  width: 100%;
+}
+
+.action-dropdown-overlay .dropdown-link,
+.action-dropdown-menu .dropdown-link {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+}

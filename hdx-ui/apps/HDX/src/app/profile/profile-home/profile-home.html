@@ -1,0 +1,96 @@
+<section class="profile-page">
+  <header class="profile-page__intro">
+    <h1>My Profile</h1>
+    <p>Federated nodes you own, and the datasets/services registered under them.</p>
+  </header>
+
+  @if (actionError()) {
+    <div class="profile-page__error">{{ actionError() }}</div>
+  }
+
+  @if (branches().length === 0) {
+    <p class="empty-state">
+      You don't own any federated nodes yet. <a routerLink="/onboarding/node">Request one</a> to get started.
+    </p>
+  }
+
+  <div class="tree">
+    @for (branch of branches(); track branch.node.id) {
+      <div class="tree-node">
+        <div class="tree-node__row">
+          <span class="tree-node__icon" aria-hidden="true">📁</span>
+          <span class="tree-node__label">{{ branch.node.name }}</span>
+          @if (branch.node.approvalStatus === 'pending') {
+            <span class="status-badge status-badge--pending">Pending approval</span>
+          } @else {
+            <app-node-badge [archetype]="branch.node.archetype" [status]="branch.node.status" />
+          }
+          <button
+            type="button"
+            class="tree-node__delete"
+            [disabled]="deletingId() === branch.node.id"
+            (click)="deleteNode(branch.node)"
+          >
+            {{ deletingId() === branch.node.id ? 'Deleting…' : 'Delete node' }}
+          </button>
+        </div>
+
+        <div class="tree-children">
+          @if (branch.datasets.length || branch.services.length) {
+            @for (dataset of branch.datasets; track dataset.id) {
+              <div class="tree-leaf">
+                <span class="tree-leaf__icon" aria-hidden="true">🗂️</span>
+                <a class="tree-leaf__label" [routerLink]="['/datasets', dataset.id]">{{ dataset.title }}</a>
+                <span class="visibility-badge" [class.visibility-badge--private]="dataset.visibility === 'private'">
+                  {{ dataset.visibility === 'private' ? 'Private' : 'Public' }}
+                </span>
+                @if (dataset.sampleFile; as sampleFile) {
+                  <button
+                    type="button"
+                    class="tree-leaf__action"
+                    [disabled]="downloadingKey() === sampleFile.key"
+                    (click)="downloadSampleFile(dataset)"
+                  >
+                    {{ downloadingKey() === sampleFile.key ? 'Downloading…' : 'Download file' }}
+                  </button>
+                }
+                <button
+                  type="button"
+                  class="tree-leaf__delete"
+                  [disabled]="deletingId() === dataset.id"
+                  (click)="deleteDataset(dataset)"
+                >
+                  {{ deletingId() === dataset.id ? 'Deleting…' : 'Delete' }}
+                </button>
+              </div>
+            }
+            @for (service of branch.services; track service.id) {
+              <div class="tree-leaf">
+                <span class="tree-leaf__icon" aria-hidden="true">⚙️</span>
+                <span class="tree-leaf__label">{{ service.name }}</span>
+                <span class="visibility-badge" [class.visibility-badge--private]="service.visibility === 'private'">
+                  {{ service.visibility === 'private' ? 'Private' : 'Public' }}
+                </span>
+                <button
+                  type="button"
+                  class="tree-leaf__delete"
+                  [disabled]="deletingId() === service.id"
+                  (click)="deleteService(service)"
+                >
+                  {{ deletingId() === service.id ? 'Deleting…' : 'Delete' }}
+                </button>
+              </div>
+            }
+          } @else {
+            <p class="tree-children__empty">
+              No datasets or services yet.
+              @if (branch.node.approvalStatus === 'approved') {
+                <a routerLink="/onboarding/dataset">Add one</a>.
+              }
+            </p>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,212 @@
+/* Canvas feature theme — IUDX brand colors (#283a89 navy, #f58120 orange).
+ * Consuming apps must define the same variable names for canvas to render correctly. */
+
+:root {
+  /* Brand / Primary */
+  --canvas-primary: #283a89;
+  --canvas-primary-hover: #1e2d6b;
+  --canvas-primary-hover-alt: #223070;
+  --canvas-primary-hover-mid: #253575;
+  --canvas-primary-deeper: #1a2659;
+  --canvas-primary-deepest: #151f4a;
+  --canvas-primary-bg: #eef1f8;
+  --canvas-primary-bg-faint: #f4f6fb;
+  --canvas-primary-bg-soft: #e8ecf6;
+  --canvas-primary-bg-hover: #f0f3fa;
+  --canvas-primary-border: #d4daf0;
+  --canvas-primary-border-mid: #c5cce8;
+  --canvas-primary-border-active: #b0b9dc;
+  --canvas-primary-focus-ring: rgba(40, 58, 137, 0.18);
+  --canvas-primary-shadow: rgba(40, 58, 137, 0.15);
+  --canvas-primary-shadow-soft: rgba(40, 58, 137, 0.12);
+
+  /* Action (brand navy) */
+  --canvas-action: #283a89;
+  --canvas-action-hover: #1e2d6b;
+  --canvas-action-deep: #1a2659;
+  --canvas-action-shadow: rgba(40, 58, 137, 0.35);
+  --canvas-action-shadow-strong: rgba(40, 58, 137, 0.4);
+  --canvas-action-shadow-md: rgba(40, 58, 137, 0.3);
+  --canvas-action-shadow-soft: rgba(40, 58, 137, 0.12);
+  --canvas-action-ring: rgba(40, 58, 137, 0.25);
+  --canvas-action-ring-soft: rgba(40, 58, 137, 0.2);
+  --canvas-action-ring-faint: rgba(40, 58, 137, 0.15);
+
+  /* Map (brand navy) */
+  --canvas-map: #283a89;
+  --canvas-map-hover: #1e2d6b;
+  --canvas-map-layer-active: #1e2d6b;
+  --canvas-map-layer-active-hover: #d4daf0;
+  --canvas-map-overlay: rgba(40, 58, 137, 0.94);
+
+  /* Chart Brand */
+  --canvas-chart-brand: #283a89;
+  --canvas-chart-text-dark: #1e2d6b;
+  --canvas-chart-text-deep: #1a2659;
+  --canvas-chart-text-darkest: #151f4a;
+  --canvas-checkbox-accent: #283a89;
+
+  /* Map Boundary / Basemap */
+  --canvas-boundary-stroke: #283a89;
+  --canvas-boundary-fill: transparent;
+  --canvas-boundary-stroke-dark: #7986cb;
+  --canvas-boundary-fill-dark: transparent;
+  --canvas-basemap-light-stroke: #778899;
+  --canvas-basemap-light-fill: rgba(119, 136, 153, 0.13);
+  --canvas-basemap-dark-bg: #111111;
+  --canvas-mask-fill: rgba(255, 255, 255, 0.58);
+  --canvas-basemap-preview-osm: linear-gradient(145deg, #b8d7cf 0%, #7db4c1 55%, #e6e0c8 100%);
+  --canvas-basemap-preview-openseries: linear-gradient(145deg, #edf2df 0%, #d8e4c7 40%, #d0d0d0 100%);
+  --canvas-basemap-preview-humanitarian: linear-gradient(145deg, #b9d5cf 0%, #7aabb4 45%, #efe6cd 100%);
+  --canvas-basemap-preview-terrain: linear-gradient(145deg, #f2d7b5 0%, #d39b63 50%, #8aa088 100%);
+  --canvas-basemap-preview-light: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 45%, #94a3b8 100%);
+  --canvas-basemap-preview-dark: linear-gradient(145deg, #1e293b 0%, #334155 40%, #0f172a 100%);
+
+  /* Map Interaction */
+  --canvas-bbox-stroke: #283a89;
+  --canvas-bbox-fill: rgba(40, 58, 137, 0.22);
+  --canvas-ogc-stroke: #283a89;
+  --canvas-ogc-fill: rgba(40, 58, 137, 0.18);
+  --canvas-measure-stroke: #111827;
+  --canvas-measure-vertex-fill: rgba(255, 255, 255, 0.65);
+  --canvas-measure-vertex-stroke: #111827;
+
+  /* Draw-Tool Shape Palette */
+  --canvas-shape-dataset: #283a89;
+  --canvas-shape-circle: #148fcb;
+  --canvas-shape-rectangle: #f58120;
+  --canvas-shape-polygon: #f59e0b;
+  --canvas-shape-default: #7c3aed;
+  --canvas-shape-fallback: #6366f1;
+  --canvas-shape-border-fallback: #cbd5e1;
+  --canvas-shape-dataset-bg: #eef1f8;
+  --canvas-shape-circle-bg: #f0f9ff;
+  --canvas-shape-rectangle-bg: #fff8f0;
+  --canvas-shape-polygon-bg: #fffbeb;
+  --canvas-shape-default-bg: #f5f3ff;
+
+  /* Default Layer / Marker */
+  --canvas-layer-default: #283a89;
+  --canvas-marker-default: #e53935;
+  --canvas-marker-fallback-blue: #148fcb;
+
+  /* Status */
+  --canvas-danger: #dc2626;
+  --canvas-danger-hover: #b91c1c;
+  --canvas-danger-alt: #da4c27;
+  --canvas-danger-mid: #e05252;
+  --canvas-danger-bg: #fee2e2;
+  --canvas-danger-border: #fca5a5;
+  --canvas-danger-faint: rgba(218, 76, 39, 0.1);
+  --canvas-warning: #f58120;
+  --canvas-warning-bg: #fff8f0;
+
+  /* Canvas UI Chrome */
+  --canvas-surface: #ffffff;
+  --canvas-surface-muted: #f9fafb;
+  --canvas-surface-subtle: #f3f4f6;
+  --canvas-surface-faint: #f0f0f0;
+  --canvas-surface-card: #fafafa;
+  --canvas-surface-hover: #f5f5f5;
+  --canvas-surface-inset: #f7f7f7;
+  --canvas-surface-inset-alt: #f8f8f8;
+  --canvas-surface-raised: #f8fafc;
+  --canvas-surface-bright: #fcfdff;
+  --canvas-surface-panel: #eef2f7;
+  --canvas-surface-panel-alt: #edf2f7;
+  --canvas-surface-overlay: rgba(255, 255, 255, 0.95);
+  --canvas-surface-overlay-strong: rgba(255, 255, 255, 0.97);
+  --canvas-surface-overlay-soft: rgba(255, 255, 255, 0.9);
+  --canvas-surface-overlay-faint: rgba(255, 255, 255, 0.85);
+  --canvas-surface-glass: rgba(255, 255, 255, 0.2);
+  --canvas-surface-glass-faint: rgba(255, 255, 255, 0.35);
+  --canvas-surface-disabled-text: #f1f5f9;
+  --canvas-border: #e5e7eb;
+  --canvas-border-muted: #d1d5db;
+  --canvas-border-soft: #e0e0e0;
+  --canvas-border-lighter: #d9d9d9;
+  --canvas-border-stone: #d6d3d1;
+  --canvas-border-strong: #ddd;
+  --canvas-border-input: #dcdcdc;
+  --canvas-border-checkbox: #bbb;
+  --canvas-border-pale: #ccc;
+  --canvas-border-dim: #aaa;
+  --canvas-border-neutral: #cfcfcf;
+  --canvas-border-divider: #ebebeb;
+  --canvas-border-divider-soft: #e8e8e8;
+  --canvas-border-panel: #e4e4e4;
+  --canvas-border-track: #ececec;
+  --canvas-border-faint: #eee;
+  --canvas-text: #111827;
+  --canvas-text-heading: #1f2937;
+  --canvas-text-body: #374151;
+  --canvas-text-secondary: #6b7280;
+  --canvas-text-muted: #9ca3af;
+  --canvas-text-faint: #4b5563;
+  --canvas-text-strong: #111;
+  --canvas-text-deep: #333;
+  --canvas-text-toolbar: #444;
+  --canvas-text-subtle: #555;
+  --canvas-text-light: #666;
+  --canvas-text-hint: #777;
+  --canvas-text-hint-alt: #888;
+  --canvas-text-placeholder: #999;
+  --canvas-text-disabled: #64748b;
+  --canvas-overlay: rgba(0, 0, 0, 0.45);
+  --canvas-overlay-light: rgba(0, 0, 0, 0.12);
+  --canvas-overlay-medium: rgba(0, 0, 0, 0.18);
+  --canvas-tooltip-bg: rgba(33, 33, 33, 0.94);
+  --canvas-tooltip-bg-soft: rgba(33, 33, 33, 0.92);
+  --canvas-access-primary: #283a89;
+  --canvas-access-primary-bg: rgba(40, 58, 137, 0.05);
+  --canvas-info: #148fcb;
+  --canvas-link: #283a89;
+  --canvas-shadow-xs: rgba(0, 0, 0, 0.08);
+  --canvas-shadow-sm: rgba(0, 0, 0, 0.1);
+  --canvas-shadow-panel: rgba(0, 0, 0, 0.06);
+  --canvas-shadow-elevated: rgba(0, 0, 0, 0.15);
+  --canvas-shadow-map: rgba(0, 0, 0, 0.14);
+  --canvas-shadow-float: rgba(0, 0, 0, 0.25);
+  --canvas-shadow-overlay: rgba(0, 0, 0, 0.35);
+  --canvas-shadow-backdrop: rgba(0, 0, 0, 0.5);
+  --canvas-shadow-backdrop-strong: rgba(0, 0, 0, 0.65);
+  --canvas-shadow-tooltip: rgba(0, 0, 0, 0.6);
+  --canvas-shadow-muted: rgba(15, 23, 42, 0.15);
+  --canvas-shadow-dialog: rgba(0, 0, 0, 0.4);
+  --canvas-shadow-popup: rgba(0, 0, 0, 0.2);
+  --canvas-shadow-ring: rgba(0, 0, 0, 0.25);
+  --canvas-shadow-float-strong: rgba(0, 0, 0, 0.3);
+  --canvas-surface-overlay-max: rgba(255, 255, 255, 0.98);
+  --canvas-text-slate-deep: #0f172a;
+  --canvas-text-slate: #334155;
+  --canvas-danger-border-soft: #fecaca;
+  --canvas-warning-hover-bg: #fef2f2;
+  --canvas-warning-text: #b45309;
+  --canvas-text-near: #222;
+  --canvas-border-skeleton: #c8c8c8;
+  --canvas-border-muted-alt: #d0d0d0;
+  --canvas-border-control: #b0b0b0;
+
+  /* ECharts Theme */
+  --canvas-chart-bg: #ffffff;
+  --canvas-chart-zoom-bg: #fafafa;
+  --canvas-chart-zoom-border: #e5e7eb;
+  --canvas-chart-zoom-filler: rgba(40, 58, 137, 0.14);
+  --canvas-chart-zoom-selected: rgba(40, 58, 137, 0.08);
+  --canvas-chart-axis-line: #9ca3af;
+  --canvas-chart-axis-label: #4b5563;
+  --canvas-chart-split-line: #f3f4f6;
+  --canvas-chart-data-line: #d1d5db;
+  --canvas-chart-data-area: #f3f4f6;
+  --canvas-chart-name-text: #374151;
+
+  /* Chart Series Palette */
+  --canvas-chart-1: #283a89;
+  --canvas-chart-2: #148fcb;
+  --canvas-chart-3: #f58120;
+  --canvas-chart-4: #8b9fd4;
+  --canvas-chart-5: #da4c27;
+  --canvas-chart-6: #1f2937;
+  --canvas-chart-7: #059669;
+  --canvas-chart-8: #e9c46a;
+}

@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nx build HDX",
+    "startTime": "2026-08-12T16:41:00.163Z",
+    "endTime": "2026-08-12T16:41:09.436Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "HDX:build:production",
+      "target": "build",
+      "projectName": "HDX",
+      "hash": "6480618011005451602",
+      "startTime": "2026-08-12T16:41:00.179Z",
+      "endTime": "2026-08-12T16:41:09.422Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
+}

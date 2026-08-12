@@ -1,0 +1,81 @@
+/**
+ * Global checkmark checkbox design (single source of truth) — IUDX navy theme.
+ * Matches MahaAgX shape/behavior; colors come from variables.scss:
+ * --checkbox-checked-bg, --checkbox-checked-border, --checkbox-hover-border (IUDX navy).
+ *
+ * Usage:
+ * - Native checkbox: add class "checkbox-checkmark-custom" to input[type="checkbox"]
+ * - Visual-only (e.g. sort dropdown): use class "checkbox-checkmark-custom" on a div/span
+ *   and add class "checked" when selected.
+ */
+
+/* Shared checkmark shape - used by both input and visual-only */
+@mixin checkbox-checkmark-tick {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+/* Native checkbox - apply class checkbox-checkmark-custom */
+input[type="checkbox"].checkbox-checkmark-custom {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.125rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.15s ease-in-out;
+
+  &:checked {
+    background-color: var(--checkbox-checked-bg, var(--primary-color));
+    border-color: var(--checkbox-checked-border, var(--primary-color));
+
+    &::after {
+      @include checkbox-checkmark-tick;
+    }
+  }
+
+  &:hover:not(:checked) {
+    border-color: var(--checkbox-hover-border, var(--primary-color));
+  }
+}
+
+/* Visual-only checkbox (e.g. sort dropdown, show dropdown) - div/span with class checkbox-checkmark-custom */
+.checkbox-checkmark-custom {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 4px;
+  border: 2px solid #d1d5db;
+  flex-shrink: 0;
+  background: #ffffff;
+  box-sizing: border-box;
+  position: relative;
+
+  &.checked {
+    background: var(--checkbox-checked-bg, var(--primary-color));
+    border-color: var(--checkbox-checked-border, var(--primary-color));
+
+    &::after {
+      @include checkbox-checkmark-tick;
+    }
+  }
+}
+
+/* Alias: same design for legacy/alternate class name (e.g. create-discussion-form, contribution steps) */
+.checkbox-custom {
+  @extend .checkbox-checkmark-custom;
+}

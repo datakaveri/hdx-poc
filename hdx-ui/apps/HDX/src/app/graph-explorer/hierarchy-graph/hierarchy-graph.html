@@ -1,0 +1,86 @@
+<div class="hint">{{ hint() }}</div>
+
+<div class="graphbox">
+  <svg #svgEl class="graph-svg" role="img" aria-label="Federation hierarchy network">
+    <g class="links">
+      @for (sub of subNodes(); track sub.id) {
+        <path class="link sub" [attr.d]="sub.linkPath" />
+      }
+    </g>
+
+    <g class="nodes">
+      @for (sub of subNodes(); track sub.id) {
+        <g
+          class="node sub"
+          [class.selected]="sub.selected"
+          tabindex="0"
+          role="button"
+          [attr.transform]="'translate(' + sub.x + ',' + sub.y + ')'"
+          (click)="pickLeaf(sub, $event)"
+          (keydown.enter)="pickLeaf(sub, $event)"
+          (keydown.space)="pickLeaf(sub, $event)"
+          (mousemove)="showTip($event, '<b>' + sub.label + '</b><br>' + sub.meta)"
+          (mouseleave)="hideTip()"
+        >
+          <circle class="halo" [attr.r]="sub.r" />
+          <use
+            [attr.href]="'#i-' + sub.icon"
+            class="ico"
+            [attr.x]="-sub.r * 0.42"
+            [attr.y]="-sub.r * 0.42"
+            [attr.width]="sub.r * 0.84"
+            [attr.height]="sub.r * 0.84"
+          />
+          <text class="cap" x="0" [attr.y]="sub.r + 14" text-anchor="middle">
+            {{ sub.label.length > 22 ? sub.label.slice(0, 21) + '…' : sub.label }}
+          </text>
+        </g>
+      }
+
+      @for (ring of ringNodes(); track ring.id) {
+        <g
+          class="node hub"
+          [class.open]="ring.open"
+          [class.dim]="ring.dim"
+          tabindex="0"
+          role="button"
+          [attr.transform]="'translate(' + ring.x + ',' + ring.y + ')'"
+          (click)="pickRing($index)"
+          (keydown.enter)="pickRing($index)"
+          (keydown.space)="pickRing($index)"
+          (mousemove)="showTip($event, '<b>' + ring.count + '</b> hosted &middot; ' + ring.label)"
+          (mouseleave)="hideTip()"
+        >
+          <circle class="halo" [attr.r]="ring.r" />
+          <use
+            [attr.href]="'#i-' + ring.icon"
+            class="ico"
+            [attr.x]="-ring.r * 0.42"
+            [attr.y]="-ring.r * 0.42"
+            [attr.width]="ring.r * 0.84"
+            [attr.height]="ring.r * 0.84"
+          />
+          <text class="cap big" x="0" [attr.y]="ring.r + 16" text-anchor="middle">{{ ring.label }}</text>
+          <text class="num" x="0" [attr.y]="ring.r + 29" text-anchor="middle">{{ ring.count }} hosted</text>
+        </g>
+      }
+    </g>
+  </svg>
+
+  @if (tooltip(); as tip) {
+    <div class="tip on" [style.left.px]="tip.x + 14" [style.top.px]="tip.y + 14" [innerHTML]="tip.html"></div>
+  }
+
+  @if (openIdx() >= 0) {
+    <button class="reset" (click)="collapseAll()">Collapse all</button>
+  }
+</div>
+
+@if (selectedLeaf(); as leaf) {
+  <div class="detail-card">
+    <div class="detail-card__kind">{{ leaf.kind }}</div>
+    <h3>{{ leaf.label }}</h3>
+    <p>{{ leaf.description }}</p>
+    <div class="detail-card__meta">{{ leaf.meta }}</div>
+  </div>
+}

@@ -1,0 +1,2177 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caladea:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caladea:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap");
+
+* {
+  font-family: "DM Sans", "Inter", sans-serif !important;
+}
+
+html,
+body {
+  min-height: 100vh;
+  height: auto;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: "DM Sans", "Inter", sans-serif !important;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "DM Sans", "Inter", sans-serif !important;
+}
+
+/* Ensure all text elements use DM Sans */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div,
+a,
+button,
+input,
+textarea,
+select,
+label,
+li,
+ul,
+ol,
+td,
+th,
+table {
+  font-family: "DM Sans", "Inter", sans-serif !important;
+}
+
+/* Keycloak-specific classes */
+.login-pf,
+.login-pf *,
+.login-pf-page,
+.login-pf-page *,
+[class*="kc-"],
+[class*="pf-"],
+[id*="kc-"],
+.navbar,
+.navbar *,
+.form-control,
+.btn,
+.custom-pf-c-form-control,
+.custom-pf-c-form__label,
+.custom-pf-c-button {
+  font-family: "DM Sans", "Inter", sans-serif !important;
+}
+
+.login-pf body {
+  /* background: url("../img/keycloak-bg.png") no-repeat center center fixed;
+    background-size: cover;
+    height: 100%; */
+  background: #fff;
+  background-size: cover;
+  min-height: 100vh;
+  height: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-pf {
+  box-shadow: none;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#custom-card-pf {
+  border: none;
+  margin: 0 auto;
+  /* background image removed (circle design) per request */
+  background: none;
+  width: 50vw; /* Take up left half of viewport */
+  max-width: 50vw;
+  margin: 0px;
+  padding: 0 120px; /* no top/bottom padding on the card */
+  padding-top: 0;
+  padding-bottom: 0;
+  height: calc(100vh - 80px); /* Account for navbar height */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100vh - 80px); /* Prevent overflow */
+  align-items: flex-start; /* Align content to left */
+  /* Vertically center title + form as one block so top/bottom whitespace matches */
+  justify-content: center;
+  justify-content: safe center;
+  position: relative; /* Ensure sticky positioning works */
+  box-sizing: border-box;
+}
+
+/* Login page: same vertical balance */
+#custom-card-pf:has(#kc-form-444) {
+  justify-content: center;
+  justify-content: safe center;
+  padding-top: 0;
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
+
+#custom-card-pf:has(#kc-form-444) .custom-header {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#custom-card-pf:has(#kc-form-444) h1#kc-page-title {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+/* Do not flex-grow: flex:1 was stretching this region and left all spare space below the form */
+#kc-content {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Page titles: no artificial top padding inside the card */
+.page-header-padded {
+  padding-top: 0 !important;
+}
+
+/* Ensure header content is left-aligned */
+header {
+  width: 100%;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 99;
+  padding-bottom: 10px;
+}
+
+/* Main login page only (login.ftl); register and other flows use different wrappers */
+#kc-form-444 {
+  overflow: visible; /* Allow content to expand naturally */
+}
+
+.custom-button-group {
+  float: right;
+}
+
+a {
+  color: #283a89;
+}
+.custom-forgot-password a,
+.custom-button-group a {
+  color: #283a89;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  text-decoration: underline;
+}
+
+.login-pf a:hover {
+  color: #283a89 !important;
+}
+
+.custom-forgot-password a:hover,
+.custom-button-group a:hover {
+  text-decoration: none;
+}
+
+.custom-forgot-password a:hover {
+  text-decoration: none;
+}
+
+.form-col {
+  display: flex;
+  justify-content: space-between;
+}
+
+#form-col-full {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.custom-pf-c-form-control {
+  /* Pill-style input to match screenshots */
+  background: var(--Basic-Forms-Input-Background, #f3f4f6);
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  margin: 0;
+  border: 0;
+  border-radius: 12px;
+  color: #111827;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.custom-pf-c-form-control:focus,
+.custom-pf-c-form-control:focus-visible {
+  appearance: none;
+  outline: none;
+  box-shadow: inset 0 0 0 2px #0b457f;
+}
+
+/* Ensure textarea/select using the theme input class match typography and sizing */
+textarea.custom-pf-c-form-control,
+select.custom-pf-c-form-control {
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  width: 100%;
+  height: auto;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 12px;
+  background: var(--Basic-Forms-Input-Background, #f3f4f6);
+}
+
+/* #form-group-1,#form-group-2,#form-group-3,#form-group-4,#form-group-5{
+    width: 100%;
+} */
+
+.custom-pf-c-form-control::placeholder {
+  color: #6c6c6c;
+}
+
+.custom-pf-c-button.custom-pf-m-primary {
+  width: 100%;
+  height: auto;
+  margin: 16px 0 0 0;
+  transition: 0.25s ease;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: 14px 16px;
+  text-align: center;
+  background: var(
+    --Colors-Emerald-600,
+    #283a89
+  ); /* primary green (theme token) */
+  color: #fff;
+  text-transform: none;
+  font-weight: 600;
+  border-radius: 10px;
+  font-size: 16px;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+}
+
+.custom-pf-c-button.custom-pf-m-primary:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  border-bottom: 4px solid transparent;
+  border-left: 4px solid transparent;
+  box-sizing: border-box;
+  transform: translateX(100%);
+}
+
+.custom-pf-c-button.custom-pf-m-primary:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  border-top: 4px solid transparent;
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  transform: translateX(-100%);
+}
+
+.custom-pf-c-button.custom-pf-m-primary:hover {
+  filter: brightness(0.95);
+  cursor: pointer;
+}
+
+.custom-pf-c-button.custom-pf-m-primary:before,
+.custom-pf-c-button.custom-pf-m-primary:after {
+  display: none; /* remove decorative borders for clean CTA */
+}
+
+.logo-header-text {
+  color: #283a89;
+}
+
+/* HDX header piece should be black per design */
+.maha-black {
+  color: #000 !important;
+}
+
+button {
+  /* color: black; */
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: transparent;
+}
+
+h1#kc-page-title {
+  /* padding-left: 10px;  */
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+  text-align: left;
+  width: 100%;
+  white-space: nowrap; /* Prevent text wrapping to multiple lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: sticky;
+  top: 80px; /* keep title below navbar */
+  z-index: 100;
+  flex-shrink: 0;
+  /* padding-bottom: 20px;
+  margin-bottom: 20px;  */
+  background: white; /* Ensure background covers content behind */
+}
+
+/* Responsive font sizes for header */
+@media (max-width: 1400px) {
+  h1#kc-page-title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 1200px) {
+  h1#kc-page-title {
+    font-size: 32px;
+  }
+
+}
+
+@media (max-width: 992px) {
+  h1#kc-page-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1#kc-page-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  h1#kc-page-title {
+    font-size: 20px;
+  }
+}
+
+#kc-header-wrapper {
+  font-family: "DM Sans", sans-serif;
+  display: none;
+}
+
+#custom-logo-wrapper {
+  background-size: contain;
+  width: 95px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  transform: translatey(25%);
+}
+
+.custom-pf-c-form__label {
+  z-index: 1;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: var(--Basic-Forms-Input-Label-Label-Color, #1f2937);
+}
+
+#kc-form-options {
+  padding: 0 !important;
+}
+
+/* Checkbox tick/accent color - HDX green (register acceptTerms, update password Sign out from other devices, login rememberMe) */
+input[type="checkbox"] {
+  accent-color: #283a89 !important;
+}
+
+.custom-pf-c-form__label-text {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  padding-bottom: 5px;
+  color: var(--Basic-Forms-Input-Label-Label-Color, #1f2937);
+}
+
+/* .col-xs-12.col-sm-12.col-md-12.col-lg-12 {
+  padding: 0 !important;
+} */
+
+.custom-pf-c-form__label-text::after {
+  content: " *";
+  color: #ff0000;
+}
+
+#kc-info-wrapper {
+  background-color: transparent;
+  font-size: 14px;
+  padding: 15px !important;
+}
+
+textarea:focus,
+input:focus,
+input:hover {
+  outline: none !important;
+  box-shadow: inset 0 0 0 1px !important;
+}
+
+#kc-registration {
+  text-align: center;
+
+  a {
+    color: #283a89;
+  }
+}
+
+#kc-registration span {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #6b7280;
+}
+
+#kc-info-wrapper a {
+  color: #283a89;
+  outline: none;
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+  font-size: 14px;
+  margin-left: 0px;
+  text-decoration: underline;
+}
+
+#kc-info-wrapper a:hover {
+  text-decoration: none;
+  color: #0088ce;
+}
+
+.login-pf-page .login-pf-signup {
+  text-align: left;
+}
+
+.custom-label-wrapper {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: var(--Basic-Forms-Input-Label-Label-Color, #1f2937);
+  border: 0;
+  border-radius: 10px;
+  margin: 0;
+  width: 100%;
+  padding: 0 !important;
+}
+
+.custom-input-wrapper {
+  font-size: 16px;
+  border: 0;
+  border-radius: 10px;
+  margin: 0;
+  width: 100%;
+  padding: 0;
+
+  &:focus {
+    appearance: none;
+    outline: none;
+    box-shadow: inset 0 0 0 2px #0b457f;
+  }
+}
+
+.custom-form-group {
+  /* Default: full-width form rows. For two-column rows, `.form-col` overrides below. */
+  width: 100%;
+  /* margin-bottom: 20px; */
+  position: relative; /* Ensure proper stacking context */
+  z-index: 1; /* Lower than header but above background elements */
+}
+
+.form-col .custom-form-group {
+  /* two-column layout for first/last name on desktop */
+  width: calc(50% - 12px);
+  position: relative; /* Ensure proper positioning */
+  z-index: 1; /* Lower than header */
+}
+
+/* #kc-form-buttons{
+  padding: 0 15px;
+} */
+.custom-login-text,
+.custom-login-helper-text {
+  font-size: 14px;
+  padding-top: 15px;
+}
+
+.custom-login-text {
+  color: #283a89;
+  margin-left: 5px;
+  font-weight: 600;
+}
+
+.custom-login-helper-text {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  text-align: center;
+  background: rgba(255, 255, 255, 1);
+  color: #6b7280;
+}
+
+#kc-register-form {
+  margin-top: 25px;
+}
+
+/* Tight spacing between terms/agreement row and Register submit button */
+#kc-register-form .form-group:has(.checkbox-container) {
+  margin-bottom: 0;
+}
+
+#kc-register-form .form-group.bottom-align {
+  margin-top: 0;
+}
+
+#kc-register-form #kc-form-buttons {
+  margin-top: 12px !important;
+}
+
+.custom-header {
+  display: flex;
+  justify-content: center;
+  span {
+    color: #283a89;
+  }
+  padding-top: 20px;
+}
+
+/* Titles that use a padded wrapper span: keep heading color, not .custom-header span green */
+h1#kc-page-title .kc-page-title-block {
+  color: #111827;
+}
+
+#kc-info {
+  margin: 0;
+}
+
+/* Password Reset */
+
+/* Update Password */
+
+#custom-kc-passwd-update-form {
+  margin-top: 20px;
+}
+
+/* Keep password criteria inside form: use normal flow below new password field (not absolute) */
+#custom-kc-passwd-update-form #password-requirements {
+  position: static !important;
+  width: 100% !important;
+  left: auto !important;
+  top: auto !important;
+  margin-top: 12px !important;
+  margin-bottom: 4px;
+}
+
+.pw-update-form-group {
+  margin-bottom: 20px;
+}
+
+.label-wrapper {
+  padding: 0 !important;
+}
+
+#custom-kc-form-buttons {
+  margin: 10px 0;
+}
+
+#kc-form-buttons input {
+  border: 0px;
+}
+
+/* Page expired */
+
+#custom-instruction1 {
+  padding: 10px 30px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #6b7280;
+}
+
+.login-pf-page {
+  padding-top: 0 !important;
+}
+
+/* Main login container - ensure it fits viewport */
+.login-pf {
+  /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
+  flex: 1;
+}
+
+/* Ensure navbar is fixed at top */
+.navbar {
+  position: relative;
+  z-index: 1000;
+  flex-shrink: 0;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  /* Tablet layout: avoid fixed full-height panels and enable scrolling */
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  /* Navbar tablet styles (keep default keycloak spacing) */
+  /* If custom tablet padding is needed, uncomment and adjust below */
+  /*
+  .navbar {
+    padding: 0.5rem 2rem 0 2rem;
+  }
+  */
+
+  /* Logo container alignment on tablet */
+  .logo-container {
+    padding-left: 40px;
+  }
+
+  /* Use full width for form container on tablet to avoid narrow 50vw layout */
+  #custom-card-pf {
+    position: relative;
+    transform: none;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    height: auto; /* Allow container to grow with content */
+    border: none;
+    padding: 0 40px;
+    margin: 0;
+    background: none;
+    z-index: 2; /* Ensure form is above any background elements */
+    overflow-y: visible; /* Let page scroll handle overflow */
+  }
+
+  /* Ensure form column can grow and not be clipped */
+  .row > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative;
+    z-index: 2;
+  }
+
+  .login-pf-page {
+    padding-top: 0;
+  }
+
+  .login-pf body {
+    padding-bottom: 0;
+  }
+
+  #kc-header {
+    margin: 0;
+  }
+
+  .custom-pf-c-button.custom-pf-m-primary {
+    font-size: 16px;
+  }
+
+  .row {
+    height: auto;
+  }
+
+  /* Ensure title aligns with logo */
+  h1#kc-page-title {
+    padding-left: 0 !important; /* Align with logo start point */
+  }
+
+  /* Hide the fixed right preview panel on tablets to avoid overlapping/scaling issues */
+  .col-12.col-md-6.p-0.d-none.d-md-block.images-row {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #custom-card-pf {
+    position: relative;
+    transform: none;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    height: calc(100vh - 80px); /* Account for navbar */
+    border: none;
+    padding: 0 40px;
+    margin: 0 auto;
+    background: none;
+  }
+
+  .login-pf-page {
+    padding-top: 0;
+  }
+
+  .login-pf body {
+    padding-bottom: 0;
+  }
+
+  #kc-header {
+    margin: 0;
+  }
+
+  .custom-pf-c-button.custom-pf-m-primary {
+    font-size: 16px;
+  }
+
+  .row {
+    height: calc(100vh - 80px); /* Account for navbar */
+  }
+}
+
+#instruction-one {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 20px;
+  padding: 0 30px;
+}
+
+#instruction-two {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #6b7280;
+}
+
+/* Generic instruction text styling */
+.instruction {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #6b7280;
+  font-family: "DM Sans", sans-serif;
+}
+
+.login-div {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  background-color: #fff;
+  height: 60px;
+}
+
+.logo {
+  padding-left: 20px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  transition: none;
+  animation: none;
+
+  p {
+    color: #363636;
+  }
+}
+
+/* Explicit logo sizing per design tokens */
+.logo-image {
+  width: 120.283px; /* approx 105.28304290771484 */
+  height: 40.551px; /* approx 24.55129623413086 */
+  object-fit: contain;
+  opacity: 1;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  transform: scale(1.05); /* Subtle static zoom effect */
+  transform-origin: center center;
+}
+
+/* Hover effect - subtle zoom on hover */
+.logo-image:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+ul li {
+  margin: 0 0.5rem;
+  text-align: center;
+}
+
+ul li a {
+  text-decoration: none !important;
+  color: var(--Colors-Gray-700, #374151) !important;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+}
+
+li.active {
+  background-color: #e5e7eb !important;
+  border-radius: 40px;
+}
+
+.row {
+  margin: 0px !important;
+  height: calc(100vh - 80px) !important; /* Account for navbar height */
+  max-height: calc(100vh - 80px) !important;
+  min-height: calc(100vh - 80px) !important;
+  display: flex;
+  align-items: stretch;
+  padding: 0 !important;
+  overflow: visible; /* Allow fixed positioning to work */
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+/* Ensure no spacing on the main login container row */
+div[class*="kcLoginClass"] .row,
+.login-pf .row {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.images-row {
+  margin: 0px !important;
+  position: relative;
+  overflow: hidden;
+  padding: 0 !important;
+  height: calc(100vh - 80px) !important; /* Account for navbar height */
+  max-height: calc(100vh - 80px) !important;
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  line-height: 0; /* Remove line-height spacing */
+  font-size: 0; /* Remove font-size spacing */
+  border-top-left-radius: 10px !important;
+}
+
+.images-row div {
+  height: 100% !important;
+  width: 100%;
+  position: relative;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block;
+  flex: 1;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  box-sizing: border-box;
+  line-height: 0; /* Remove line-height spacing */
+  font-size: 0; /* Remove font-size spacing */
+}
+
+/* Ensure video container div takes full height of parent */
+.col-12.col-md-6.p-0.d-none.d-md-block.images-row > div {
+  height: 100% !important;
+  min-height: 100% !important;
+}
+
+.images-row .video {
+  /* Video should match container width and available height */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100% !important; /* equal to right-column width */
+  height: 100% !important; /* fit within container */
+  min-height: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover;
+  /* Lower vertical anchor so soil/ground stays in frame; was 40% (plant-heavy crop) */
+  object-position: 45% 72%;
+  opacity: 1;
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0;
+  outline: 0;
+  border-top-left-radius: 10px; /* Rounded corner on left top edge */
+  /* Zoom out slightly vs 1.7 so full scene (incl. soil) reads better */
+  transform-origin: center 48%;
+}
+
+.images-row .video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dark gradient overlay on top of video */
+.images-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    269.76deg,
+    rgba(5, 32, 24, 0) 46.37%,
+    #052018 99.82%
+  );
+  z-index: 2;
+}
+
+/* Subtle overlay to improve contrast on top of the video */
+.images-row::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 32, 24, 0.14) 0%,
+    rgba(5, 32, 24, 0.32) 100%
+  );
+  z-index: 1;
+}
+
+/* make the right column a positioned, overflow-hidden frame for the hero */
+.col-12.col-md-6.p-0.d-none.d-md-block.images-row,
+.col-6.p-0.d-none.d-md-block.images-row {
+  position: fixed !important; /* Fixed positioning to ensure full right side coverage */
+  top: 80px !important; /* Start below navbar */
+  right: 0 !important;
+  bottom: 0 !important; /* Extend to bottom of page */
+  width: 50vw !important; /* Take up right half of viewport */
+  overflow: hidden;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: calc(100vh - 80px) !important; /* Account for navbar height */
+  max-height: calc(100vh - 80px) !important;
+  min-height: calc(100vh - 80px) !important;
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* Override any Bootstrap column padding/margin */
+.col-12.col-md-6.p-0.d-none.d-md-block.images-row *,
+.col-6.p-0.d-none.d-md-block.images-row * {
+  box-sizing: border-box;
+}
+
+/* Navbar */
+
+.navbar {
+  height: 80px;
+  /* padding: 0 30px; */
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0px !important;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  justify-content: start;
+  background: linear-gradient(
+    180deg,
+    rgba(247, 254, 231, 0.7) 0%,
+    rgba(247, 254, 231, 0) 100%
+  );
+  backdrop-filter: blur(0px);
+  flex-shrink: 0;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Enhanced navbar container */
+.navbar .container-fluid,
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  box-sizing: border-box;
+}
+
+/* Navbar navigation list styling */
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.navbar-nav li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Enhanced navbar links */
+.navbar-nav .nav-link {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 4px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background-color: #283a89;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 1.5px;
+}
+
+.navbar-nav .nav-link::before {
+  display: none;
+}
+
+.navbar-nav .nav-link:hover {
+  transform: translateY(-1px);
+  color: #f58120 !important;
+  text-decoration: none !important;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 0 !important;
+  display: none !important;
+}
+
+/* Active state for navbar links (per screenshot: light mint bg, dark green text) */
+.navbar-nav li.active .nav-link {
+  background-color: #d1f7e0;
+  color: #237e56 !important;
+  font-weight: 600;
+}
+
+.navbar-nav li.active .nav-link::after {
+  width: 90%;
+}
+
+.nav-link {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  cursor: pointer;
+  color: var(--Colors-Gray-700, #374151) !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background-color: #283a89;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 1.5px;
+}
+
+.nav-link:hover {
+  color: #f58120 !important;
+  text-decoration: none !important;
+}
+
+.nav-link:hover::after {
+  width: 0 !important;
+  display: none !important;
+}
+
+.nav-link.active {
+  background-color: #d1f7e0;
+  color: #237e56 !important;
+}
+
+.nav-link.active::after {
+  width: 90%;
+}
+
+.login-btn {
+  text-decoration: none;
+
+  a {
+    color: #283a89 !important;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #f58120 !important;
+    text-decoration: none;
+  }
+}
+
+.register-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: #283a89;
+  /* padding: 8px 20px !important; */
+  min-width: unset;
+  transition: background-color 0.3s ease;
+
+  a {
+    color:white !important;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+}
+
+.register-btn:hover {
+  background: #283a89;
+}
+
+.register-btn:active {
+  transform: scale(0.98);
+}
+
+.register-btn:hover a,
+.register-btn a:hover {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.login-image-mobile {
+  min-width: 342px !important;
+  min-height: 229px;
+  margin-top: 36px;
+}
+
+.logo-name {
+  position: relative;
+  top: 5px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.logo-department {
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+
+.menu-item-desktop {
+  font-size: 14px;
+  text-align: end;
+  margin-left: 20px;
+  cursor: pointer;
+  border: solid 1px;
+  border-color: #1a2e05;
+  border-radius: 500px;
+
+  button {
+    font-size: 14px;
+    color: #1a2e05;
+  }
+}
+
+.white-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+
+/* Mobile hamburger menu - Bootstrap navbar-toggler */
+.navbar-toggler {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  z-index: 1001;
+  margin-left: auto;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23374151' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+
+/* Mobile offcanvas sidebar - Clean design matching screenshot */
+.offcanvas {
+  max-width: 320px;
+  width: 320px;
+  background-color: #f8f9fa;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  border: none;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.offcanvas-header {
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  border-bottom: none;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  min-height: auto;
+}
+
+/* Custom close button with green X matching screenshot */
+.btn-close-custom {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-custom:hover {
+  background-color: #dee2e6;
+  transform: scale(1.05);
+}
+
+.btn-close-custom:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.close-icon {
+  color: #10b981;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  font-family: "DM Sans", "Inter", sans-serif;
+}
+
+.offcanvas-title {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.offcanvas-body {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  background-color: #f8f9fa;
+  height: calc(100vh - 100px);
+  min-height: calc(100vh - 100px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.offcanvas-body .navbar-nav,
+.offcanvas-body .offcanvas-nav-list {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.offcanvas-body .nav-item {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.offcanvas-body .nav-item:last-child {
+  border-bottom: none;
+}
+
+.offcanvas-body .nav-item:last-child .nav-link {
+  border-bottom: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.offcanvas-body .nav-link {
+  display: block;
+  color: #6b7280;
+  text-decoration: none;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+  border-radius: 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.offcanvas-body .nav-link-with-trailer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.offcanvas-body .nav-link-with-trailer .nav-trailer {
+  color: #9ca3af;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.offcanvas-body .nav-link-with-trailer .nav-trailer-label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.offcanvas-body .nav-link:hover {
+  background-color: #d1fae5;
+  color: #f58120;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(28, 58, 137, 0.15);
+  text-decoration: none !important;
+}
+
+.offcanvas-body .nav-link:hover::after {
+  width: 0 !important;
+  display: none !important;
+}
+
+/* Active/highlighted state matching the green background in screenshot */
+.offcanvas-body .nav-item.active .nav-link,
+.offcanvas-body .nav-link.active {
+  background-color: #d1f7e0;
+  color: #237e56 !important;
+  font-weight: 600;
+  border-bottom: none !important;
+}
+
+.offcanvas-body .nav-item.active .nav-link::after,
+.offcanvas-body .nav-link.active::after {
+  display: none !important;
+  width: 0 !important;
+}
+
+.offcanvas-body .nav-item.active .nav-link:hover,
+.offcanvas-body .nav-link.active:hover {
+  background-color: #b8f0d4;
+  color: #237e56 !important;
+  box-shadow: 0 2px 8px rgba(28, 58, 137, 0.15);
+}
+
+/* Remove border on last item comment since we removed all borders */
+
+/* Ensure offcanvas backdrop and positioning */
+.offcanvas-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Override Bootstrap offcanvas positioning for full height */
+.offcanvas.offcanvas-end {
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  transform: translateX(100%);
+}
+
+.offcanvas.offcanvas-end.show {
+  transform: translateX(0);
+}
+
+/* Ensure offcanvas body fills available space */
+.offcanvas-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* Mobile/tablet offcanvas CTA buttons (Login + Register) */
+.offcanvas-cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 0 8px 0;
+  margin-top: auto;
+}
+
+.offcanvas-login-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  text-align: center;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #283a89 !important;
+  background: #fff;
+  border: 1.5px solid #283a89;
+  border-radius: 8px;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.offcanvas-login-btn:hover {
+  background: #f0fdf4;
+  color: #047857 !important;
+  border-color: #047857;
+  text-decoration: none !important;
+}
+
+.offcanvas-register-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  text-align: center;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff !important;
+  background: #283a89;
+  border: 1.5px solid #283a89;
+  border-radius: 8px;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  transition: background 0.2s ease;
+}
+
+.offcanvas-register-btn:hover {
+  background: #283a89;
+  border-color: #283a89;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+/* Tablet view - ensure full height canvas */
+@media (min-width: 768px) and (max-width: 991px) {
+  .offcanvas {
+    height: max-content !important;
+    min-height: max-content !important;
+    max-height: max-content !important;
+    border-radius: 10px;
+  }
+
+  .offcanvas.offcanvas-end {
+    height: max-content !important;
+    min-height: max-content !important;
+    max-height: max-content !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    border-radius: 10px;
+  }
+
+  .offcanvas-body {
+    height: calc(100vh - 80px) !important;
+    min-height: calc(100vh - 80px) !important;
+    padding-bottom: 0 !important;
+  }
+
+  .offcanvas-body .navbar-nav,
+  .offcanvas-body .offcanvas-nav-list {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .offcanvas-body .nav-item:last-child {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+  }
+
+  .offcanvas-body .nav-item:last-child .nav-link {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+    border-radius: 0 0 12px 12px !important;
+  }
+
+  /* Tablet: slightly smaller nav text */
+  .offcanvas-body .nav-link {
+    font-size: 13px !important;
+    padding: 10px 20px !important;
+  }
+}
+
+/* Mobile: even more compact nav text */
+@media (max-width: 767px) {
+  .offcanvas-body .nav-link {
+    font-size: 13px !important;
+    padding: 10px 16px !important;
+  }
+}
+
+/* @media (max-width: 1200px) {
+  .navbar {
+    padding: 0 0 0 20px;
+  }
+} */
+
+@media (max-width: 991px) {
+  .navbar-toggler {
+    display: flex;
+    margin-left: auto;
+  }
+
+  .navbar-nav {
+    display: none;
+  }
+}
+
+/* Below 1250px: switch header to offcanvas design */
+@media (max-width: 1200px) {
+  .navbar-toggler {
+    display: flex !important; /* override d-lg-none */
+    margin-left: auto;
+  }
+
+  /* Hide desktop nav items and use offcanvas instead */
+  .navbar-nav.ms-auto {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+  /* Keep header nav on a single line for 990-1200px widths */
+  .navbar {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  .navbar-nav {
+    gap: 0.2rem;
+    flex-wrap: nowrap;
+  }
+
+  .navbar-nav li {
+    margin: 0 !important;
+    padding: 0;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 12px;
+    padding: 8px 10px !important;
+    margin: 0 2px !important;
+    white-space: nowrap; /* Keep nav labels on one line */
+  }
+
+  .navbar-nav .nav-link.resources-nav-btn {
+    padding: 0.35rem 0.75rem !important; /* Override template inline-ish style */
+    white-space: nowrap;
+  }
+}
+
+/* 1200–1450px: nav is now visible; shrink register button so it doesn't push items to a second line */
+@media (min-width: 1200px) and (max-width: 1450px) {
+  .navbar {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .navbar-nav {
+    gap: 0.1rem;
+    flex-wrap: nowrap;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 14px;
+    padding: 8px 8px !important;
+    margin: 0 !important;
+    white-space: nowrap;
+  }
+
+  .navbar-nav .nav-link.resources-nav-btn {
+    padding: 8px 8px !important;
+    white-space: nowrap;
+  }
+
+  /* Register button: compact size to prevent wrapping */
+  .register-btn {
+    min-width: unset;
+  }
+
+  .register-btn .nav-link {
+    font-size: 12px !important;
+    padding: 6px 10px !important;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Mobile - ensure full height canvas */
+  .offcanvas {
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  .offcanvas.offcanvas-end {
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    top: 0 !important;
+    bottom: 0 !important;
+  }
+
+  .offcanvas-body {
+    height: calc(100vh - 80px) !important;
+    min-height: calc(100vh - 80px) !important;
+  }
+
+  .login-pf-page {
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    a {
+      color: #1a2e05;
+    }
+  }
+
+  .bottom-align {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* padding: 10px 40px; */
+  }
+
+  .form-col {
+    flex-direction: column;
+  }
+
+  .custom-form-group {
+    width: 100% !important;
+    margin-bottom: 20px;
+  }
+
+  .custom-pf-c-button.custom-pf-m-primary {
+    width: 100% !important;
+  }
+
+  .custom-pf-c-form-control {
+    width: 100% !important;
+  }
+
+  #form-col-full {
+    width: 100% !important;
+  }
+
+
+  .custom-forgot-password a,
+  .custom-button-group a {
+    color: #283a89;
+  }
+
+  /* Navbar mobile styles */
+  .navbar {
+    padding: 0 40px;
+  }
+
+  /* Card: match desktop — vertically balanced block, no forced flex stretch */
+  #custom-card-pf {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: safe center;
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  #kc-content {
+    height: auto;
+    flex: 0 1 auto;
+    min-height: 0;
+  }
+
+  h1#kc-page-title {
+    padding-left: 0 !important; /* No additional padding needed with balanced card padding */
+  }
+}
+
+/* Additional fixes to ensure video touches bottom */
+video {
+  line-height: 0;
+  font-size: 0;
+}
+
+/* Remove any default spacing from containers */
+div[class*="login-pf"],
+div[class*="kcLoginClass"] {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Ensure video container has no gaps */
+.col-12.col-md-6.p-0.d-none.d-md-block.images-row {
+  line-height: 0;
+  font-size: 0;
+}
+
+.col-lg-1,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-md-1,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-sm-1,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-xs-1,
+.col-xs-10,
+.col-xs-11,
+.col-xs-12,
+.col-xs-2,
+.col-xs-3,
+.col-xs-4,
+.col-xs-5,
+.col-xs-6,
+.col-xs-7,
+.col-xs-8,
+.col-xs-9 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* .form-group {
+  margin-right: 7px !important;
+  margin-left: 4px !important;
+} */
+
+@media (min-width: 968px) {
+  .navbar {
+    padding: 0.5rem 2rem 0 2rem;
+  }
+
+  .navbar-expand-lg .navbar-nav .nav-link {
+    padding-left: .5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .offcanvas-end {
+    border-left: 1px solid rgba(0, 0, 0, 0.2) !important;
+  }
+}
+
+@media (min-width: 967px) and (max-width: 1200px) {
+  .logo-container {
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 770px) and (max-width: 967px) {
+  .navbar-toggler {
+    padding-right: 40px;
+  }
+}
+
+.form-horizontal .form-group {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+/* Password Requirements Styling */
+#password-requirements {
+  margin-top: 12px !important;
+  padding: 12px 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  font-family: "DM Sans", "Inter", sans-serif !important;
+  position: absolute; /* Position absolutely to prevent layout shifts */
+  z-index: 1000; /* High z-index to appear above other elements */
+  width: calc(100% - 32px); /* Account for padding */
+  left: 0;
+  top: calc(100% + 8px); /* Position below the password field */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  margin: 6px 0 !important;
+  font-family: "DM Sans", "Inter", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 20px;
+  color: #6b7280 !important;
+  transition: color 0.2s ease;
+}
+
+.requirement span:not(.req-icon) {
+  font-family: "DM Sans", "Inter", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 20px;
+}
+
+.req-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px !important;
+  font-size: 10px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background-color: #ffffff;
+  color: #d1d5db;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+/* Valid requirement state */
+.requirement.valid {
+  color: #283a89 !important;
+}
+
+.requirement.valid .req-icon {
+  border-color: #283a89;
+  background-color: #283a89;
+  color: #ffffff;
+}
+
+/* Invalid requirement state - default (not attempted yet) */
+.requirement.invalid {
+  color: #6b7280 !important;
+}
+
+.requirement.invalid .req-icon {
+  border-color: #d1d5db;
+  background-color: #ffffff;
+  color: #d1d5db;
+}
+
+/* Invalid requirement state - when password has been attempted but requirement not met */
+.requirement.invalid.attempted {
+  color: #ef4444 !important;
+}
+
+.requirement.invalid.attempted .req-icon {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+
+/* Better styling for icons */
+.req-icon {
+  font-family: "DM Sans", "Inter", sans-serif !important;
+  font-weight: 600;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fix for registration form field overlap when password validation appears */
+.form-col {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px; /* Add some top margin to prevent overlap */
+}
+
+/* Ensure form fields don't get hidden behind sticky header */
+.custom-pf-c-form-control {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure password field container can contain absolutely positioned requirements */
+#kc-register-form .form-col div[style*="position: relative"] {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Ensure the password field wrapper has proper positioning */
+#kc-register-form input[name="password"] {
+  position: relative;
+  z-index: 2;
+}
+
+/* When password requirements are visible, ensure proper spacing */
+#password-requirements + .form-col,
+#password-requirements ~ .form-col {
+  margin-top: 20px; /* Extra spacing after password requirements */
+}
+
+/* Ensure the form container scrolls properly when content expands */
+#custom-card-pf {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Additional fix for mobile to prevent field cutoff */
+@media (max-width: 767px) {
+  .form-col {
+    margin-top: 15px;
+  }
+  
+  #password-requirements + .form-col,
+  #password-requirements ~ .form-col {
+    margin-top: 25px;
+  }
+  
+  /* On mobile, make password requirements full width */
+  #password-requirements {
+    width: calc(100% - 16px) !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+}
+/* Specific fix for registration form name fields */
+#kc-register-form .form-col:first-of-type {
+  position: relative;
+  z-index: 10; /* Higher z-index to stay above password requirements */
+  background: white; /* Ensure background covers any overlapping content */
+}
+
+/* Ensure name fields stay visible and properly positioned */
+#kc-register-form .form-col:first-of-type .custom-form-group {
+  position: relative;
+  z-index: 11;
+  background: white;
+}
+
+/* Ensure the password requirements don't interfere with name fields */
+#kc-register-form .form-col:nth-of-type(2) {
+  position: relative;
+  z-index: 5; /* Lower than name fields */
+  margin-top: 20px; /* Ensure proper spacing from name fields */
+}
+
+/* Make sure password requirements appear in the correct stacking context */
+#password-requirements {
+  z-index: 999 !important; /* High but not higher than name fields */
+}
+
+/* Ensure proper spacing between form sections */
+#form-col-full {
+  position: relative;
+  z-index: 8;
+  margin: 20px 0;
+  background: white;
+}
+
+/* Additional safety for username field if present */
+#kc-register-form input[name="username"] {
+  position: relative;
+  z-index: 8;
+}
+/* Fix for login form field labels getting cut off by sticky header */
+#kc-form-login {
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+}
+
+/* Main login: no extra top padding on the form */
+#kc-form-444 #kc-form-login {
+  margin-top: 0;
+  padding-top: 0;
+  box-sizing: border-box;
+}
+
+#kc-form-444 #kc-form-wrapper {
+  padding-top: 0;
+}
+
+/* Ensure login form groups have proper spacing and positioning */
+#kc-form-login .form-group,
+#kc-form-login .custom-form-group {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 25px; /* Increased spacing between fields */
+  background: white; /* Ensure background covers any overlapping content */
+}
+
+/* Specific fix for email/username field label */
+#kc-form-login label[for="username"] {
+  position: relative;
+  z-index: 3;
+  background: white;
+  padding-bottom: 8px;
+  display: block;
+}
+
+/* Specific fix for password field label */
+#kc-form-login label[for="password"] {
+  position: relative;
+  z-index: 3;
+  background: white;
+  padding-bottom: 8px;
+  display: block;
+}
+
+/* Ensure form wrapper has proper positioning */
+#kc-form-wrapper {
+  position: relative;
+  z-index: 1;
+  background: white;
+  padding-top: 0;
+}
+
+/* Ensure input fields are properly positioned */
+#kc-form-login input[type="text"],
+#kc-form-login input[type="password"],
+#kc-form-login input[type="email"] {
+  position: relative;
+  z-index: 2;
+}
+
+/* Additional spacing for mobile to prevent cutoff */
+@media (max-width: 767px) {
+  
+  #kc-form-login .form-group,
+  #kc-form-login .custom-form-group {
+    margin-bottom: 20px;
+  }
+}

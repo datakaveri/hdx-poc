@@ -1,0 +1,69 @@
+<section class="plane-page">
+  <header class="plane-page__intro plane-page__intro--with-action">
+    <div>
+      <h1>Data Plane</h1>
+      <p>
+        Federated dataset catalogue — DCAT records pulled from each node's local adaptor via the federated index.
+        Data never leaves the originating node; this view surfaces pointers and metadata only.
+      </p>
+    </div>
+    <a routerLink="/onboarding/dataset" class="add-btn">+ Add Dataset</a>
+  </header>
+
+  <div class="plane-page__stats">
+    <div class="stat-tile">
+      <span class="stat-tile__value">{{ datasets.length }}</span>
+      <span class="stat-tile__label">Datasets indexed</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-tile__value">{{ nodes.length }}</span>
+      <span class="stat-tile__label">Federated nodes</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-tile__value">{{ filteredDatasets().length }}</span>
+      <span class="stat-tile__label">Matching current filter</span>
+    </div>
+  </div>
+
+  <div class="plane-page__filters">
+    <app-dropdown-select
+      class="filter-dropdown"
+      [options]="nodeOptions"
+      [value]="selectedNodeId()"
+      placeholder="All federated nodes"
+      (valueChange)="selectedNodeId.set($event)"
+    />
+    <app-dropdown-select
+      class="filter-dropdown"
+      [options]="trackOptions"
+      [value]="selectedTrack()"
+      placeholder="All tracks"
+      (valueChange)="selectedTrack.set($event)"
+    />
+  </div>
+
+  <div class="dataset-grid">
+    @for (dataset of filteredDatasets(); track dataset.id) {
+      <p-card styleClass="dataset-card">
+        <div class="dataset-card__node">
+          <app-node-badge [archetype]="nodeFor(dataset.nodeId)!.archetype" />
+          <span class="dataset-card__node-name">{{ nodeFor(dataset.nodeId)?.name }}</span>
+        </div>
+        <a class="dataset-card__title" [routerLink]="['/datasets', dataset.id]">{{ dataset.title }}</a>
+        <p class="dataset-card__description">{{ dataset.description }}</p>
+        <div class="dataset-card__meta">
+          <p-tag [value]="dataset.track" severity="secondary" />
+          <p-tag [value]="dataset.access" [severity]="accessSeverity(dataset.access)" />
+          <span class="dataset-card__count">{{ dataset.recordCount | number }} records</span>
+        </div>
+        <div class="dataset-card__standards">
+          @for (standard of dataset.standards; track standard) {
+            <span class="standard-chip">{{ standard }}</span>
+          }
+        </div>
+      </p-card>
+    } @empty {
+      <p class="empty-state">No datasets match the current filter.</p>
+    }
+  </div>
+</section>

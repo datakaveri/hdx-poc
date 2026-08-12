@@ -1,0 +1,18 @@
+.spec-upload__paste {
+  margin-top: var(--spacing-md);
+  font-size: 0.85rem;
+
+  summary {
+    cursor: pointer;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .form-field {
+    margin-top: var(--spacing-sm);
+  }
+
+  .wizard-btn {
+    margin-top: var(--spacing-sm);
+  }
+}

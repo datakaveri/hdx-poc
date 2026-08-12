@@ -1,0 +1,31 @@
+<app-graph-icon-defs />
+
+<section class="plane-page">
+  <header class="plane-page__intro">
+    <h1>Graph Explorer</h1>
+    <p>
+      The federation as a network. The hierarchy view drills from a node down to what it hosts; the relationship
+      view lays out every node, dataset, and service together — who hosts what, and which services reach across
+      nodes to operate on someone else's data.
+    </p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" [class.on]="tab() === 'hier'" role="tab" [attr.aria-selected]="tab() === 'hier'" (click)="setTab('hier')">
+      Federation hierarchy
+    </button>
+    <button class="tab" [class.on]="tab() === 'rel'" role="tab" [attr.aria-selected]="tab() === 'rel'" (click)="setTab('rel')">
+      Cross-node relationships
+    </button>
+  </div>
+
+  <div class="panel" [hidden]="tab() !== 'hier'">
+    <app-hierarchy-graph [rings]="rings" />
+  </div>
+
+  @if (tab() === 'rel') {
+    <div class="panel">
+      <app-relationship-graph [relNodes]="relNodes" [relEdges]="relEdges" />
+    </div>
+  }
+</section>

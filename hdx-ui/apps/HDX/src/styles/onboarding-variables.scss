@@ -1,0 +1,63 @@
+/* Onboarding feature theme — IUDX brand colors (#283a89 navy, #f58120 orange).
+ * Consuming apps must define the same variable names for onboarding to render correctly. */
+
+:root {
+  /* Brand / Primary */
+  --ob-primary: #283a89;
+  --ob-primary-dark: #1e2d6b;
+  --ob-primary-deeper: #1a2659;
+  --ob-primary-deepest: #151f4a;
+  --ob-primary-bg: #eef1f8;
+  --ob-primary-bg-faint: #f4f6fb;
+  --ob-primary-bg-soft: #e8ecf6;
+  --ob-primary-bg-hover: #f0f3fa;
+  --ob-primary-border: #d4daf0;
+  --ob-primary-border-mid: #c5cce8;
+  --ob-primary-border-active: #b0b9dc;
+  --ob-primary-shadow-xs: rgba(40, 58, 137, 0.08);
+  --ob-primary-shadow-md: rgba(40, 58, 137, 0.15);
+  --ob-primary-shadow-lg: rgba(40, 58, 137, 0.22);
+  --ob-primary-deeper-shadow-xs: rgba(26, 38, 89, 0.04);
+  --ob-primary-deeper-shadow-md: rgba(26, 38, 89, 0.12);
+
+  /* Surface / UI chrome */
+  --ob-surface: #ffffff;
+  --ob-surface-muted: #f9fafb;
+  --ob-surface-subtle: #fbfcfc;
+  --ob-surface-raised: #f8fafc;
+  --ob-surface-warm: #f5f6fa;
+  --ob-surface-mid: #f1f5f9;
+
+  /* Borders */
+  --ob-border: #e2e8f0;
+  --ob-border-muted: #cbd5e1;
+  --ob-border-soft: #e5e7eb;
+  --ob-border-subtle: #e8ecef;
+  --ob-divider: rgba(226, 232, 240, 0.85);
+
+  /* Text */
+  --ob-text-heading: #0f172a;
+  --ob-text-body: #334155;
+  --ob-text-muted: #64748b;
+  --ob-text-subtle: #475569;
+  --ob-text-faint: #94a3b8;
+  --ob-text-placeholder: #94a3b8;
+
+  /* Overlays / shadows */
+  --ob-backdrop: rgba(15, 23, 42, 0.45);
+  --ob-backdrop-heavy: rgba(15, 23, 42, 0.55);
+  --ob-shadow-sm: rgba(0, 0, 0, 0.04);
+  --ob-shadow-md: rgba(15, 23, 42, 0.12);
+  --ob-shadow-lg: rgba(15, 23, 42, 0.08);
+  --ob-white-overlay: rgba(255, 255, 255, 0.6);
+
+  /* Status */
+  --ob-error: #dc2626;
+  --ob-error-bg: #fef2f2;
+  --ob-error-dark: #b91c1c;
+  --ob-error-border: #fecaca;
+  --ob-error-shadow: rgba(220, 38, 38, 0.12);
+  --ob-warning: #f58120;
+  --ob-warning-dark: #b45309;
+  --ob-success-dark: #059669;
+}
