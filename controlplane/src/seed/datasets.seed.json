@@ -9,7 +9,8 @@
     "standards": ["FHIR", "SNOMED CT", "LOINC"],
     "access": "open",
     "tags": ["glaucoma", "diabetes", "fundus-imaging", "fhir"],
-    "updatedAt": "2026-08-13"
+    "updatedAt": "2026-08-13",
+    "visibility": "private"
   },
   {
     "id": "ds-diabetes-registry",
@@ -21,7 +22,8 @@
     "standards": ["FHIR", "mCXDE", "SNOMED CT", "LOINC"],
     "access": "dac-approval",
     "tags": ["diabetes", "longitudinal", "mCXDE"],
-    "updatedAt": "2026-07-18"
+    "updatedAt": "2026-07-18",
+    "visibility": "private"
   },
   {
     "id": "ds-oncology-mcode",
@@ -33,7 +35,8 @@
     "standards": ["FHIR", "mCODE", "SNOMED CT", "NCIt"],
     "access": "dac-approval",
     "tags": ["oncology", "mCODE"],
-    "updatedAt": "2026-06-30"
+    "updatedAt": "2026-06-30",
+    "visibility": "private"
   },
   {
     "id": "ds-genomic-variants",
@@ -45,7 +48,8 @@
     "standards": ["GA4GH Beacon", "FHIR Genomics", "MolecularSequence"],
     "access": "dac-approval",
     "tags": ["genomics", "rare-disease", "beacon"],
-    "updatedAt": "2026-07-02"
+    "updatedAt": "2026-07-02",
+    "visibility": "private"
   },
   {
     "id": "ds-imaging-dicom",
@@ -57,7 +61,8 @@
     "standards": ["DICOM", "DCAT"],
     "access": "registered",
     "tags": ["imaging", "radiology"],
-    "updatedAt": "2026-05-21"
+    "updatedAt": "2026-05-21",
+    "visibility": "private"
   },
   {
     "id": "ds-hospital-ehr",
@@ -69,7 +74,8 @@
     "standards": ["FHIR", "ICD", "SNOMED CT"],
     "access": "dac-approval",
     "tags": ["brownfield", "ehr"],
-    "updatedAt": "2026-07-25"
+    "updatedAt": "2026-07-25",
+    "visibility": "private"
   },
   {
     "id": "ds-population-health",
@@ -81,7 +87,8 @@
     "standards": ["FHIR", "EvidenceVariable"],
     "access": "registered",
     "tags": ["field-capture", "maternal-health"],
-    "updatedAt": "2026-06-10"
+    "updatedAt": "2026-06-10",
+    "visibility": "private"
   },
   {
     "id": "ds-maternal-immunization",
@@ -93,7 +100,8 @@
     "standards": ["FHIR", "EvidenceVariable"],
     "access": "registered",
     "tags": ["immunization", "maternal-health"],
-    "updatedAt": "2026-07-30"
+    "updatedAt": "2026-07-30",
+    "visibility": "private"
   },
   {
     "id": "ds-cardio-risk",
@@ -105,7 +113,8 @@
     "standards": ["FHIR", "SNOMED CT", "LOINC"],
     "access": "dac-approval",
     "tags": ["cardiovascular", "hypertension"],
-    "updatedAt": "2026-07-05"
+    "updatedAt": "2026-07-05",
+    "visibility": "private"
   },
   {
     "id": "ds-tb-surveillance",
@@ -117,7 +126,8 @@
     "standards": ["FHIR", "ICD", "SNOMED CT"],
     "access": "registered",
     "tags": ["tuberculosis", "surveillance"],
-    "updatedAt": "2026-06-22"
+    "updatedAt": "2026-06-22",
+    "visibility": "private"
   },
   {
     "id": "ds-pediatric-nutrition",
@@ -129,7 +139,8 @@
     "standards": ["FHIR", "EvidenceVariable"],
     "access": "open",
     "tags": ["pediatric", "nutrition"],
-    "updatedAt": "2026-07-12"
+    "updatedAt": "2026-07-12",
+    "visibility": "private"
   },
   {
     "id": "ds-mental-health",
@@ -141,7 +152,8 @@
     "standards": ["FHIR", "SNOMED CT", "LOINC"],
     "access": "dac-approval",
     "tags": ["mental-health", "screening"],
-    "updatedAt": "2026-07-20"
+    "updatedAt": "2026-07-20",
+    "visibility": "private"
   },
   {
     "id": "ds-wgs-panel",
@@ -153,7 +165,8 @@
     "standards": ["GA4GH Beacon", "FHIR Genomics", "MolecularSequence"],
     "access": "dac-approval",
     "tags": ["genomics", "wgs", "reference-panel"],
-    "updatedAt": "2026-06-15"
+    "updatedAt": "2026-06-15",
+    "visibility": "private"
   },
   {
     "id": "ds-ed-triage",
@@ -165,7 +178,8 @@
     "standards": ["FHIR", "ICD", "SNOMED CT"],
     "access": "dac-approval",
     "tags": ["brownfield", "emergency", "triage"],
-    "updatedAt": "2026-08-01"
+    "updatedAt": "2026-08-01",
+    "visibility": "private"
   },
   {
     "id": "ds-radiology-archive",
@@ -177,7 +191,8 @@
     "standards": ["DICOM", "DCAT"],
     "access": "registered",
     "tags": ["brownfield", "imaging", "radiology"],
-    "updatedAt": "2026-07-28"
+    "updatedAt": "2026-07-28",
+    "visibility": "private"
   },
   {
     "id": "ds-pharmacy-records",
@@ -189,6 +204,7 @@
     "standards": ["FHIR", "RxNorm"],
     "access": "registered",
     "tags": ["brownfield", "pharmacy"],
-    "updatedAt": "2026-07-15"
+    "updatedAt": "2026-07-15",
+    "visibility": "private"
   }
 ]

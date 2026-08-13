@@ -2,7 +2,7 @@
   <input
     type="text"
     class="bundle-browser__filter"
-    placeholder="Filter by name or result…"
+    placeholder="Filter by patient ID or result…"
     [ngModel]="filterText()"
     (ngModelChange)="filterText.set($event)"
   />
@@ -12,7 +12,7 @@
     @for (patient of filteredPatients(); track patient.id) {
       <div class="bundle-row" [class.bundle-row--expanded]="expandedId() === patient.id">
         <button type="button" class="bundle-row__summary" (click)="toggleExpand(patient.id)">
-          <span class="bundle-row__name">{{ patient.name }}</span>
+          <span class="bundle-row__name">pt-{{ patient.id }}</span>
           <span class="bundle-row__meta">{{ patient.gender }} · {{ patient.age }}y</span>
           <span class="bundle-row__label" [class.bundle-row__label--positive]="patient.hasGlaucoma">
             {{ patient.labelText }}
@@ -28,7 +28,7 @@
                 <p class="error-message">{{ detail.error }}</p>
               } @else {
                 @if (detail.imageDataUrl) {
-                  <img class="bundle-row__fundus" [src]="detail.imageDataUrl" alt="Fundus photograph for {{ patient.name }}" />
+                  <img class="bundle-row__fundus" [src]="detail.imageDataUrl" alt="Fundus photograph for pt-{{ patient.id }}" />
                 }
                 <details class="bundle-row__json">
                   <summary>Raw input Bundle (FHIR JSON)</summary>

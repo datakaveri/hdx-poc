@@ -1,15 +1,63 @@
 name: hdx
 
 services:
+  # hapiproject/hapi runs as non-root uid:gid 65532:65532, but a fresh named
+  # volume is created root-owned — so hapi-fhir can't create its own data dir
+  # under it without this chown running first.
+  hapi-fhir-data-init:
+    image: busybox
+    command: sh -c "mkdir -p /data/hapi && chown -R 65532:65532 /data/hapi"
+    volumes:
+      - hapi-fhir-data:/data/hapi
+
   hapi-fhir:
     image: hapiproject/hapi:latest
+    depends_on:
+      hapi-fhir-data-init:
+        condition: service_completed_successfully
     environment:
       hapi.fhir.default_encoding: json
       hapi.fhir.fhir_version: R4
+      # Default is `jdbc:h2:mem:test_mem` — a pure in-memory DB that never
+      # touches disk at all, so hapi-fhir-data (below) was a no-op mount
+      # against it. This is the actual Spring datasource property HAPI reads.
+      spring.datasource.url: jdbc:h2:file:/data/hapi/h2/hapi;AUTO_SERVER=TRUE
     ports:
       # host 8082 so this stack can run alongside Keycloak (8081) and
       # other per-portal dev instances without a clash
       - "8082:8080"
+    volumes:
+      # Without this, the embedded H2 database lives only in the container's
+      # writable layer — every bundle pushed by fhir-setup (below) vanishes on
+      # the next `docker compose down` + `up`, unlike es-data/minio-data/
+      # keycloak-data which all already persist the same way.
+      - hapi-fhir-data:/data/hapi
+
+  fhir-setup:
+    image: alpine:3.20
+    depends_on:
+      - hapi-fhir
+    volumes:
+      - ./fhir:/fhir:ro
+    environment:
+      FHIR_BASE_URL: http://hapi-fhir:8080/fhir
+    # Mirrors kc-setup's role for Keycloak and the ES seedIfEmpty()
+    # pattern for datasets/services: idempotently makes sure the demo FHIR
+    # bundles exist, so a wiped hapi-fhir-data volume (or a first-ever boot)
+    # self-heals instead of silently leaving the FHIR-backed pages empty.
+    entrypoint: >
+      /bin/sh -c "
+      apk add --no-cache bash curl jq >/dev/null &&
+      echo 'Waiting for HAPI FHIR...' &&
+      until curl -sf http://hapi-fhir:8080/fhir/metadata >/dev/null; do sleep 3; done &&
+      COUNT=$$(curl -s 'http://hapi-fhir:8080/fhir/Bundle?_summary=count' | jq -r '.total // 0') &&
+      if [ \"$$COUNT\" = \"0\" ]; then
+        echo 'HAPI FHIR is empty — seeding StructureDefinitions and patient bundles...' &&
+        bash /fhir/upload.sh;
+      else
+        echo \"HAPI FHIR already has $$COUNT Bundle(s) — skipping seed.\";
+      fi
+      "
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.7.0
@@ -150,3 +198,4 @@ volumes:
   es-data:
   minio-data:
   keycloak-data:
+  hapi-fhir-data:

@@ -36,6 +36,9 @@
         <div class="service-card__header">
           <i [class]="categoryMeta(service.category).icon"></i>
           <span class="service-card__host">{{ hostLabel(service.nodeId) }}</span>
+          @if (service.visibility === 'private') {
+            <span class="visibility-chip visibility-chip--private">Private</span>
+          }
         </div>
         <a class="service-card__title h3" [routerLink]="['/services', service.id]">{{ service.name }}</a>
         <p class="service-card__description">{{ service.description }}</p>

@@ -105,6 +105,22 @@
   color: var(--primary-cyan);
 }
 
+.visibility-chip {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(20, 143, 203, 0.1);
+  color: var(--primary-color);
+
+  &--private {
+    background: rgba(245, 129, 32, 0.12);
+    color: var(--secondary-color);
+  }
+}
+
 .section-title {
   font-size: 1.05rem;
   color: var(--text-primary);

@@ -27,9 +27,9 @@ export class ServicesService implements OnModuleInit {
     await this.es.seedIfEmpty(INDEX, seedServices as ServiceDoc[]);
   }
 
-  async list(user: AuthUser | undefined): Promise<ServiceDoc[]> {
-    const all = await this.es.list<ServiceDoc>(INDEX);
-    return all.filter((s) => s.visibility !== 'private' || isAdmin(user) || (user && s.ownerId === user.sub));
+  /** Private services stay listed (with `visibility` intact) so they're discoverable and requestable — only their detail/data is gated client-side. */
+  async list(_user: AuthUser | undefined): Promise<ServiceDoc[]> {
+    return this.es.list<ServiceDoc>(INDEX);
   }
 
   getById(id: string): Promise<ServiceDoc | undefined> {

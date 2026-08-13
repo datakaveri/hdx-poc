@@ -54,6 +54,9 @@
         <div class="dataset-card__meta">
           <p-tag [value]="dataset.track" severity="secondary" />
           <p-tag [value]="dataset.access" [severity]="accessSeverity(dataset.access)" />
+          @if (dataset.visibility === 'private') {
+            <span class="visibility-chip visibility-chip--private">Private</span>
+          }
           <span class="dataset-card__count">{{ dataset.recordCount | number }} records</span>
         </div>
         <div class="dataset-card__standards">

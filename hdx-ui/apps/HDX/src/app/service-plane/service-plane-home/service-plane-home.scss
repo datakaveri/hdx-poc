@@ -139,6 +139,20 @@
   }
 }
 
+.visibility-chip {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+
+  &--private {
+    background: rgba(245, 129, 32, 0.12);
+    color: var(--secondary-color);
+  }
+}
+
 .dataset-chip {
   display: inline-block;
   font-size: 0.7rem;

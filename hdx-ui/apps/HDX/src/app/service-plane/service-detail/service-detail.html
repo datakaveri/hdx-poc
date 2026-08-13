@@ -41,7 +41,11 @@
 
     @if (parsedSpec(); as spec) {
       <h2 class="section-title">API spec</h2>
-      <app-spec-diagram-viewer [spec]="spec" />
+      @if (hasDataAccess()) {
+        <app-spec-diagram-viewer [spec]="spec" />
+      } @else {
+        <p class="empty-state">Request access to view this service's API spec.</p>
+      }
     }
   </section>
 } @else {

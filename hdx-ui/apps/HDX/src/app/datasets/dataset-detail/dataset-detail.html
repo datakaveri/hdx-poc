@@ -16,6 +16,9 @@
         <p-tag [value]="ds.access" [severity]="accessSeverity(ds.access)" />
         <span class="ds-header__count">{{ ds.recordCount | number }} records</span>
         <span class="ds-header__updated">Updated {{ ds.updatedAt }}</span>
+        <span class="visibility-chip" [class.visibility-chip--private]="ds.visibility === 'private'">
+          {{ ds.visibility === 'private' ? 'Private' : 'Public' }}
+        </span>
       </div>
       <div class="ds-header__standards">
         @for (standard of ds.standards; track standard) {
@@ -36,12 +39,16 @@
       </div>
       @if (ds.sampleFile; as sampleFile) {
         <div class="ds-header__sample-file">
-          <button type="button" class="wizard-btn wizard-btn--secondary" [disabled]="downloading()" (click)="downloadSampleFile()">
-            {{ downloading() ? 'Downloading…' : 'Download sample file' }}
-          </button>
-          <span class="form-hint">{{ sampleFile.filename }} · {{ formatSize(sampleFile.size) }}</span>
-          @if (downloadError()) {
-            <span class="error-message">{{ downloadError() }}</span>
+          @if (hasDataAccess()) {
+            <button type="button" class="wizard-btn wizard-btn--secondary" [disabled]="downloading()" (click)="downloadSampleFile()">
+              {{ downloading() ? 'Downloading…' : 'Download sample file' }}
+            </button>
+            <span class="form-hint">{{ sampleFile.filename }} · {{ formatSize(sampleFile.size) }}</span>
+            @if (downloadError()) {
+              <span class="error-message">{{ downloadError() }}</span>
+            }
+          } @else {
+            <span class="form-hint">{{ sampleFile.filename }} · {{ formatSize(sampleFile.size) }} — request access to download.</span>
           }
         </div>
       }

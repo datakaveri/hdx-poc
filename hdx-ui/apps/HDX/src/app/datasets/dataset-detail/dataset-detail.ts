@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, input, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TagModule } from 'primeng/tag';
@@ -7,6 +7,8 @@ import { FileUploadService } from '../../shared/services/file-upload.service';
 import { NodeBadge } from '../../shared/components/node-badge/node-badge';
 import { RequestAccessButton } from '../../shared/components/request-access-button/request-access-button';
 import { GlaucomaBundleList } from '../glaucoma-bundle-list/glaucoma-bundle-list';
+import { AccessRequestService } from '../../shared/services/access-request.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { AccessTier } from '../../shared/models';
 
 @Component({
@@ -16,14 +18,28 @@ import { AccessTier } from '../../shared/models';
   templateUrl: './dataset-detail.html',
   styleUrl: './dataset-detail.scss',
 })
-export class DatasetDetailHome {
+export class DatasetDetailHome implements OnInit {
   private readonly mockData = inject(MockDataService);
   private readonly fileUpload = inject(FileUploadService);
+  private readonly accessRequests = inject(AccessRequestService);
+  private readonly auth = inject(AuthService);
 
   // Bound from the `:id` route param via withComponentInputBinding().
   readonly id = input.required<string>();
 
   readonly dataset = computed(() => this.mockData.getDataset(this.id()));
+
+  /** Owner/admin always have full access; everyone else needs an approved request (direct or node-level). */
+  readonly hasDataAccess = computed(() => {
+    const ds = this.dataset();
+    if (!ds || ds.visibility !== 'private') return true;
+    if (this.auth.isAdmin() || (!!ds.ownerId && ds.ownerId === this.auth.userId())) return true;
+    return this.accessRequests.statusFor('dataset', ds.id, ds.nodeId) === 'approved';
+  });
+
+  ngOnInit(): void {
+    this.accessRequests.ensureMineLoaded();
+  }
 
   constructor() {
     // Not in the (visibility-filtered) local cache yet — e.g. a direct link to

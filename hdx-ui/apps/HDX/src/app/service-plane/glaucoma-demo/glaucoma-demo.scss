@@ -227,6 +227,7 @@
 
 .demo-table__detail {
   display: flex;
+  align-items: flex-start;
   gap: var(--spacing-lg);
   flex-wrap: wrap;
   cursor: default;

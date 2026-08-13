@@ -1,10 +1,12 @@
-import { Component, computed, effect, inject, input } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MockDataService } from '../../shared/services/mock-data.service';
 import { NodeBadge } from '../../shared/components/node-badge/node-badge';
 import { RequestAccessButton } from '../../shared/components/request-access-button/request-access-button';
 import { parseOpenApiSpec } from '../../onboarding/service-onboarding/spec-diagram/openapi-parser';
 import { SpecDiagramViewer } from '../../onboarding/service-onboarding/spec-diagram/spec-diagram-viewer/spec-diagram-viewer';
+import { AccessRequestService } from '../../shared/services/access-request.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { ServiceCategory } from '../../shared/models';
 
 const CATEGORY_LABELS: Record<ServiceCategory, string> = {
@@ -24,13 +26,27 @@ const CATEGORY_LABELS: Record<ServiceCategory, string> = {
   templateUrl: './service-detail.html',
   styleUrl: './service-detail.scss',
 })
-export class ServiceDetailHome {
+export class ServiceDetailHome implements OnInit {
   private readonly mockData = inject(MockDataService);
+  private readonly accessRequests = inject(AccessRequestService);
+  private readonly auth = inject(AuthService);
 
   // Bound from the `:id` route param via withComponentInputBinding().
   readonly id = input.required<string>();
 
   readonly service = computed(() => this.mockData.getServices().find((s) => s.id === this.id()));
+
+  /** Owner/admin always have full access; everyone else needs an approved request. */
+  readonly hasDataAccess = computed(() => {
+    const svc = this.service();
+    if (!svc || svc.visibility !== 'private') return true;
+    if (this.auth.isAdmin() || (!!svc.ownerId && svc.ownerId === this.auth.userId())) return true;
+    return this.accessRequests.statusFor('service', svc.id) === 'approved';
+  });
+
+  ngOnInit(): void {
+    this.accessRequests.ensureMineLoaded();
+  }
 
   constructor() {
     // Not in the (visibility-filtered) local cache yet — e.g. a direct link to

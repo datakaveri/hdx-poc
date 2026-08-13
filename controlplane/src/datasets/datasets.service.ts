@@ -27,9 +27,9 @@ export class DatasetsService implements OnModuleInit {
     await this.es.seedIfEmpty(INDEX, seedDatasets as DatasetDoc[]);
   }
 
-  async list(user: AuthUser | undefined): Promise<DatasetDoc[]> {
-    const all = await this.es.list<DatasetDoc>(INDEX);
-    return all.filter((d) => d.visibility !== 'private' || isAdmin(user) || (user && d.ownerId === user.sub));
+  /** Private datasets stay listed (with `visibility` intact) so they're discoverable and requestable — only their detail/data is gated client-side. */
+  async list(_user: AuthUser | undefined): Promise<DatasetDoc[]> {
+    return this.es.list<DatasetDoc>(INDEX);
   }
 
   getById(id: string): Promise<DatasetDoc | undefined> {
