@@ -17,6 +17,7 @@ const CATEGORY_OPTIONS: DropdownOption[] = [
   { label: 'Federated Learning + DEPA', value: 'federated-learning' },
   { label: 'No-Code Editor', value: 'no-code-editor' },
   { label: 'Jupyter Sandbox', value: 'jupyter-sandbox' },
+  { label: 'Diagnostic AI', value: 'diagnostic-ai' },
 ];
 
 /**

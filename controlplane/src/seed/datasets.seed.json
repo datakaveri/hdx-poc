@@ -1,5 +1,17 @@
 [
   {
+    "id": "ds-diabetic-glaucoma",
+    "nodeId": "node-a",
+    "title": "Diabetic Glaucoma Screening Cohort",
+    "description": "110 synthetic diabetic patients with a fundus photograph and ophthalmic exam findings per encounter, for glaucoma screening.",
+    "track": "imaging",
+    "recordCount": 110,
+    "standards": ["FHIR", "SNOMED CT", "LOINC"],
+    "access": "open",
+    "tags": ["glaucoma", "diabetes", "fundus-imaging", "fhir"],
+    "updatedAt": "2026-08-13"
+  },
+  {
     "id": "ds-diabetes-registry",
     "nodeId": "node-a",
     "title": "Type 2 Diabetes Longitudinal Registry",

@@ -1,0 +1,249 @@
+[33m❯[39m Building...
+[32m✔[39m Building...
+[37mApplication bundle generation failed. [4.698 seconds][39m
+[37m[39m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/app/service-plane/service-plane-home/service-plane-home.scss:71:2:[39m[22m
+[1m[33m[37m      71 │   [32m[37mtransition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);[39m[22m
+[1m[33m         ╵   [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass's behavior for declarations that appear after nested[39m[22m
+[1m[33m  rules will be changing to match the behavior specified by CSS in an upcoming[39m[22m
+[1m[33m  version. To keep the existing behavior, move the declaration above the nested[39m[22m
+[1m[33m  rule. To opt into the new behavior, wrap the declaration in `& {}`.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info: [4mhttps://sass-lang.com/d/mixed-decls[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1m8 repetitive deprecation warnings omitted.[39m[22m
+[1m[33mRun in verbose mode to see all warnings.[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  null[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:7:8:[39m[22m
+[1m[33m[37m      7 │ @import [32m[37m'./styles/variables.scss';[39m[22m
+[1m[33m        ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:8:8:[39m[22m
+[1m[33m[37m      8 │ @import [32m[37m'./styles/canvas-variables.scss';[39m[22m
+[1m[33m        ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggere[39m[22m[1m[33md by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:9:8:[39m[22m
+[1m[33m[37m      9 │ @import [32m[37m'./styles/onboarding-variables.scss';[39m[22m
+[1m[33m        ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:10:8:[39m[22m
+[1m[33m[37m      10 │ @import [32m[37m'./styles/mixins.scss';[39m[22m
+[1m[33m         ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mDeprecation[0m [1m[35m[plugin angular-sass][0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m    apps/HDX/src/styles.scss:11:8:[39m[22m
+[1m[33m[37m      11 │ @import [32m[37m'./styles/checkbox-custom.scss';[39m[22m
+[1m[33m         ╵         [32m^[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.[39m[22m
+[1m[33m  [39m[22m
+[1m[33m  More info and automated migrator: [4mhttps://sass-lang.com/d/import[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m  The plugin "angular-sass" was triggered by this import[39m[22m
+[1m[33m[39m[22m
+[1m[33m    angular:styles/global:styles:1:8:[39m[22m
+[1m[33m[37m      1 │ @import [32m'apps/HDX/src/styles.scss'[37m;[39m[22m
+[1m[33m        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[33m[39m[22m
+[1m[33m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: "as" expression is only allowed on the primary @if block[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:27:35:[39m[22m
+[1m[31m[37m      27 │     } @else if (selectedPatient(); [32mas patient[37m) {[39m[22m
+[1m[31m         ╵                                    [32m~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:32:86:[39m[22m
+[1m[31m[37m      32 │ ...dus" [src]="img" alt="Fundus photograph for {{ [32mpatient[37m.name }}" />[39m[22m
+[1m[31m         ╵                                                   [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:36:19:[39m[22m
+[1m[31m[37m      36 │             <dd>{{ [32mpatient[37m.name }} ({{ patient.gender }}, {{ patie...[39m[22m
+[1m[31m         ╵                    [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97[39m[22m[1m[31mmERROR[41;31m][0m [1mTS2551: Property 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:36:39:[39m[22m
+[1m[31m[37m      36 │ ... <dd>{{ patient.name }} ({{ [32mpatient[37m.gender }}, {{ patient.age }...[39m[22m
+[1m[31m         ╵                                [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:36:61:[39m[22m
+[1m[31m[37m      36 │ ...{{ patient.name }} ({{ patient.gender }}, {{ [32mpatient[37m.age }}y)</dd>[39m[22m
+[1m[31m         ╵                                                 [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:38:19:[39m[22m
+[1m[31m[37m      38 │             <dd>{{ [32mpatient[37m.hba1cPercent }}%</dd>[39m[22m
+[1m[31m         ╵                    [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[39m[22m[1m[31m[41;31m][0m [1mTS2551: Property 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:40:19:[39m[22m
+[1m[31m[37m      40 │             <dd>{{ [32mpatient[37m.fastingGlucoseMgDl }} mg/dL</dd>[39m[22m
+[1m[31m         ╵                    [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: "as" expression is only allowed on the primary @if block[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:73:39:[39m[22m
+[1m[31m[37m      73 │         } @else if (selectedPatient(); [32mas patient[37m) {[39m[22m
+[1m[31m         ╵                                        [32m~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:74:81:[39m[22m
+[1m[31m[37m      74 │ ...badge" [class.demo-result__badge--positive]="[32mpatient[37m.hasGlaucoma">[39m[22m
+[1m[31m         ╵                                                 [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: P[39m[22m[1m[31mroperty 'patient' does not exist on type 'GlaucomaDemo'. Did you mean 'patients'?[0m [1m[35m[plugin angular-compiler][0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.html:75:15:[39m[22m
+[1m[31m[37m      75 │             {{ [32mpatient[37m.labelText }}[39m[22m
+[1m[31m         ╵                [32m~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m  Error occurs in the template of component GlaucomaDemo.[39m[22m
+[1m[31m[39m[22m
+[1m[31m    apps/HDX/src/app/service-plane/glaucoma-demo/glaucoma-demo.ts:36:15:[39m[22m
+[1m[31m[37m      36 │   templateUrl: [32m'./glaucoma-demo.html'[37m,[39m[22m
+[1m[31m         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m

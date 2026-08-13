@@ -1,9 +1,21 @@
 {
   "run": {
-    "command": "nx serve HDX --port 4302",
-    "startTime": "2026-08-13T08:43:44.952Z",
-    "endTime": "2026-08-13T08:44:10.260Z",
+    "command": "nx build HDX --configuration=development",
+    "startTime": "2026-08-13T10:58:08.376Z",
+    "endTime": "2026-08-13T10:58:17.551Z",
     "inner": false
   },
-  "tasks": []
+  "tasks": [
+    {
+      "taskId": "HDX:build:development",
+      "target": "build",
+      "projectName": "HDX",
+      "hash": "8416387955529956847",
+      "startTime": "2026-08-13T10:58:08.406Z",
+      "endTime": "2026-08-13T10:58:17.500Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
 }

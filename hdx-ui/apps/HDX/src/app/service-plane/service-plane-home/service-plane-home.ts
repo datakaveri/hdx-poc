@@ -17,6 +17,7 @@ const CATEGORY_META: Record<ServiceCategory, CategoryMeta> = {
   'federated-learning': { label: 'Federated Learning + DEPA', icon: 'pi pi-sitemap' },
   'no-code-editor': { label: 'No-Code Editor', icon: 'pi pi-table' },
   'jupyter-sandbox': { label: 'Jupyter Sandbox', icon: 'pi pi-code' },
+  'diagnostic-ai': { label: 'Diagnostic AI', icon: 'pi pi-eye' },
 };
 
 @Component({

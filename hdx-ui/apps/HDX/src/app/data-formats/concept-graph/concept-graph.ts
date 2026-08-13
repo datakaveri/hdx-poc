@@ -171,14 +171,34 @@ export class ConceptGraph {
     this.minimapSvg.insert('use', '.minimap-cursor').attr('href', `#${this.viewportId}`);
     this.minimapCursor = this.minimapSvg.select<SVGRectElement>('.minimap-cursor');
 
-    const panToEvent = (event: { x: number; y: number }) => this.panToMinimapPoint(event.x, event.y);
-    this.minimapSvg.call(
-      d3.drag<SVGSVGElement, unknown>().on('start', panToEvent).on('drag', panToEvent),
-    );
-    this.minimapSvg.on('click', (event: MouseEvent) => {
-      const [x, y] = d3.pointer(event, this.minimapSvg.node());
+    // Plain Pointer Events (not d3.drag, whose default coordinate container
+    // is the dragged element's *parent*, not the element itself — that
+    // mismatched the minimap's own 0–180/0–120 viewBox space and made
+    // dragging track the wrong position). Pointer capture keeps the drag
+    // tracking even if the pointer strays outside the small minimap box.
+    const svgNode = this.minimapSvgRef().nativeElement;
+    let dragPointerId: number | null = null;
+
+    const panFromEvent = (event: PointerEvent) => {
+      const [x, y] = d3.pointer(event, svgNode);
       this.panToMinimapPoint(x, y);
+    };
+
+    svgNode.addEventListener('pointerdown', (event) => {
+      dragPointerId = event.pointerId;
+      svgNode.setPointerCapture(event.pointerId);
+      panFromEvent(event);
     });
+    svgNode.addEventListener('pointermove', (event) => {
+      if (dragPointerId !== event.pointerId) return;
+      panFromEvent(event);
+    });
+    const endDrag = (event: PointerEvent) => {
+      if (dragPointerId !== event.pointerId) return;
+      dragPointerId = null;
+    };
+    svgNode.addEventListener('pointerup', endDrag);
+    svgNode.addEventListener('pointercancel', endDrag);
   }
 
   private updateMinimap(): void {

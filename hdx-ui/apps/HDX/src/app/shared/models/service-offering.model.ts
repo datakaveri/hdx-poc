@@ -6,7 +6,8 @@ export type ServiceCategory =
   | 'federated-query'
   | 'federated-learning'
   | 'no-code-editor'
-  | 'jupyter-sandbox';
+  | 'jupyter-sandbox'
+  | 'diagnostic-ai';
 
 export interface ServiceOffering {
   id: string;

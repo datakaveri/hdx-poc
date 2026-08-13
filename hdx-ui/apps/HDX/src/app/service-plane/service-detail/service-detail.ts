@@ -14,6 +14,7 @@ const CATEGORY_LABELS: Record<ServiceCategory, string> = {
   'federated-learning': 'Federated Learning + DEPA',
   'no-code-editor': 'No-Code Editor',
   'jupyter-sandbox': 'Jupyter Sandbox',
+  'diagnostic-ai': 'Diagnostic AI',
 };
 
 @Component({

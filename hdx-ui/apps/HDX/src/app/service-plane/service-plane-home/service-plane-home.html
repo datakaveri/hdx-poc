@@ -30,9 +30,9 @@
     }
   </div>
 
-  <div class="service-grid">
+  <div class="service-grid" data-tour="service-grid">
     @for (service of filteredServices(); track service.id) {
-      <p-card styleClass="service-card">
+      <p-card styleClass="service-card" [attr.data-tour]="service.id === 'svc-glaucoma-detection' ? 'glaucoma-card' : null">
         <div class="service-card__header">
           <i [class]="categoryMeta(service.category).icon"></i>
           <span class="service-card__host">{{ hostLabel(service.nodeId) }}</span>

@@ -1,7 +1,15 @@
 @if (tour.active()) {
-  <div class="tour-scrim" [class.tour-scrim--fallback]="!display()"></div>
-
   @if (display(); as d) {
+    @for (blocker of d.blockers; track $index) {
+      <div
+        class="tour-block"
+        [style.top.px]="blocker.top"
+        [style.left.px]="blocker.left"
+        [style.width.px]="blocker.width"
+        [style.height.px]="blocker.height"
+      ></div>
+    }
+
     <div
       class="tour-highlight"
       [style.top.px]="d.highlight.top"
@@ -19,16 +27,49 @@
       <ng-container [ngTemplateOutlet]="popoverContent" />
     </div>
   } @else {
+    <div class="tour-scrim"></div>
     <div class="tour-popover tour-popover--centered">
       <ng-container [ngTemplateOutlet]="popoverContent" />
     </div>
   }
+
+  <div class="tour-checklist" [class.tour-checklist--collapsed]="checklistCollapsed()">
+    <button type="button" class="tour-checklist__toggle" (click)="checklistCollapsed.set(!checklistCollapsed())">
+      <span>Guided Tour</span>
+      <span class="tour-checklist__toggle-icon">{{ checklistCollapsed() ? '▸' : '▾' }}</span>
+    </button>
+    @if (!checklistCollapsed()) {
+      <div class="tour-checklist__body">
+        @for (chapter of tour.chapters; track chapter.id) {
+          <div class="tour-checklist__chapter">
+            <div class="tour-checklist__chapter-title">{{ chapter.title }}</div>
+            @for (step of chapter.steps; track step.id) {
+              <button
+                type="button"
+                class="tour-checklist__item"
+                [class.tour-checklist__item--active]="tour.currentStep()?.id === step.id"
+                (click)="tour.goTo(step.id)"
+              >
+                <span class="tour-checklist__check" [class.tour-checklist__check--done]="tour.visited().has(step.id)"></span>
+                <span class="tour-checklist__label">{{ step.title }}</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
 }
 
 <ng-template #popoverContent>
   @if (tour.currentStep(); as step) {
     <div class="tour-popover__header">
-      <span class="tour-popover__step">Step {{ tour.index() + 1 }} of {{ tour.total }}</span>
+      <span class="tour-popover__step">
+        {{ tour.currentChapter()?.title }}
+        @if (tour.chapterPosition(); as pos) {
+          <span class="tour-popover__step-count"> · {{ pos.index }} of {{ pos.total }}</span>
+        }
+      </span>
       <button type="button" class="tour-popover__close" (click)="tour.end()" aria-label="Close tour">&times;</button>
     </div>
     <h3 class="tour-popover__title">{{ step.title }}</h3>

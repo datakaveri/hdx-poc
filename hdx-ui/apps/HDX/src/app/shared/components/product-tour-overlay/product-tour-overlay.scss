@@ -2,11 +2,13 @@
   position: fixed;
   inset: 0;
   z-index: 1200;
-  background: transparent;
+  background: rgba(15, 23, 42, 0.6);
+}
 
-  &--fallback {
-    background: rgba(15, 23, 42, 0.6);
-  }
+.tour-block {
+  position: fixed;
+  z-index: 1200;
+  background: transparent;
 }
 
 .tour-highlight {
@@ -56,6 +58,11 @@
     letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--secondary-color);
+  }
+
+  &__step-count {
+    color: var(--text-tertiary);
+    font-weight: 500;
   }
 
   &__close {
@@ -143,5 +150,110 @@
         color: var(--secondary-color);
       }
     }
+  }
+}
+
+.tour-checklist {
+  position: fixed;
+  z-index: 1203;
+  top: 5.5rem;
+  right: 1rem;
+  width: 300px;
+  max-height: calc(100vh - 7rem);
+  display: flex;
+  flex-direction: column;
+  background: var(--primary-white);
+  border-radius: var(--radius-md, 0.75rem);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.3);
+  overflow: hidden;
+
+  &--collapsed {
+    max-height: none;
+  }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--primary-color);
+    color: var(--text-inverse);
+    border: none;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  &__toggle-icon {
+    font-size: 0.7rem;
+  }
+
+  &__body {
+    overflow-y: auto;
+    padding: 0.5rem;
+  }
+
+  &__chapter {
+    margin-bottom: 0.6rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__chapter-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    padding: 0.4rem 0.5rem 0.2rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-primary);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--hover-bg);
+    }
+
+    &--active {
+      background: var(--secondary-color-15, rgba(245, 129, 32, 0.15));
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+  }
+
+  &__check {
+    flex-shrink: 0;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-color);
+
+    &--done {
+      background: var(--primary-cyan);
+      border-color: var(--primary-cyan);
+    }
+  }
+
+  &__label {
+    flex: 1;
+    min-width: 0;
   }
 }

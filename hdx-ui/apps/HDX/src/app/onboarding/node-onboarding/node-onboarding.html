@@ -5,7 +5,7 @@
   </header>
 
   @if (!submitted()) {
-    <app-wizard-stepper [steps]="steps" [current]="currentStep()" (stepSelect)="goToStep($event)" />
+    <app-wizard-stepper data-tour="node-wizard-stepper" [steps]="steps" [current]="currentStep()" (stepSelect)="goToStep($event)" />
 
     <div class="wizard-card">
       @if (currentStep() === 0) {

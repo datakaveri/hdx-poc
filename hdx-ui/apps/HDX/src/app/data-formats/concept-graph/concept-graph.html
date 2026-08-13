@@ -1,12 +1,12 @@
 <div class="concept-graph">
-  <div class="concept-graph__controls">
+  <div class="concept-graph__controls" data-tour="concept-graph-controls">
     <button type="button" [disabled]="currentView() === 'master'" (click)="showMaster()">Overview</button>
     <button type="button" (click)="fitGraph()">Fit graph</button>
     <button type="button" (click)="zoomBy(1.25)">Zoom +</button>
     <button type="button" (click)="zoomBy(0.8)">Zoom −</button>
   </div>
 
-  <div class="concept-graph__canvas">
+  <div class="concept-graph__canvas" data-tour="concept-graph-canvas">
     <svg #graphSvg class="concept-graph__svg" role="img" [attr.aria-label]="svgAriaLabel()"></svg>
 
     <div class="breadcrumb">
@@ -17,7 +17,7 @@
       }
     </div>
 
-    <div class="legend" role="group" aria-label="Toggle domain visibility">
+    <div class="legend" role="group" aria-label="Toggle domain visibility" data-tour="concept-graph-legend">
       @for (item of legendItems(); track item.type) {
         <button
           type="button"

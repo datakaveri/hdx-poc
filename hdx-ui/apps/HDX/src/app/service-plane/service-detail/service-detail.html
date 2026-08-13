@@ -2,7 +2,7 @@
   <section class="plane-page">
     <a class="back-link" routerLink="/service-plane">&larr; All services</a>
 
-    <header class="svc-header">
+    <header class="svc-header" data-tour="service-access-panel">
       @if (node(); as n) {
         <div class="svc-header__node">
           <app-node-badge [archetype]="n.archetype" [status]="n.status" />
@@ -20,6 +20,11 @@
         </span>
       </div>
       <app-request-access-button resourceType="service" [resourceId]="svc.id" [ownerId]="svc.ownerId" />
+      @if (svc.id === 'svc-glaucoma-detection') {
+        <a class="wizard-btn wizard-btn--secondary" data-tour="try-service-btn" [routerLink]="['/services', svc.id, 'demo']"
+          >Try this service &rarr;</a
+        >
+      }
     </header>
 
     <h2 class="section-title">Registered against ({{ operatesOnDatasets().length }})</h2>

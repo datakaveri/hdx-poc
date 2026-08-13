@@ -18,9 +18,17 @@ export class CreateServiceDto {
   name!: string;
 
   @ApiProperty({
-    enum: ['tee-enclave', 'mlops', 'federated-query', 'federated-learning', 'no-code-editor', 'jupyter-sandbox'],
+    enum: [
+      'tee-enclave',
+      'mlops',
+      'federated-query',
+      'federated-learning',
+      'no-code-editor',
+      'jupyter-sandbox',
+      'diagnostic-ai',
+    ],
   })
-  @IsIn(['tee-enclave', 'mlops', 'federated-query', 'federated-learning', 'no-code-editor', 'jupyter-sandbox'])
+  @IsIn(['tee-enclave', 'mlops', 'federated-query', 'federated-learning', 'no-code-editor', 'jupyter-sandbox', 'diagnostic-ai'])
   category!: string;
 
   @ApiProperty()

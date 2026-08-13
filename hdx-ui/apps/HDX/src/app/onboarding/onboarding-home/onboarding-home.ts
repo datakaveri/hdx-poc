@@ -8,6 +8,7 @@ interface OnboardingOption {
   description: string;
   icon: string;
   requiresNode?: boolean;
+  tourId?: string;
 }
 
 @Component({
@@ -33,6 +34,7 @@ export class OnboardingHome {
       description: 'Publish a dataset from your federated node into the catalogue, with standards and access policy.',
       icon: 'pi pi-database',
       requiresNode: true,
+      tourId: 'onboard-dataset-card',
     },
     {
       path: '/onboarding/service',
@@ -40,6 +42,7 @@ export class OnboardingHome {
       description: 'Register a compute or data-processing service and the datasets it is permitted to operate on.',
       icon: 'pi pi-bolt',
       requiresNode: true,
+      tourId: 'onboard-service-card',
     },
   ];
 }

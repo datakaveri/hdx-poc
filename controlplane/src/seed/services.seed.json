@@ -5,7 +5,12 @@
     "name": "TEE / Secure Enclave Execution",
     "category": "tee-enclave",
     "description": "Hardware-attested chokepoint all consumer jobs route through — the only thing that touches node-local data.",
-    "operatesOn": ["ds-diabetes-registry", "ds-oncology-mcode", "ds-hospital-ehr", "ds-ed-triage"]
+    "operatesOn": [
+      "ds-diabetes-registry",
+      "ds-oncology-mcode",
+      "ds-hospital-ehr",
+      "ds-ed-triage"
+    ]
   },
   {
     "id": "svc-mlops",
@@ -13,7 +18,11 @@
     "name": "MLOps-as-a-Service",
     "category": "mlops",
     "description": "Model training, federated learning, and large-scale analytics offered as a registered service.",
-    "operatesOn": ["ds-imaging-dicom", "ds-genomic-variants", "ds-wgs-panel"]
+    "operatesOn": [
+      "ds-imaging-dicom",
+      "ds-genomic-variants",
+      "ds-wgs-panel"
+    ]
   },
   {
     "id": "svc-federated-query",
@@ -21,7 +30,12 @@
     "name": "Federated Query Aggregation",
     "category": "federated-query",
     "description": "Dispatches a query across nodes and aggregates responses — modelled as just another marketplace service.",
-    "operatesOn": ["ds-diabetes-registry", "ds-genomic-variants", "ds-hospital-ehr", "ds-tb-surveillance"]
+    "operatesOn": [
+      "ds-diabetes-registry",
+      "ds-genomic-variants",
+      "ds-hospital-ehr",
+      "ds-tb-surveillance"
+    ]
   },
   {
     "id": "svc-federated-learning",
@@ -29,7 +43,11 @@
     "name": "Federated Learning + DEPA",
     "category": "federated-learning",
     "description": "Cross-institution model training bound to DEPA purpose-limited consent records.",
-    "operatesOn": ["ds-diabetes-registry", "ds-population-health", "ds-mental-health"]
+    "operatesOn": [
+      "ds-diabetes-registry",
+      "ds-population-health",
+      "ds-mental-health"
+    ]
   },
   {
     "id": "svc-no-code-editor",
@@ -37,7 +55,10 @@
     "name": "No-Code Editor (GDI reuse)",
     "category": "no-code-editor",
     "description": "Existing GDI No-Code Editor, repointed at the TEE job API instead of its current execution backend.",
-    "operatesOn": ["ds-oncology-mcode", "ds-cardio-risk"]
+    "operatesOn": [
+      "ds-oncology-mcode",
+      "ds-cardio-risk"
+    ]
   },
   {
     "id": "svc-jupyter-sandbox",
@@ -45,6 +66,20 @@
     "name": "Jupyter Sandbox",
     "category": "jupyter-sandbox",
     "description": "Python/R execution with kernel isolation, package management, and resource limits.",
-    "operatesOn": ["ds-imaging-dicom", "ds-radiology-archive"]
+    "operatesOn": [
+      "ds-imaging-dicom",
+      "ds-radiology-archive"
+    ]
+  },
+  {
+    "id": "svc-glaucoma-detection",
+    "nodeId": "platform",
+    "name": "Glaucoma Detection (Diabetic Screening)",
+    "category": "diagnostic-ai",
+    "description": "Screens a batch of patients for glaucoma from a fundus photograph embedded in each patient's FHIR Bundle; returns a FHIR Bundle of per-patient Observation/DiagnosticReport results.",
+    "operatesOn": [
+      "ds-diabetic-glaucoma"
+    ],
+    "openApiSpec": "openapi: 3.0.3\ninfo:\n  title: Glaucoma Detection Service\n  description: >\n    Dummy AI service that screens patients for glaucoma from a retinal fundus\n    photograph embedded in a FHIR Bundle. Accepts a Bundle covering multiple\n    patients (each patient's data + fundus image as one Media resource) and\n    returns a FHIR Bundle of per-patient classification results.\n  version: 0.1.0\nservers:\n  - url: http://localhost:8082/fhir\npaths:\n  /glaucoma-screening:\n    post:\n      summary: Screen a batch of patients for glaucoma from fundus images\n      operationId: screenForGlaucoma\n      requestBody:\n        required: true\n        content:\n          application/fhir+json:\n            schema:\n              $ref: '#/components/schemas/InputBundle'\n      responses:\n        '200':\n          description: Per-patient glaucoma screening results\n          content:\n            application/fhir+json:\n              schema:\n                $ref: '#/components/schemas/OutputBundle'\n        '400':\n          description: Malformed Bundle, or a patient entry missing a fundus Media resource\ncomponents:\n  schemas:\n    InputBundle:\n      type: object\n      description: >\n        A FHIR Bundle (type collection or batch) whose entries cover multiple\n        patients. For each patient, expect Patient + Encounter + a Media\n        resource carrying the base64-encoded fundus photo\n        (Media.content.data, Media.content.contentType,\n        Media.modality.coding.code = \"fundus-photo\"), optionally alongside\n        Condition/Observation/DiagnosticReport context.\n      required: [resourceType, type, entry]\n      properties:\n        resourceType:\n          type: string\n          enum: [Bundle]\n        type:\n          type: string\n          enum: [collection, batch]\n        entry:\n          type: array\n          items:\n            $ref: '#/components/schemas/BundleEntry'\n    BundleEntry:\n      type: object\n      properties:\n        fullUrl:\n          type: string\n        resource:\n          type: object\n          description: Patient, Encounter, Media (fundus photo), Condition, Observation, DiagnosticReport, ...\n          additionalProperties: true\n    OutputBundle:\n      type: object\n      description: >\n        FHIR Bundle of results. For each input patient, contains the Patient,\n        an Observation carrying the classification\n        (code=glaucoma-screening-result, valueCodeableConcept =\n        glaucoma-detected | no-glaucoma-detected, interpretation POS/NEG),\n        and a DiagnosticReport referencing it with a plain-text conclusion.\n      required: [resourceType, type, entry]\n      properties:\n        resourceType:\n          type: string\n          enum: [Bundle]\n        type:\n          type: string\n          enum: [collection]\n        timestamp:\n          type: string\n          format: date-time\n        entry:\n          type: array\n          items:\n            type: object\n            properties:\n              resource:\n                type: object\n                additionalProperties: true\n"
   }
 ]
