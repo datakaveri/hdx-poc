@@ -1,0 +1,107 @@
+{
+  "resourceType": "Bundle",
+  "id": "inpatient-diabetes-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/inpatient-diabetes-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "inpatient-diabetes-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/inpatient-diabetes-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "inpatient-diabetes-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "text": "Diabetes mellitus requiring inpatient management"
+        },
+        "subject": {
+          "reference": "Patient/inpatient-diabetes-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Encounter/inpatient-diabetes-example",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "inpatient-diabetes-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-inpatient-diabetes"
+          ]
+        },
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "IMP",
+          "display": "inpatient encounter"
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                "code": "inpatient-diabetes",
+                "display": "Inpatient Diabetes"
+              }
+            ],
+            "text": "Inpatient Diabetes"
+          }
+        ],
+        "subject": {
+          "reference": "Patient/inpatient-diabetes-patient"
+        },
+        "period": {
+          "start": "2026-08-08T13:00:00+05:30",
+          "end": "2026-08-11T11:00:00+05:30"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/inpatient-diabetes-example-diabetes"
+          }
+        ],
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/inpatient-diabetes-example-diabetes"
+            },
+            "rank": 1
+          }
+        ]
+      }
+    }
+  ]
+}

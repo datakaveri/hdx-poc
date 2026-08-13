@@ -1,0 +1,147 @@
+{
+  "resourceType": "Bundle",
+  "id": "patient-reported-diabetes-outcome-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/patient-reported-diabetes-outcome-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-reported-diabetes-outcome-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Questionnaire/patient-reported-diabetes-outcome-example-form",
+      "resource": {
+        "resourceType": "Questionnaire",
+        "id": "patient-reported-diabetes-outcome-example-form",
+        "url": "https://example.org/fhir/Questionnaire/patient-reported-diabetes-outcome-example-form",
+        "status": "active",
+        "title": "Patient-Reported Diabetes Outcome Questionnaire",
+        "subjectType": [
+          "Patient"
+        ],
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Quality of Life",
+            "type": "string"
+          },
+          {
+            "linkId": "q2",
+            "text": "Treatment Satisfaction",
+            "type": "string"
+          },
+          {
+            "linkId": "q3",
+            "text": "Treatment Burden",
+            "type": "string"
+          },
+          {
+            "linkId": "q4",
+            "text": "Diabetes Distress",
+            "type": "string"
+          },
+          {
+            "linkId": "q5",
+            "text": "Daily Function",
+            "type": "string"
+          },
+          {
+            "linkId": "q6",
+            "text": "Assessment Date",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/QuestionnaireResponse/patient-reported-diabetes-outcome-example",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "patient-reported-diabetes-outcome-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-patient-reported-diabetes-outcome"
+          ]
+        },
+        "questionnaire": "https://example.org/fhir/Questionnaire/patient-reported-diabetes-outcome-example-form",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/patient-reported-diabetes-outcome-patient"
+        },
+        "authored": "2026-08-11T09:00:00+05:30",
+        "source": {
+          "reference": "Patient/patient-reported-diabetes-outcome-patient"
+        },
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Quality of Life",
+            "answer": [
+              {
+                "valueString": "Illustrative response for quality of life"
+              }
+            ]
+          },
+          {
+            "linkId": "q2",
+            "text": "Treatment Satisfaction",
+            "answer": [
+              {
+                "valueString": "Illustrative response for treatment satisfaction"
+              }
+            ]
+          },
+          {
+            "linkId": "q3",
+            "text": "Treatment Burden",
+            "answer": [
+              {
+                "valueString": "Illustrative response for treatment burden"
+              }
+            ]
+          },
+          {
+            "linkId": "q4",
+            "text": "Diabetes Distress",
+            "answer": [
+              {
+                "valueString": "Illustrative response for diabetes distress"
+              }
+            ]
+          },
+          {
+            "linkId": "q5",
+            "text": "Daily Function",
+            "answer": [
+              {
+                "valueString": "Illustrative response for daily function"
+              }
+            ]
+          },
+          {
+            "linkId": "q6",
+            "text": "Assessment Date",
+            "answer": [
+              {
+                "valueString": "Illustrative response for assessment date"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

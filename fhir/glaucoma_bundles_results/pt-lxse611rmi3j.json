@@ -1,0 +1,154 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-result-pt-lxse611rmi3j",
+  "type": "collection",
+  "timestamp": "2026-08-12T12:50:00+05:30",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:51bbe488-5858-5c40-80f0-6868c7222928",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "pt-lxse611rmi3j",
+        "identifier": [
+          {
+            "system": "https://iisc.example.org/synthetic-diabetes-cohort/mrn",
+            "value": "DG24700605"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Wilson",
+            "given": [
+              "Nikhil"
+            ],
+            "text": "Nikhil Wilson"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1965-02-23",
+        "address": [
+          {
+            "use": "home",
+            "type": "physical",
+            "city": "Chicago",
+            "state": "IL",
+            "country": "US"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2acb6bcd-3b30-57dc-9f28-4bbdf9e9d629",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-glaucoma-result-lxse611rmi3j",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "exam",
+                "display": "Exam"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/ophthalmology",
+              "code": "glaucoma-screening-result",
+              "display": "Glaucoma screening result"
+            }
+          ],
+          "text": "Glaucoma screening result"
+        },
+        "subject": {
+          "reference": "Patient/pt-lxse611rmi3j"
+        },
+        "effectiveDateTime": "2026-08-12T12:30:00+05:30",
+        "issued": "2026-08-12T12:45:00+05:30",
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/diabetic-glaucoma-result",
+              "code": "glaucoma-detected",
+              "display": "Glaucoma detected"
+            }
+          ],
+          "text": "Glaucoma"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "POS",
+                "display": "Positive"
+              }
+            ],
+            "text": "Positive"
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/screening-method",
+              "code": "fundus-image-label",
+              "display": "Fundus image label review"
+            }
+          ],
+          "text": "Fundus image label review"
+        },
+        "note": [
+          {
+            "text": "Synthetic result derived from the external cohort label table for model evaluation."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f29ab372-2171-5b1e-b809-d0dfd28a5e99",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "dr-glaucoma-result-lxse611rmi3j",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "IMG",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/reports",
+              "code": "glaucoma-screening-report",
+              "display": "Glaucoma screening report"
+            }
+          ],
+          "text": "Glaucoma screening report"
+        },
+        "subject": {
+          "reference": "Patient/pt-lxse611rmi3j"
+        },
+        "effectiveDateTime": "2026-08-12T12:30:00+05:30",
+        "issued": "2026-08-12T12:45:00+05:30",
+        "result": [
+          {
+            "reference": "Observation/obs-glaucoma-result-lxse611rmi3j"
+          }
+        ],
+        "conclusion": "Glaucoma screening result: positive."
+      }
+    }
+  ]
+}

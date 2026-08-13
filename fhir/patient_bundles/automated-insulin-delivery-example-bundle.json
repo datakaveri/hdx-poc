@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "id": "automated-insulin-delivery-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/automated-insulin-delivery-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "automated-insulin-delivery-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Device/automated-insulin-delivery-example-device",
+      "resource": {
+        "resourceType": "Device",
+        "id": "automated-insulin-delivery-example-device",
+        "status": "active",
+        "deviceName": [
+          {
+            "name": "Illustrative automated insulin delivery device",
+            "type": "user-friendly-name"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "automated-insulin-delivery",
+              "display": "Automated Insulin Delivery"
+            }
+          ],
+          "text": "Automated Insulin Delivery"
+        },
+        "patient": {
+          "reference": "Patient/automated-insulin-delivery-patient"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/DeviceUseStatement/automated-insulin-delivery-example",
+      "resource": {
+        "resourceType": "DeviceUseStatement",
+        "id": "automated-insulin-delivery-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-automated-insulin-delivery"
+          ]
+        },
+        "status": "active",
+        "subject": {
+          "reference": "Patient/automated-insulin-delivery-patient"
+        },
+        "timingPeriod": {
+          "start": "2026-06-01",
+          "end": "2026-08-11"
+        },
+        "recordedOn": "2026-08-11T09:00:00+05:30",
+        "device": {
+          "reference": "Device/automated-insulin-delivery-example-device"
+        },
+        "reasonCode": [
+          {
+            "text": "Diabetes management"
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: AID System; Automation Mode; CGM Integration; Algorithm Target; Time in Automation; Insulin Delivery Summary; Override / Exit Information."
+          }
+        ]
+      }
+    }
+  ]
+}

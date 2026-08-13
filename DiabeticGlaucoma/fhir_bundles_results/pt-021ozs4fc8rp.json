@@ -1,0 +1,154 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-result-pt-021ozs4fc8rp",
+  "type": "collection",
+  "timestamp": "2026-08-12T12:50:00+05:30",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:bd4e14c4-7b05-5066-8a40-9537a71a2256",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "pt-021ozs4fc8rp",
+        "identifier": [
+          {
+            "system": "https://iisc.example.org/synthetic-diabetes-cohort/mrn",
+            "value": "DG52278428"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Rao",
+            "given": [
+              "Priya"
+            ],
+            "text": "Priya Rao"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1995-04-03",
+        "address": [
+          {
+            "use": "home",
+            "type": "physical",
+            "city": "Chicago",
+            "state": "IL",
+            "country": "US"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5e673867-cbc8-5262-97d5-308281bd7e05",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-glaucoma-result-021ozs4fc8rp",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "exam",
+                "display": "Exam"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/ophthalmology",
+              "code": "glaucoma-screening-result",
+              "display": "Glaucoma screening result"
+            }
+          ],
+          "text": "Glaucoma screening result"
+        },
+        "subject": {
+          "reference": "Patient/pt-021ozs4fc8rp"
+        },
+        "effectiveDateTime": "2026-08-12T12:30:00+05:30",
+        "issued": "2026-08-12T12:45:00+05:30",
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/diabetic-glaucoma-result",
+              "code": "glaucoma-not-detected",
+              "display": "Glaucoma not detected"
+            }
+          ],
+          "text": "Non-Glaucoma"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "NEG",
+                "display": "Negative"
+              }
+            ],
+            "text": "Negative"
+          }
+        ],
+        "method": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/screening-method",
+              "code": "fundus-image-label",
+              "display": "Fundus image label review"
+            }
+          ],
+          "text": "Fundus image label review"
+        },
+        "note": [
+          {
+            "text": "Synthetic result derived from the external cohort label table for model evaluation."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2afd1240-6997-5530-a936-503c73365980",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "dr-glaucoma-result-021ozs4fc8rp",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "IMG",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://iisc.example.org/fhir/CodeSystem/reports",
+              "code": "glaucoma-screening-report",
+              "display": "Glaucoma screening report"
+            }
+          ],
+          "text": "Glaucoma screening report"
+        },
+        "subject": {
+          "reference": "Patient/pt-021ozs4fc8rp"
+        },
+        "effectiveDateTime": "2026-08-12T12:30:00+05:30",
+        "issued": "2026-08-12T12:45:00+05:30",
+        "result": [
+          {
+            "reference": "Observation/obs-glaucoma-result-021ozs4fc8rp"
+          }
+        ],
+        "conclusion": "Glaucoma screening result: negative."
+      }
+    }
+  ]
+}

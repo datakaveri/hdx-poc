@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "id": "prediabetes-high-risk-glycemia-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/prediabetes-high-risk-glycemia-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "prediabetes-high-risk-glycemia-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/prediabetes-high-risk-glycemia-example",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "prediabetes-high-risk-glycemia-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-prediabetes-high-risk-glycemia"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "problem-list-item",
+                "display": "Problem List Item"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "prediabetes-high-risk-glycemia",
+              "display": "Prediabetes / High-Risk Glycemia"
+            }
+          ],
+          "text": "Prediabetes / High-Risk Glycemia"
+        },
+        "subject": {
+          "reference": "Patient/prediabetes-high-risk-glycemia-patient"
+        },
+        "onsetDateTime": "2026-01-15",
+        "recordedDate": "2026-08-11",
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Graph coverage: Diagnostic Criteria; Assessment Date; Progression Risk; Trajectory; Current Status. Standard terminology bindings should be refined in a formal implementation guide."
+          }
+        ]
+      }
+    }
+  ]
+}

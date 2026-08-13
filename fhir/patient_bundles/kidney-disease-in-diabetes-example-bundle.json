@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "id": "kidney-disease-in-diabetes-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/kidney-disease-in-diabetes-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "kidney-disease-in-diabetes-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/kidney-disease-in-diabetes-example",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "kidney-disease-in-diabetes-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-kidney-disease-in-diabetes"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "problem-list-item",
+                "display": "Problem List Item"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "kidney-disease-in-diabetes",
+              "display": "Kidney Disease in Diabetes"
+            }
+          ],
+          "text": "Kidney Disease in Diabetes"
+        },
+        "subject": {
+          "reference": "Patient/kidney-disease-in-diabetes-patient"
+        },
+        "onsetDateTime": "2026-01-15",
+        "recordedDate": "2026-08-11",
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Graph coverage: CKD Status; GFR Category; Albuminuria Category; Progression; Kidney Failure; Kidney Replacement Therapy; Etiology / Attribution. Standard terminology bindings should be refined in a formal implementation guide."
+          }
+        ]
+      }
+    }
+  ]
+}

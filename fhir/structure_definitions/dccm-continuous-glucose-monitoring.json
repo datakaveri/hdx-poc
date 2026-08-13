@@ -1,0 +1,321 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "dccm-continuous-glucose-monitoring",
+  "url": "https://example.org/fhir/StructureDefinition/dccm-continuous-glucose-monitoring",
+  "version": "0.1.0",
+  "name": "ContinuousGlucoseMonitoring",
+  "title": "Continuous Glucose Monitoring Profile",
+  "status": "draft",
+  "experimental": true,
+  "date": "2026-08-11",
+  "publisher": "Illustrative Diabetes Common Clinical Model",
+  "description": "An mCODE-inspired FHIR R4 profile for a continuous glucose monitoring (CGM) summary. The core summary is represented as an Observation with a reporting period, method, device, and structured components for sensor data sufficiency, mean glucose, GMI, time in/below/above range, glucose variability, and clinically relevant glucose patterns. The patient's CGM use start/stop period is represented by a related DeviceUseStatement in the example Bundle.",
+  "purpose": "Prototype only. It demonstrates how every child concept under the Continuous Glucose Monitoring box can be represented using standard FHIR R4 elements and a related device-use resource, following the profile-oriented pattern used by mCODE.",
+  "fhirVersion": "4.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Observation",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Observation",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Observation",
+        "path": "Observation"
+      },
+      {
+        "id": "Observation.status",
+        "path": "Observation.status",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.category",
+        "path": "Observation.category",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.code",
+        "path": "Observation.code",
+        "min": 1,
+        "mustSupport": true,
+        "binding": {
+          "strength": "preferred",
+          "description": "Prefer LOINC for CGM summary/panel observations when an appropriate code exists."
+        }
+      },
+      {
+        "id": "Observation.subject",
+        "path": "Observation.subject",
+        "min": 1,
+        "mustSupport": true,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Patient"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Observation.effective[x]",
+        "path": "Observation.effective[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.method",
+        "path": "Observation.method",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.device",
+        "path": "Observation.device",
+        "min": 1,
+        "mustSupport": true,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Device"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Observation.component",
+        "path": "Observation.component",
+        "min": 1,
+        "mustSupport": true,
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "pattern",
+              "path": "code"
+            }
+          ],
+          "ordered": false,
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Observation.component:sensorWear",
+        "path": "Observation.component",
+        "sliceName": "sensorWear",
+        "min": 0,
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:sensorWear.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+              "code": "sensor-wear-data-sufficiency"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:sensorWear.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:meanGlucose",
+        "path": "Observation.component",
+        "sliceName": "meanGlucose",
+        "min": 0,
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:meanGlucose.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "97507-8"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:meanGlucose.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:gmi",
+        "path": "Observation.component",
+        "sliceName": "gmi",
+        "min": 0,
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:gmi.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "97506-0"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:gmi.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:tir",
+        "path": "Observation.component",
+        "sliceName": "tir",
+        "min": 0,
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:tir.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "97510-2"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:tir.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:tbr",
+        "path": "Observation.component",
+        "sliceName": "tbr",
+        "min": 0,
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:tbr.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+              "code": "time-below-range-total"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:tbr.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:tar",
+        "path": "Observation.component",
+        "sliceName": "tar",
+        "min": 0,
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:tar.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+              "code": "time-above-range-total"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:tar.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:variability",
+        "path": "Observation.component",
+        "sliceName": "variability",
+        "min": 0,
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:variability.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "104638-2"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:variability.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:patterns",
+        "path": "Observation.component",
+        "sliceName": "patterns",
+        "min": 0,
+        "max": "*",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.component:patterns.code",
+        "path": "Observation.component.code",
+        "min": 1,
+        "patternCodeableConcept": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+              "code": "glucose-event-pattern"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Observation.component:patterns.value[x]",
+        "path": "Observation.component.value[x]",
+        "min": 1,
+        "mustSupport": true
+      }
+    ]
+  }
+}

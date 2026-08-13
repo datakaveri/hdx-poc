@@ -1,0 +1,145 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-classification-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-classification-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-classification-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/diabetes-classification-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "diabetes-classification-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-classification-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ClinicalImpression/diabetes-classification-example",
+      "resource": {
+        "resourceType": "ClinicalImpression",
+        "id": "diabetes-classification-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-classification"
+          ]
+        },
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "diabetes-classification",
+              "display": "Diabetes Classification"
+            }
+          ],
+          "text": "Diabetes Classification"
+        },
+        "description": "Clinical assessment supporting diabetes classification.",
+        "subject": {
+          "reference": "Patient/diabetes-classification-patient"
+        },
+        "problem": [
+          {
+            "reference": "Condition/diabetes-classification-example-diabetes"
+          }
+        ],
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "date": "2026-08-11T09:15:00+05:30",
+        "summary": "Diabetes Classification: illustrative structured clinical impression.",
+        "finding": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "diabetes-type",
+                  "display": "Diabetes Type"
+                }
+              ],
+              "text": "Diabetes Type"
+            },
+            "basis": "Illustrative assessment of diabetes type."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "classification-certainty",
+                  "display": "Classification Certainty"
+                }
+              ],
+              "text": "Classification Certainty"
+            },
+            "basis": "Illustrative assessment of classification certainty."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "clinical-phenotype",
+                  "display": "Clinical Phenotype"
+                }
+              ],
+              "text": "Clinical Phenotype"
+            },
+            "basis": "Illustrative assessment of clinical phenotype."
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Diabetes Type; Classification Certainty; Clinical Phenotype."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "id": "general-conditions-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/general-conditions-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "general-conditions-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/general-conditions-example",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "general-conditions-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-general-conditions"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "problem-list-item",
+                "display": "Problem List Item"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "general-conditions",
+              "display": "General Conditions"
+            }
+          ],
+          "text": "General Conditions"
+        },
+        "subject": {
+          "reference": "Patient/general-conditions-patient"
+        },
+        "onsetDateTime": "2026-01-15",
+        "recordedDate": "2026-08-11",
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Graph coverage: Hypertension; Dyslipidemia; Obesity; ASCVD; Heart Failure; Chronic Kidney Disease; MASLD; Sleep Apnea; Thyroid Disease; Celiac Disease; Mental Health Conditions. Standard terminology bindings should be refined in a formal implementation guide."
+          }
+        ]
+      }
+    }
+  ]
+}

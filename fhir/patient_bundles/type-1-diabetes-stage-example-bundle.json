@@ -1,0 +1,156 @@
+{
+  "resourceType": "Bundle",
+  "id": "type-1-diabetes-stage-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/type-1-diabetes-stage-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "type-1-diabetes-stage-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/type-1-diabetes-stage-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "type-1-diabetes-stage-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-type-1-diabetes-stage"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "type-1-diabetes-stage",
+              "display": "Type 1 Diabetes Stage"
+            }
+          ],
+          "text": "Type 1 Diabetes Stage"
+        },
+        "subject": {
+          "reference": "Patient/type-1-diabetes-stage-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "stage",
+                  "display": "Stage"
+                }
+              ],
+              "text": "Stage"
+            },
+            "valueString": "Illustrative stage value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "islet-autoantibody-status",
+                  "display": "Islet Autoantibody Status"
+                }
+              ],
+              "text": "Islet Autoantibody Status"
+            },
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "stable",
+                  "display": "Stable / active as clinically applicable"
+                }
+              ],
+              "text": "Stable / active as clinically applicable"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "glycemic-state",
+                  "display": "Glycemic State"
+                }
+              ],
+              "text": "Glycemic State"
+            },
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "stable",
+                  "display": "Stable / active as clinically applicable"
+                }
+              ],
+              "text": "Stable / active as clinically applicable"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "symptoms",
+                  "display": "Symptoms"
+                }
+              ],
+              "text": "Symptoms"
+            },
+            "valueString": "Illustrative symptoms value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "stage-date",
+                  "display": "Stage Date"
+                }
+              ],
+              "text": "Stage Date"
+            },
+            "valueString": "2026-08-11"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

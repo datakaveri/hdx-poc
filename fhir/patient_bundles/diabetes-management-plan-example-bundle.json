@@ -1,0 +1,309 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-management-plan-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/careplan-example",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "careplan-example",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/careplan-diabetes-condition",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "careplan-diabetes-condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/careplan-example"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Goal/glycemic-goal-example",
+      "resource": {
+        "resourceType": "Goal",
+        "id": "glycemic-goal-example",
+        "lifecycleStatus": "active",
+        "description": {
+          "text": "Individual glycemic goal: HbA1c less than 7.0% unless revised through shared decision-making."
+        },
+        "subject": {
+          "reference": "Patient/careplan-example"
+        },
+        "target": [
+          {
+            "measure": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "4548-4",
+                  "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+                }
+              ],
+              "text": "HbA1c"
+            },
+            "detailQuantity": {
+              "value": 7.0,
+              "comparator": "<",
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Goal/weight-goal-example",
+      "resource": {
+        "resourceType": "Goal",
+        "id": "weight-goal-example",
+        "lifecycleStatus": "active",
+        "description": {
+          "text": "Weight goal: gradual 5% reduction from baseline over six months."
+        },
+        "subject": {
+          "reference": "Patient/careplan-example"
+        },
+        "target": [
+          {
+            "detailString": "5% reduction from baseline",
+            "dueDate": "2027-02-11"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/CarePlan/diabetes-management-plan-example",
+      "resource": {
+        "resourceType": "CarePlan",
+        "id": "diabetes-management-plan-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/dccm-diabetes-management-plan"
+          ]
+        },
+        "status": "active",
+        "intent": "plan",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "https://example.org/fhir/CodeSystem/dccm-careplan-category",
+                "code": "diabetes-management",
+                "display": "Diabetes management"
+              }
+            ],
+            "text": "Diabetes management plan"
+          }
+        ],
+        "title": "Individualized diabetes management plan",
+        "subject": {
+          "reference": "Patient/careplan-example"
+        },
+        "period": {
+          "start": "2026-08-11",
+          "end": "2027-02-11"
+        },
+        "addresses": [
+          {
+            "reference": "Condition/careplan-diabetes-condition"
+          }
+        ],
+        "goal": [
+          {
+            "reference": "Goal/glycemic-goal-example",
+            "display": "Glycemic Goals"
+          },
+          {
+            "reference": "Goal/weight-goal-example",
+            "display": "Weight Goals"
+          }
+        ],
+        "activity": [
+          {
+            "detail": {
+              "kind": "ServiceRequest",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                    "code": "monitoring-plan",
+                    "display": "Monitoring Plan"
+                  }
+                ]
+              },
+              "status": "in-progress",
+              "scheduledTiming": {
+                "repeat": {
+                  "frequency": 1,
+                  "period": 3,
+                  "periodUnit": "mo"
+                }
+              },
+              "description": "Review HbA1c at least every three months and review home glucose/CGM data as clinically indicated."
+            }
+          },
+          {
+            "detail": {
+              "kind": "MedicationRequest",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                    "code": "medication-plan",
+                    "display": "Medication Plan"
+                  }
+                ]
+              },
+              "status": "in-progress",
+              "goal": [
+                {
+                  "reference": "Goal/glycemic-goal-example"
+                }
+              ],
+              "description": "Continue individualized glucose-lowering therapy; reassess efficacy, tolerance, hypoglycemia risk, and cardiorenal indications at follow-up."
+            }
+          },
+          {
+            "detail": {
+              "kind": "ServiceRequest",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                    "code": "lifestyle-plan",
+                    "display": "Lifestyle Plan"
+                  }
+                ]
+              },
+              "status": "in-progress",
+              "goal": [
+                {
+                  "reference": "Goal/glycemic-goal-example"
+                },
+                {
+                  "reference": "Goal/weight-goal-example"
+                }
+              ],
+              "description": "Individualized nutrition, physical activity, sleep, and behavioral goals with periodic review."
+            }
+          },
+          {
+            "detail": {
+              "kind": "Task",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                    "code": "hypoglycemia-safety-plan",
+                    "display": "Hypoglycemia Safety Plan"
+                  }
+                ]
+              },
+              "status": "in-progress",
+              "description": "Recognize and treat hypoglycemia promptly; maintain access to fast-acting carbohydrate and prescribed rescue therapy when indicated."
+            }
+          },
+          {
+            "detail": {
+              "kind": "Task",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                    "code": "sick-day-ketone-plan",
+                    "display": "Sick-Day / Ketone Plan"
+                  }
+                ]
+              },
+              "status": "in-progress",
+              "description": "During acute illness, intensify glucose monitoring, maintain hydration, follow medication instructions, and check ketones when clinically indicated."
+            }
+          },
+          {
+            "detail": {
+              "kind": "ServiceRequest",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                    "code": "referral-plan",
+                    "display": "Referral Plan"
+                  }
+                ]
+              },
+              "status": "scheduled",
+              "description": "Refer to diabetes education, nutrition, eye, kidney, foot, behavioral-health, or other services according to assessed need."
+            }
+          },
+          {
+            "detail": {
+              "kind": "Appointment",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://example.org/fhir/CodeSystem/dccm-careplan-activity",
+                    "code": "follow-up-plan",
+                    "display": "Follow-Up Plan"
+                  }
+                ]
+              },
+              "status": "scheduled",
+              "scheduledPeriod": {
+                "start": "2026-11-01",
+                "end": "2026-11-30"
+              },
+              "description": "Follow-up within approximately three months, earlier if glycemia, treatment tolerance, or safety concerns require review."
+            }
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Glycemic Goals and Weight Goals are Goal resources; Monitoring, Medication, Lifestyle, Hypoglycemia Safety, Sick-Day/Ketone, Referral, and Follow-Up plans are CarePlan activities."
+          }
+        ]
+      }
+    }
+  ]
+}

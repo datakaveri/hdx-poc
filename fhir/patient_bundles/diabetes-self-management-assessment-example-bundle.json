@@ -1,0 +1,189 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-self-management-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-self-management-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-self-management-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Questionnaire/diabetes-self-management-assessment-example-form",
+      "resource": {
+        "resourceType": "Questionnaire",
+        "id": "diabetes-self-management-assessment-example-form",
+        "url": "https://example.org/fhir/Questionnaire/diabetes-self-management-assessment-example-form",
+        "status": "active",
+        "title": "Diabetes Self-Management Assessment Questionnaire",
+        "subjectType": [
+          "Patient"
+        ],
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Medication-Taking",
+            "type": "string"
+          },
+          {
+            "linkId": "q2",
+            "text": "Glucose Monitoring",
+            "type": "string"
+          },
+          {
+            "linkId": "q3",
+            "text": "Nutrition Skills",
+            "type": "string"
+          },
+          {
+            "linkId": "q4",
+            "text": "Physical Activity",
+            "type": "string"
+          },
+          {
+            "linkId": "q5",
+            "text": "Insulin Skills",
+            "type": "string"
+          },
+          {
+            "linkId": "q6",
+            "text": "Device Skills",
+            "type": "string"
+          },
+          {
+            "linkId": "q7",
+            "text": "Hypoglycemia Skills",
+            "type": "string"
+          },
+          {
+            "linkId": "q8",
+            "text": "Sick-Day / Ketone Skills",
+            "type": "string"
+          },
+          {
+            "linkId": "q9",
+            "text": "DSMES Need",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/QuestionnaireResponse/diabetes-self-management-assessment-example",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "diabetes-self-management-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-self-management-assessment"
+          ]
+        },
+        "questionnaire": "https://example.org/fhir/Questionnaire/diabetes-self-management-assessment-example-form",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/diabetes-self-management-assessment-patient"
+        },
+        "authored": "2026-08-11T09:00:00+05:30",
+        "source": {
+          "reference": "Patient/diabetes-self-management-assessment-patient"
+        },
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Medication-Taking",
+            "answer": [
+              {
+                "valueString": "Illustrative response for medication-taking"
+              }
+            ]
+          },
+          {
+            "linkId": "q2",
+            "text": "Glucose Monitoring",
+            "answer": [
+              {
+                "valueString": "Illustrative response for glucose monitoring"
+              }
+            ]
+          },
+          {
+            "linkId": "q3",
+            "text": "Nutrition Skills",
+            "answer": [
+              {
+                "valueString": "Illustrative response for nutrition skills"
+              }
+            ]
+          },
+          {
+            "linkId": "q4",
+            "text": "Physical Activity",
+            "answer": [
+              {
+                "valueString": "Illustrative response for physical activity"
+              }
+            ]
+          },
+          {
+            "linkId": "q5",
+            "text": "Insulin Skills",
+            "answer": [
+              {
+                "valueString": "Illustrative response for insulin skills"
+              }
+            ]
+          },
+          {
+            "linkId": "q6",
+            "text": "Device Skills",
+            "answer": [
+              {
+                "valueString": "Illustrative response for device skills"
+              }
+            ]
+          },
+          {
+            "linkId": "q7",
+            "text": "Hypoglycemia Skills",
+            "answer": [
+              {
+                "valueString": "Illustrative response for hypoglycemia skills"
+              }
+            ]
+          },
+          {
+            "linkId": "q8",
+            "text": "Sick-Day / Ketone Skills",
+            "answer": [
+              {
+                "valueString": "Illustrative response for sick-day / ketone skills"
+              }
+            ]
+          },
+          {
+            "linkId": "q9",
+            "text": "DSMES Need",
+            "answer": [
+              {
+                "valueString": "Illustrative response for dsmes need"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

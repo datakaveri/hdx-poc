@@ -1,0 +1,605 @@
+{
+  "resourceType": "Bundle",
+  "id": "eye-health-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-eye-example",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-eye-example",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Practitioner/ophthalmologist-example",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "ophthalmologist-example",
+        "name": [
+          {
+            "family": "Rao",
+            "given": [
+              "Mira"
+            ],
+            "prefix": [
+              "Dr"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ServiceRequest/eye-exam-order",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "eye-exam-order",
+        "status": "completed",
+        "intent": "order",
+        "priority": "routine",
+        "code": {
+          "text": "Diabetes eye examination with bilateral macular optical coherence tomography (OCT)"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "authoredOn": "2026-08-01",
+        "requester": {
+          "reference": "Practitioner/ophthalmologist-example"
+        },
+        "note": [
+          {
+            "text": "Illustrative order/request fulfilled by the eye examination and OCT imaging study in this bundle."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Endpoint/ophthalmology-dicomweb",
+      "resource": {
+        "resourceType": "Endpoint",
+        "id": "ophthalmology-dicomweb",
+        "status": "active",
+        "connectionType": {
+          "system": "http://terminology.hl7.org/CodeSystem/endpoint-connection-type",
+          "code": "dicom-wado-rs",
+          "display": "DICOM WADO-RS"
+        },
+        "name": "Illustrative ophthalmology DICOMweb endpoint",
+        "payloadType": [
+          {
+            "text": "DICOM ophthalmic imaging"
+          }
+        ],
+        "payloadMimeType": [
+          "application/dicom"
+        ],
+        "address": "https://example.org/dicomweb"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ImagingStudy/retinal-oct-study",
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "retinal-oct-study",
+        "identifier": [
+          {
+            "system": "urn:dicom:uid",
+            "value": "urn:oid:2.16.124.113543.1154777499.20260811.1"
+          }
+        ],
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "OPT",
+            "display": "Ophthalmic Tomography"
+          }
+        ],
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "started": "2026-08-11T08:40:00+05:30",
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/eye-exam-order"
+          }
+        ],
+        "interpreter": [
+          {
+            "reference": "Practitioner/ophthalmologist-example"
+          }
+        ],
+        "endpoint": [
+          {
+            "reference": "Endpoint/ophthalmology-dicomweb"
+          }
+        ],
+        "numberOfSeries": 2,
+        "numberOfInstances": 2,
+        "description": "Bilateral macular optical coherence tomography (OCT)",
+        "note": [
+          {
+            "text": "The diagnostic scan pixels are not embedded in this ImagingStudy resource. The DICOM study remains in the imaging archive and is retrievable through the referenced WADO-RS endpoint."
+          }
+        ],
+        "series": [
+          {
+            "uid": "2.16.124.113543.1154777499.20260811.1.1",
+            "number": 1,
+            "modality": {
+              "system": "http://dicom.nema.org/resources/ontology/DCM",
+              "code": "OPT",
+              "display": "Ophthalmic Tomography"
+            },
+            "description": "Right-eye macular OCT",
+            "numberOfInstances": 1,
+            "endpoint": [
+              {
+                "reference": "Endpoint/ophthalmology-dicomweb"
+              }
+            ],
+            "bodySite": {
+              "text": "Retina"
+            },
+            "laterality": {
+              "system": "http://snomed.info/sct",
+              "code": "419465000",
+              "display": "Unilateral right"
+            },
+            "started": "2026-08-11T08:40:00+05:30",
+            "instance": [
+              {
+                "uid": "2.16.124.113543.1154777499.20260811.1.1.1",
+                "sopClass": {
+                  "system": "urn:ietf:rfc:3986",
+                  "code": "urn:oid:1.2.840.10008.5.1.4.1.1.77.1.5.4",
+                  "display": "Ophthalmic Tomography Image Storage"
+                },
+                "number": 1,
+                "title": "Right macular OCT volume"
+              }
+            ]
+          },
+          {
+            "uid": "2.16.124.113543.1154777499.20260811.1.2",
+            "number": 2,
+            "modality": {
+              "system": "http://dicom.nema.org/resources/ontology/DCM",
+              "code": "OPT",
+              "display": "Ophthalmic Tomography"
+            },
+            "description": "Left-eye macular OCT",
+            "numberOfInstances": 1,
+            "endpoint": [
+              {
+                "reference": "Endpoint/ophthalmology-dicomweb"
+              }
+            ],
+            "bodySite": {
+              "text": "Retina"
+            },
+            "laterality": {
+              "system": "http://snomed.info/sct",
+              "code": "419161000",
+              "display": "Unilateral left"
+            },
+            "started": "2026-08-11T08:42:00+05:30",
+            "instance": [
+              {
+                "uid": "2.16.124.113543.1154777499.20260811.1.2.1",
+                "sopClass": {
+                  "system": "urn:ietf:rfc:3986",
+                  "code": "urn:oid:1.2.840.10008.5.1.4.1.1.77.1.5.4",
+                  "display": "Ophthalmic Tomography Image Storage"
+                },
+                "number": 1,
+                "title": "Left macular OCT volume"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/right-visual-acuity",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "right-visual-acuity",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "exam",
+                "display": "Exam"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "65893-0",
+              "display": "Visual acuity best corrected Right eye"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "effectiveDateTime": "2026-08-11T08:30:00+05:30",
+        "performer": [
+          {
+            "reference": "Practitioner/ophthalmologist-example"
+          }
+        ],
+        "method": {
+          "text": "Best-corrected Snellen visual acuity"
+        },
+        "valueRatio": {
+          "numerator": {
+            "value": 20,
+            "unit": "ft",
+            "system": "http://unitsofmeasure.org",
+            "code": "[ft_us]"
+          },
+          "denominator": {
+            "value": 20,
+            "unit": "ft",
+            "system": "http://unitsofmeasure.org",
+            "code": "[ft_us]"
+          }
+        },
+        "note": [
+          {
+            "text": "Right-eye best-corrected visual acuity: 20/20."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/left-visual-acuity",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "left-visual-acuity",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "exam",
+                "display": "Exam"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "65897-1",
+              "display": "Visual acuity best corrected Left eye"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "effectiveDateTime": "2026-08-11T08:30:00+05:30",
+        "performer": [
+          {
+            "reference": "Practitioner/ophthalmologist-example"
+          }
+        ],
+        "method": {
+          "text": "Best-corrected Snellen visual acuity"
+        },
+        "valueRatio": {
+          "numerator": {
+            "value": 20,
+            "unit": "ft",
+            "system": "http://unitsofmeasure.org",
+            "code": "[ft_us]"
+          },
+          "denominator": {
+            "value": 25,
+            "unit": "ft",
+            "system": "http://unitsofmeasure.org",
+            "code": "[ft_us]"
+          }
+        },
+        "note": [
+          {
+            "text": "Left-eye best-corrected visual acuity: 20/25."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/right-retinal-oct-finding",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "right-retinal-oct-finding",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "79818-1",
+              "display": "Study observation Right retina by OCT"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "effectiveDateTime": "2026-08-11T08:40:00+05:30",
+        "performer": [
+          {
+            "reference": "Practitioner/ophthalmologist-example"
+          }
+        ],
+        "method": {
+          "text": "Optical coherence tomography (OCT)"
+        },
+        "bodySite": {
+          "text": "Right retina"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "LA24809-8",
+              "display": "No abnormal findings"
+            }
+          ],
+          "text": "No abnormal findings"
+        },
+        "derivedFrom": [
+          {
+            "reference": "ImagingStudy/retinal-oct-study"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/right-macular-thickness",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "right-macular-thickness",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "57108-3",
+              "display": "Macular grid.center point thickness by OCT"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "effectiveDateTime": "2026-08-11T08:40:00+05:30",
+        "performer": [
+          {
+            "reference": "Practitioner/ophthalmologist-example"
+          }
+        ],
+        "method": {
+          "text": "Optical coherence tomography (OCT)"
+        },
+        "bodySite": {
+          "text": "Right macula"
+        },
+        "valueQuantity": {
+          "value": 258,
+          "unit": "um",
+          "system": "http://unitsofmeasure.org",
+          "code": "um"
+        },
+        "derivedFrom": [
+          {
+            "reference": "ImagingStudy/retinal-oct-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative quantitative macular OCT finding; no intraretinal or subretinal fluid described."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Media/oct-key-image-right",
+      "resource": {
+        "resourceType": "Media",
+        "id": "oct-key-image-right",
+        "status": "completed",
+        "type": {
+          "text": "image"
+        },
+        "modality": {
+          "coding": [
+            {
+              "system": "http://dicom.nema.org/resources/ontology/DCM",
+              "code": "OPT",
+              "display": "Ophthalmic Tomography"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "createdDateTime": "2026-08-11T08:40:00+05:30",
+        "operator": {
+          "reference": "Practitioner/ophthalmologist-example"
+        },
+        "bodySite": {
+          "text": "Right retina / macula"
+        },
+        "content": {
+          "contentType": "image/jpeg",
+          "url": "https://example.org/dicomweb/studies/2.16.124.113543.1154777499.20260811.1/series/2.16.124.113543.1154777499.20260811.1.1/instances/2.16.124.113543.1154777499.20260811.1.1.1/rendered",
+          "title": "Rendered right-eye macular OCT key image"
+        },
+        "note": [
+          {
+            "text": "Illustrative rendered key image. The full diagnostic DICOM study is referenced separately by ImagingStudy."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/DiagnosticReport/eye-health-assessment",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "eye-health-assessment",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/dccm-eye-health-assessment"
+          ]
+        },
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/eye-exam-order"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "text": "Ophthalmology"
+          }
+        ],
+        "code": {
+          "text": "Diabetes eye health assessment with bilateral macular OCT"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "effectiveDateTime": "2026-08-11T08:30:00+05:30",
+        "issued": "2026-08-11T09:05:00+05:30",
+        "performer": [
+          {
+            "reference": "Practitioner/ophthalmologist-example"
+          }
+        ],
+        "resultsInterpreter": [
+          {
+            "reference": "Practitioner/ophthalmologist-example"
+          }
+        ],
+        "result": [
+          {
+            "reference": "Observation/right-visual-acuity"
+          },
+          {
+            "reference": "Observation/left-visual-acuity"
+          },
+          {
+            "reference": "Observation/right-retinal-oct-finding"
+          },
+          {
+            "reference": "Observation/right-macular-thickness"
+          }
+        ],
+        "imagingStudy": [
+          {
+            "reference": "ImagingStudy/retinal-oct-study"
+          }
+        ],
+        "media": [
+          {
+            "comment": "Rendered key image from the right-eye macular OCT; full DICOM study is available through ImagingStudy.",
+            "link": {
+              "reference": "Media/oct-key-image-right"
+            }
+          }
+        ],
+        "conclusion": "Best-corrected visual acuity is 20/20 right and 20/25 left. The illustrative OCT assessment records no abnormal right-retinal finding and a right macular center-point thickness of 258 um. Repeat diabetic eye examination in approximately 12 months unless clinically indicated sooner.",
+        "presentedForm": [
+          {
+            "contentType": "application/pdf",
+            "url": "https://example.org/reports/eye-health-assessment.pdf",
+            "title": "Illustrative ophthalmology report"
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Exam Method is represented by the report code and Observation.method; Exam Date by DiagnosticReport.effectiveDateTime; Visual Acuity by right/left LOINC Observations; Retinal Findings and Macular Findings by OCT-derived Observations; Laterality by laterality-specific observations and ImagingStudy.series.laterality; Referral / Follow-Up by the linked ServiceRequest. The eye scan itself is represented by ImagingStudy plus a WADO-RS Endpoint, with an optional rendered key image represented by Media."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ServiceRequest/eye-follow-up",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "eye-follow-up",
+        "status": "active",
+        "intent": "plan",
+        "priority": "routine",
+        "code": {
+          "text": "Repeat diabetes eye examination with retinal imaging"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-eye-example"
+        },
+        "occurrencePeriod": {
+          "start": "2027-08-01",
+          "end": "2027-08-31"
+        },
+        "authoredOn": "2026-08-11",
+        "requester": {
+          "reference": "Practitioner/ophthalmologist-example"
+        },
+        "reasonReference": [
+          {
+            "reference": "DiagnosticReport/eye-health-assessment"
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph child mapping: Referral / Follow-Up."
+          }
+        ]
+      }
+    }
+  ]
+}

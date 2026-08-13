@@ -1,0 +1,110 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "mcdia-diabetes-metabolic-procedure",
+  "url": "https://example.org/fhir/StructureDefinition/mcdia-diabetes-metabolic-procedure",
+  "version": "0.2.0",
+  "name": "DiabetesMetabolicProcedure",
+  "title": "Diabetes / Metabolic Procedure Profile",
+  "status": "draft",
+  "experimental": true,
+  "date": "2026-08-11",
+  "publisher": "Illustrative Diabetes Common Clinical Data Elements (mC(Dia)DE)",
+  "description": "An mCODE-inspired FHIR R4 profile for representing diabetes / metabolic procedure within the diabetes common clinical model.",
+  "purpose": "Prototype only. This profile follows an mCODE-inspired profile-first approach by constraining the closest FHIR R4 base resource and identifying interoperable elements for the diabetes common clinical model.",
+  "fhirVersion": "4.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Procedure",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Procedure",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Procedure",
+        "path": "Procedure",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.basedOn",
+        "path": "Procedure.basedOn",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.status",
+        "path": "Procedure.status",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.statusReason",
+        "path": "Procedure.statusReason",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.category",
+        "path": "Procedure.category",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.code",
+        "path": "Procedure.code",
+        "min": 1,
+        "mustSupport": true,
+        "binding": {
+          "strength": "preferred",
+          "description": "Prefer SNOMED CT for procedure identity when an appropriate concept exists."
+        }
+      },
+      {
+        "id": "Procedure.subject",
+        "path": "Procedure.subject",
+        "min": 1,
+        "mustSupport": true,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Patient"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Procedure.performed[x]",
+        "path": "Procedure.performed[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.performer",
+        "path": "Procedure.performer",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.reasonCode",
+        "path": "Procedure.reasonCode",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.reasonReference",
+        "path": "Procedure.reasonReference",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.bodySite",
+        "path": "Procedure.bodySite",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.outcome",
+        "path": "Procedure.outcome",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.note",
+        "path": "Procedure.note",
+        "mustSupport": true
+      }
+    ]
+  }
+}

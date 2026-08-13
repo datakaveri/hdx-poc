@@ -1,0 +1,120 @@
+.bundle-browser {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.bundle-browser__filter {
+  width: 100%;
+  max-width: 320px;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: var(--primary-white);
+  color: var(--text-primary);
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+}
+
+.bundle-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.bundle-row {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--primary-white);
+  overflow: hidden;
+
+  &--expanded {
+    border-color: var(--primary-color);
+  }
+}
+
+.bundle-row__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: 0.6rem var(--spacing-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.bundle-row__name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.bundle-row__meta {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.bundle-row__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  color: var(--success-color);
+  background: color-mix(in srgb, var(--success-color) 12%, transparent);
+  white-space: nowrap;
+
+  &--positive {
+    color: var(--error-color);
+    background: color-mix(in srgb, var(--error-color) 12%, transparent);
+  }
+}
+
+.bundle-row__detail {
+  padding: 0 var(--spacing-md) var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+}
+
+.bundle-row__fundus {
+  max-width: 260px;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-sm) 0;
+  display: block;
+}
+
+.bundle-row__json {
+  margin-top: var(--spacing-sm);
+  font-size: 0.8rem;
+
+  summary {
+    cursor: pointer;
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+
+  pre {
+    max-height: 320px;
+    overflow: auto;
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+    font-size: 0.72rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}

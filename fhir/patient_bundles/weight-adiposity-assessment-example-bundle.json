@@ -1,0 +1,171 @@
+{
+  "resourceType": "Bundle",
+  "id": "weight-adiposity-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/weight-adiposity-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "weight-adiposity-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/weight-adiposity-assessment-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "weight-adiposity-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-weight-adiposity-assessment"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "weight-adiposity-assessment",
+              "display": "Weight & Adiposity Assessment"
+            }
+          ],
+          "text": "Weight & Adiposity Assessment"
+        },
+        "subject": {
+          "reference": "Patient/weight-adiposity-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "weight",
+                  "display": "Weight"
+                }
+              ],
+              "text": "Weight"
+            },
+            "valueQuantity": {
+              "value": 78.4,
+              "unit": "kg",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "bmi",
+                  "display": "BMI"
+                }
+              ],
+              "text": "BMI"
+            },
+            "valueQuantity": {
+              "value": 28.7,
+              "unit": "kg/m2",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg/m2"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "waist-circumference",
+                  "display": "Waist Circumference"
+                }
+              ],
+              "text": "Waist Circumference"
+            },
+            "valueString": "Illustrative waist circumference value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "weight-trajectory",
+                  "display": "Weight Trajectory"
+                }
+              ],
+              "text": "Weight Trajectory"
+            },
+            "valueQuantity": {
+              "value": 78.4,
+              "unit": "kg",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "weight-goal",
+                  "display": "Weight Goal"
+                }
+              ],
+              "text": "Weight Goal"
+            },
+            "valueQuantity": {
+              "value": 78.4,
+              "unit": "kg",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "clinical-significance",
+                  "display": "Clinical Significance"
+                }
+              ],
+              "text": "Clinical Significance"
+            },
+            "valueString": "Illustrative clinical significance value"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "id": "insulin-delivery-device-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/insulin-delivery-device-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "insulin-delivery-device-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Device/insulin-delivery-device-example-device",
+      "resource": {
+        "resourceType": "Device",
+        "id": "insulin-delivery-device-example-device",
+        "status": "active",
+        "deviceName": [
+          {
+            "name": "Illustrative insulin delivery device device",
+            "type": "user-friendly-name"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "insulin-delivery-device",
+              "display": "Insulin Delivery Device"
+            }
+          ],
+          "text": "Insulin Delivery Device"
+        },
+        "patient": {
+          "reference": "Patient/insulin-delivery-device-patient"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/DeviceUseStatement/insulin-delivery-device-example",
+      "resource": {
+        "resourceType": "DeviceUseStatement",
+        "id": "insulin-delivery-device-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-insulin-delivery-device"
+          ]
+        },
+        "status": "active",
+        "subject": {
+          "reference": "Patient/insulin-delivery-device-patient"
+        },
+        "timingPeriod": {
+          "start": "2026-06-01",
+          "end": "2026-08-11"
+        },
+        "recordedOn": "2026-08-11T09:00:00+05:30",
+        "device": {
+          "reference": "Device/insulin-delivery-device-example-device"
+        },
+        "reasonCode": [
+          {
+            "text": "Diabetes management"
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Device Type; Insulin; Start / Stop; Basal Settings; Bolus Settings; Insulin-to-Carbohydrate Ratio; Insulin Sensitivity / Correction Factor; Target Glucose; Device Status."
+          }
+        ]
+      }
+    }
+  ]
+}

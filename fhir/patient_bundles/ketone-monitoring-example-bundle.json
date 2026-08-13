@@ -1,0 +1,151 @@
+{
+  "resourceType": "Bundle",
+  "id": "ketone-monitoring-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/ketone-monitoring-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "ketone-monitoring-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/ketone-monitoring-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "ketone-monitoring-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-ketone-monitoring"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "ketone-monitoring",
+              "display": "Ketone Monitoring"
+            }
+          ],
+          "text": "Ketone Monitoring"
+        },
+        "subject": {
+          "reference": "Patient/ketone-monitoring-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "blood-urine",
+                  "display": "Blood / Urine"
+                }
+              ],
+              "text": "Blood / Urine"
+            },
+            "valueString": "Illustrative blood / urine value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "method",
+                  "display": "Method"
+                }
+              ],
+              "text": "Method"
+            },
+            "valueString": "Clinician assessment using documented evidence"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "ketone-result",
+                  "display": "Ketone Result"
+                }
+              ],
+              "text": "Ketone Result"
+            },
+            "valueString": "Illustrative ketone result value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "date-time",
+                  "display": "Date / Time"
+                }
+              ],
+              "text": "Date / Time"
+            },
+            "valueString": "2026-08-11"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "clinical-context",
+                  "display": "Clinical Context"
+                }
+              ],
+              "text": "Clinical Context"
+            },
+            "valueString": "Illustrative clinical context value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "interpretation",
+                  "display": "Interpretation"
+                }
+              ],
+              "text": "Interpretation"
+            },
+            "valueString": "Illustrative interpretation value"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

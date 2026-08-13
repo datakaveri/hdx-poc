@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "id": "hyperglycemic-crisis-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/hyperglycemic-crisis-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "hyperglycemic-crisis-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/hyperglycemic-crisis-example",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "hyperglycemic-crisis-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-hyperglycemic-crisis"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "problem-list-item",
+                "display": "Problem List Item"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "hyperglycemic-crisis",
+              "display": "Hyperglycemic Crisis"
+            }
+          ],
+          "text": "Hyperglycemic Crisis"
+        },
+        "subject": {
+          "reference": "Patient/hyperglycemic-crisis-patient"
+        },
+        "onsetDateTime": "2026-01-15",
+        "recordedDate": "2026-08-11",
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Graph coverage: Crisis Type; Date / Time; Glucose; Ketosis; Acid-Base Status; Osmolality / Hydration; Severity; Precipitating Factor; Care Setting; Resolution. Standard terminology bindings should be refined in a formal implementation guide."
+          }
+        ]
+      }
+    }
+  ]
+}

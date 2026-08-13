@@ -1,0 +1,106 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "mcdia-comorbidity-assessment",
+  "url": "https://example.org/fhir/StructureDefinition/mcdia-comorbidity-assessment",
+  "version": "0.2.0",
+  "name": "ComorbidityAssessment",
+  "title": "Comorbidity Assessment Profile",
+  "status": "draft",
+  "experimental": true,
+  "date": "2026-08-11",
+  "publisher": "Illustrative Diabetes Common Clinical Data Elements (mC(Dia)DE)",
+  "description": "An mCODE-inspired FHIR R4 profile for representing comorbidity assessment within the diabetes common clinical model.",
+  "purpose": "Prototype only. This profile follows an mCODE-inspired profile-first approach by constraining the closest FHIR R4 base resource and identifying interoperable elements for the diabetes common clinical model.",
+  "fhirVersion": "4.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "ClinicalImpression",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/ClinicalImpression",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "ClinicalImpression",
+        "path": "ClinicalImpression",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.status",
+        "path": "ClinicalImpression.status",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.code",
+        "path": "ClinicalImpression.code",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.description",
+        "path": "ClinicalImpression.description",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.subject",
+        "path": "ClinicalImpression.subject",
+        "min": 1,
+        "mustSupport": true,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Patient"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ClinicalImpression.effective[x]",
+        "path": "ClinicalImpression.effective[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.date",
+        "path": "ClinicalImpression.date",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.assessor",
+        "path": "ClinicalImpression.assessor",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.problem",
+        "path": "ClinicalImpression.problem",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.investigation",
+        "path": "ClinicalImpression.investigation",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.summary",
+        "path": "ClinicalImpression.summary",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.finding",
+        "path": "ClinicalImpression.finding",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.supportingInfo",
+        "path": "ClinicalImpression.supportingInfo",
+        "mustSupport": true
+      },
+      {
+        "id": "ClinicalImpression.note",
+        "path": "ClinicalImpression.note",
+        "mustSupport": true
+      }
+    ]
+  }
+}

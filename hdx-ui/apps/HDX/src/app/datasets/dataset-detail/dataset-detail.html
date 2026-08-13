@@ -1,0 +1,75 @@
+@if (dataset(); as ds) {
+  <section class="plane-page">
+    <a class="back-link" routerLink="/data-plane">&larr; All datasets</a>
+
+    <header class="ds-header" data-tour="dataset-access-panel">
+      @if (node(); as n) {
+        <div class="ds-header__node">
+          <app-node-badge [archetype]="n.archetype" [status]="n.status" />
+          <a class="ds-header__node-link" [routerLink]="['/nodes', n.id]">{{ n.name }}</a>
+        </div>
+      }
+      <h1>{{ ds.title }}</h1>
+      <p class="ds-header__description">{{ ds.description }}</p>
+      <div class="ds-header__meta">
+        <p-tag [value]="ds.track" severity="secondary" />
+        <p-tag [value]="ds.access" [severity]="accessSeverity(ds.access)" />
+        <span class="ds-header__count">{{ ds.recordCount | number }} records</span>
+        <span class="ds-header__updated">Updated {{ ds.updatedAt }}</span>
+      </div>
+      <div class="ds-header__standards">
+        @for (standard of ds.standards; track standard) {
+          <span class="standard-chip">{{ standard }}</span>
+        }
+      </div>
+      <div class="ds-header__tags">
+        @for (tag of ds.tags; track tag) {
+          <span class="tag-chip">#{{ tag }}</span>
+        }
+      </div>
+      <app-request-access-button resourceType="dataset" [resourceId]="ds.id" [nodeId]="ds.nodeId" [ownerId]="ds.ownerId" />
+      <div class="ds-header__id">
+        <button type="button" class="wizard-btn wizard-btn--secondary" (click)="copyDatasetId()">
+          {{ copied() ? 'Copied!' : 'Copy dataset ID' }}
+        </button>
+        <code class="ds-header__id-value">{{ ds.id }}</code>
+      </div>
+      @if (ds.sampleFile; as sampleFile) {
+        <div class="ds-header__sample-file">
+          <button type="button" class="wizard-btn wizard-btn--secondary" [disabled]="downloading()" (click)="downloadSampleFile()">
+            {{ downloading() ? 'Downloading…' : 'Download sample file' }}
+          </button>
+          <span class="form-hint">{{ sampleFile.filename }} · {{ formatSize(sampleFile.size) }}</span>
+          @if (downloadError()) {
+            <span class="error-message">{{ downloadError() }}</span>
+          }
+        </div>
+      }
+    </header>
+
+    @if (ds.id === 'ds-diabetic-glaucoma') {
+      <h2 class="section-title">Patient bundles (FHIR)</h2>
+      <app-glaucoma-bundle-list />
+    }
+
+    <h2 class="section-title">Compatible services ({{ compatibleServices().length }})</h2>
+    <div class="service-list">
+      @for (service of compatibleServices(); track service.id) {
+        <div class="service-row">
+          <div class="service-row__top">
+            <span class="service-row__name">{{ service.name }}</span>
+            <span class="service-row__host">{{ hostLabel(service.nodeId) }}</span>
+          </div>
+          <span class="service-row__description">{{ service.description }}</span>
+        </div>
+      } @empty {
+        <p class="empty-state">No service on the exchange is currently registered against this dataset.</p>
+      }
+    </div>
+  </section>
+} @else {
+  <section class="plane-page">
+    <a class="back-link" routerLink="/data-plane">&larr; All datasets</a>
+    <p class="empty-state">No dataset matches "{{ id() }}".</p>
+  </section>
+}

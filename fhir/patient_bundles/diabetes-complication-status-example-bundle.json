@@ -1,0 +1,147 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-complication-status-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-complication-status-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-complication-status-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/diabetes-complication-status-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "diabetes-complication-status-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-complication-status"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "diabetes-complication-status",
+              "display": "Diabetes Complication Status"
+            }
+          ],
+          "text": "Diabetes Complication Status"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-complication-status-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "complication-reference",
+                  "display": "Complication Reference"
+                }
+              ],
+              "text": "Complication Reference"
+            },
+            "valueString": "Illustrative complication reference value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "evidence",
+                  "display": "Evidence"
+                }
+              ],
+              "text": "Evidence"
+            },
+            "valueString": "Illustrative evidence value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "status",
+                  "display": "Status"
+                }
+              ],
+              "text": "Status"
+            },
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "stable",
+                  "display": "Stable / active as clinically applicable"
+                }
+              ],
+              "text": "Stable / active as clinically applicable"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "trend",
+                  "display": "Trend"
+                }
+              ],
+              "text": "Trend"
+            },
+            "valueString": "Illustrative trend value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "assessment-date",
+                  "display": "Assessment Date"
+                }
+              ],
+              "text": "Assessment Date"
+            },
+            "valueString": "2026-08-11"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

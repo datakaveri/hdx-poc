@@ -1,0 +1,113 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "mcdia-foot-risk-assessment",
+  "url": "https://example.org/fhir/StructureDefinition/mcdia-foot-risk-assessment",
+  "version": "0.2.0",
+  "name": "FootRiskAssessment",
+  "title": "Foot Risk Assessment Profile",
+  "status": "draft",
+  "experimental": true,
+  "date": "2026-08-11",
+  "publisher": "Illustrative Diabetes Common Clinical Data Elements (mC(Dia)DE)",
+  "description": "An mCODE-inspired FHIR R4 profile for representing foot risk assessment within the diabetes common clinical model.",
+  "purpose": "Prototype only. This profile follows an mCODE-inspired profile-first approach by constraining the closest FHIR R4 base resource and identifying interoperable elements for the diabetes common clinical model.",
+  "fhirVersion": "4.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "RiskAssessment",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/RiskAssessment",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "RiskAssessment",
+        "path": "RiskAssessment",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.status",
+        "path": "RiskAssessment.status",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.method",
+        "path": "RiskAssessment.method",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.code",
+        "path": "RiskAssessment.code",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.subject",
+        "path": "RiskAssessment.subject",
+        "min": 1,
+        "mustSupport": true,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Patient"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "RiskAssessment.occurrence[x]",
+        "path": "RiskAssessment.occurrence[x]",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.condition",
+        "path": "RiskAssessment.condition",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.performer",
+        "path": "RiskAssessment.performer",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.reasonCode",
+        "path": "RiskAssessment.reasonCode",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.basis",
+        "path": "RiskAssessment.basis",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.prediction",
+        "path": "RiskAssessment.prediction",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.prediction.outcome",
+        "path": "RiskAssessment.prediction.outcome",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.prediction.probability[x]",
+        "path": "RiskAssessment.prediction.probability[x]",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.prediction.qualitativeRisk",
+        "path": "RiskAssessment.prediction.qualitativeRisk",
+        "mustSupport": true
+      },
+      {
+        "id": "RiskAssessment.note",
+        "path": "RiskAssessment.note",
+        "mustSupport": true
+      }
+    ]
+  }
+}

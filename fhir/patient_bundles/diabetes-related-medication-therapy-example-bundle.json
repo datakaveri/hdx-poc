@@ -1,0 +1,105 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-related-medication-therapy-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-related-medication-therapy-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-related-medication-therapy-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/diabetes-related-medication-therapy-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "diabetes-related-medication-therapy-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-related-medication-therapy-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/MedicationRequest/diabetes-related-medication-therapy-example",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "diabetes-related-medication-therapy-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-related-medication-therapy"
+          ]
+        },
+        "status": "active",
+        "intent": "plan",
+        "category": [
+          {
+            "text": "Diabetes medication therapy"
+          }
+        ],
+        "medicationCodeableConcept": {
+          "text": "Illustrative glucose-lowering medication"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-related-medication-therapy-patient"
+        },
+        "authoredOn": "2026-08-11",
+        "reasonReference": [
+          {
+            "reference": "Condition/diabetes-related-medication-therapy-example-diabetes"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "Dose, route, frequency, timing, and titration individualized to the patient."
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Medication; Indication / Reason; Treatment Intent; Dose; Route; Frequency; Start Date; Status; Reason for Start / Change / Stop; Adverse Effects / Tolerance. Prefer RxNorm coding for medication identity in a production implementation."
+          }
+        ]
+      }
+    }
+  ]
+}

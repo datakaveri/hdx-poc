@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-in-pregnancy-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-in-pregnancy-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-in-pregnancy-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1992-06-22"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/diabetes-in-pregnancy-example",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "diabetes-in-pregnancy-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-in-pregnancy"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "problem-list-item",
+                "display": "Problem List Item"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "diabetes-in-pregnancy",
+              "display": "Diabetes in Pregnancy"
+            }
+          ],
+          "text": "Diabetes in Pregnancy"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-in-pregnancy-patient"
+        },
+        "onsetDateTime": "2026-01-15",
+        "recordedDate": "2026-08-11",
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Graph coverage: Preexisting Diabetes / GDM; Gestational Age; Preconception Care; Pregnancy Glycemic Targets; Pregnancy Medication Safety; Maternal / Fetal Monitoring; Delivery Context; Postpartum Follow-Up. Standard terminology bindings should be refined in a formal implementation guide."
+          }
+        ]
+      }
+    }
+  ]
+}

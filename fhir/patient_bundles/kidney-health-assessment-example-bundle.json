@@ -1,0 +1,298 @@
+{
+  "resourceType": "Bundle",
+  "id": "kidney-health-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/kidney-health-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "kidney-health-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/kidney-health-assessment-example-result-1",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "kidney-health-assessment-example-result-1",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "serum-creatinine",
+              "display": "Serum Creatinine"
+            }
+          ],
+          "text": "Serum Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/kidney-health-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative serum creatinine value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/kidney-health-assessment-example-result-2",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "kidney-health-assessment-example-result-2",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "egfr",
+              "display": "eGFR"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/kidney-health-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueQuantity": {
+          "value": 82,
+          "unit": "mL/min/1.73 m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "mL/min/{1.73_m2}"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/kidney-health-assessment-example-result-3",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "kidney-health-assessment-example-result-3",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "urine-albumin-to-creatinine-ratio",
+              "display": "Urine Albumin-to-Creatinine Ratio"
+            }
+          ],
+          "text": "Urine Albumin-to-Creatinine Ratio"
+        },
+        "subject": {
+          "reference": "Patient/kidney-health-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueQuantity": {
+          "value": 24,
+          "unit": "mg/g",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/g"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/kidney-health-assessment-example-result-4",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "kidney-health-assessment-example-result-4",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "gfr-category",
+              "display": "GFR Category"
+            }
+          ],
+          "text": "GFR Category"
+        },
+        "subject": {
+          "reference": "Patient/kidney-health-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative gfr category value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/kidney-health-assessment-example-result-5",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "kidney-health-assessment-example-result-5",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "albuminuria-category",
+              "display": "Albuminuria Category"
+            }
+          ],
+          "text": "Albuminuria Category"
+        },
+        "subject": {
+          "reference": "Patient/kidney-health-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueQuantity": {
+          "value": 24,
+          "unit": "mg/g",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/g"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/kidney-health-assessment-example-result-6",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "kidney-health-assessment-example-result-6",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "kidney-function-trend",
+              "display": "Kidney Function Trend"
+            }
+          ],
+          "text": "Kidney Function Trend"
+        },
+        "subject": {
+          "reference": "Patient/kidney-health-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative kidney function trend value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/DiagnosticReport/kidney-health-assessment-example",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "kidney-health-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-kidney-health-assessment"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "text": "Diabetes assessment"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "kidney-health-assessment",
+              "display": "Kidney Health Assessment"
+            }
+          ],
+          "text": "Kidney Health Assessment"
+        },
+        "subject": {
+          "reference": "Patient/kidney-health-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "issued": "2026-08-11T09:10:00+05:30",
+        "result": [
+          {
+            "reference": "Observation/kidney-health-assessment-example-result-1"
+          },
+          {
+            "reference": "Observation/kidney-health-assessment-example-result-2"
+          },
+          {
+            "reference": "Observation/kidney-health-assessment-example-result-3"
+          },
+          {
+            "reference": "Observation/kidney-health-assessment-example-result-4"
+          },
+          {
+            "reference": "Observation/kidney-health-assessment-example-result-5"
+          },
+          {
+            "reference": "Observation/kidney-health-assessment-example-result-6"
+          }
+        ],
+        "conclusion": "Illustrative kidney health assessment summary; interpret in clinical context."
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+<div class="bundle-browser">
+  <input
+    type="text"
+    class="bundle-browser__filter"
+    placeholder="Filter by name or result…"
+    [ngModel]="filterText()"
+    (ngModelChange)="filterText.set($event)"
+  />
+  <span class="form-hint">{{ filteredPatients().length }} of {{ patients.length }} patients</span>
+
+  <div class="bundle-list">
+    @for (patient of filteredPatients(); track patient.id) {
+      <div class="bundle-row" [class.bundle-row--expanded]="expandedId() === patient.id">
+        <button type="button" class="bundle-row__summary" (click)="toggleExpand(patient.id)">
+          <span class="bundle-row__name">{{ patient.name }}</span>
+          <span class="bundle-row__meta">{{ patient.gender }} · {{ patient.age }}y</span>
+          <span class="bundle-row__label" [class.bundle-row__label--positive]="patient.hasGlaucoma">
+            {{ patient.labelText }}
+          </span>
+        </button>
+
+        @if (expandedId() === patient.id) {
+          <div class="bundle-row__detail">
+            @if (detailFor(patient.id); as detail) {
+              @if (detail.loading) {
+                <p class="empty-state">Loading bundle from FHIR…</p>
+              } @else if (detail.error) {
+                <p class="error-message">{{ detail.error }}</p>
+              } @else {
+                @if (detail.imageDataUrl) {
+                  <img class="bundle-row__fundus" [src]="detail.imageDataUrl" alt="Fundus photograph for {{ patient.name }}" />
+                }
+                <details class="bundle-row__json">
+                  <summary>Raw input Bundle (FHIR JSON)</summary>
+                  <pre>{{ detail.bundleJson }}</pre>
+                </details>
+              }
+            }
+          </div>
+        }
+      </div>
+    } @empty {
+      <p class="empty-state">No patients match "{{ filterText() }}".</p>
+    }
+  </div>
+</div>

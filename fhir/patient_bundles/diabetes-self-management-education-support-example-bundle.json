@@ -1,0 +1,112 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-self-management-education-support-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-self-management-education-support-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-self-management-education-support-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/diabetes-self-management-education-support-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "diabetes-self-management-education-support-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-self-management-education-support-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ServiceRequest/diabetes-self-management-education-support-example",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "diabetes-self-management-education-support-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-self-management-education-support"
+          ]
+        },
+        "status": "active",
+        "intent": "plan",
+        "priority": "routine",
+        "category": [
+          {
+            "text": "Diabetes supportive therapy / service"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "diabetes-self-management-education-support",
+              "display": "Diabetes Self-Management Education & Support"
+            }
+          ],
+          "text": "Diabetes Self-Management Education & Support"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-self-management-education-support-patient"
+        },
+        "occurrencePeriod": {
+          "start": "2026-08-15",
+          "end": "2026-11-15"
+        },
+        "authoredOn": "2026-08-11",
+        "reasonReference": [
+          {
+            "reference": "Condition/diabetes-self-management-education-support-example-diabetes"
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Education Topic; Learning Goal; Education Method; Medication Skills; Monitoring Skills; Nutrition Skills; Hypoglycemia Skills; Sick-Day Skills; Technology / Device Training; Understanding / Completion."
+          }
+        ]
+      }
+    }
+  ]
+}

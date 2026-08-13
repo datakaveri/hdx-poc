@@ -1,0 +1,219 @@
+HDX is not a central data lake. Think of it
+as a federation:
+
+a central Discovery and Governance entity
+indexes what's available across the network,
+
+so anyone can find it — but the data itself
+never moves there.
+
+Every participating institution runs its own
+federated node, keeping its own data and
+
+services, and operating its own control
+plane for access control and audit.
+
+Data is discovered centrally. It only ever
+leaves its source with consent.
+
+Here's that federation in practice.
+
+Every card is an independent institution —
+Node A, Node B, City General Hospital — each
+
+with its own infrastructure and its own
+control plane.
+
+Only metadata and pointers join the shared
+federated index;
+
+the underlying records stay exactly where
+they are.
+
+Opening a node shows exactly what it
+contributes to the network:
+
+the datasets and services it exposes.
+
+Node A here hosts seven datasets, spanning
+diabetes, oncology, cardiovascular, and
+
+imaging data, plus one compute service — all
+discoverable, none of it copied anywhere
+
+else.
+
+This is the Data Plane — every dataset from
+every node, in one federated catalogue.
+
+A consumer can filter by node or by track,
+and scan standards and access tiers at a
+
+glance without leaving this page.
+
+Opening a dataset surfaces its full metadata
+before anyone requests anything:
+
+standards used, access tier, tags, record
+counts.
+
+This one — the Diabetic Glaucoma Screening
+Cohort — follows the mCXDE diabetes profile,
+
+which is worth seeing as more than a label.
+
+Standards like mCXDE aren't bolted onto a
+single dataset — they're part of the
+platform.
+
+HDX renders the whole profile as an
+interactive concept graph.
+
+Overview returns to the top-level clinical
+domains;
+
+Fit graph and the zoom controls adjust the
+view.
+
+Each chip in the legend is a clinical domain
+in the model — Disease, Assessment,
+
+Treatment, and so on.
+
+Clicking one hides or shows it, which is how
+you narrow a dense graph down to just the
+
+part you care about.
+
+Clicking a domain node expands it into its
+own detail graph.
+
+Clicking a leaf concept goes one level
+deeper — opening its actual FHIR
+
+StructureDefinition next to a worked example
+Bundle, side by side.
+
+Services are catalogued the same way
+datasets are — by category, by hosting node,
+
+and by which datasets each one is registered
+to operate on. This is the Service Plane.
+
+Every dataset carries a consent gate. A non-
+owner requests access here;
+
+the owning institution — or an admin —
+approves it before anything moves.
+
+Once granted, a download streams from the
+source node's own file server over an
+
+authenticated call. There's never a public
+link handed out.
+
+Every access request, whether it's one you
+made or one waiting on something you own, is
+
+tracked in one place.
+
+Approving access to an entire node
+automatically grants everything hosted under
+
+it — no need to approve each dataset one by
+one.
+
+Requesting a service works identically to
+requesting a dataset.
+
+Once you're consented, actually invoking the
+service routes your data through the control
+
+plane's secure enclave — the chokepoint
+every job passes through.
+
+The service itself only ever sees the one
+dataset it's been granted.
+
+It never gets a raw path into a node's
+storage.
+
+Services with a live try-it flow show this
+button.
+
+Glaucoma Detection is one of them — click
+through to open its cohort screening demo.
+
+This is where a consumer routes a specific
+dataset to the service.
+
+We've already pasted a dataset ID from the
+exchange — ds-diabetic-glaucoma, the same
+
+cohort we looked at earlier — so the next
+step is simply to load it.
+
+With the cohort loaded, running the service
+is one click.
+
+Every patient in the cohort gets sent
+through the glaucoma screening model.
+
+And here are the results — one row per
+patient, positive and negative screenings
+
+side by side.
+
+Clicking any row expands its fundus
+photograph, the model's stated conclusion,
+
+and the raw FHIR input and output bundles
+that were actually exchanged for that
+patient.
+
+This is the full round trip:
+
+a consented dataset, routed through the
+control plane, processed by a service, and
+
+returned as a structured, auditable result.
+
+Everything a provider does starts here — one
+of three wizards:
+
+onboard a node, a dataset, or a service.
+
+This is how an institution — say, ICMR —
+joins the federation in the first place.
+
+They register their basic details here.
+
+The request sits pending until an HDX admin
+reviews and approves it;
+
+approval is what grants the institution the
+node-owner role and a control-plane identity
+
+scoped to their own node.
+
+Once an institution is an approved node
+owner, publishing a dataset is a short
+wizard:
+
+basic info, the standards and access tier it
+follows, and an optional sample file.
+
+As soon as it's published, it's discoverable
+in the Data Plane we saw earlier.
+
+Onboarding a service follows the same shape
+— register it against your node, declare
+
+which datasets it's permitted to operate on,
+and attach an OpenAPI spec.
+
+From that point on, it's discoverable and
+requestable in the Service Plane, exactly
+
+like the Glaucoma Detection service we just
+tried.

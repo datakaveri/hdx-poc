@@ -1,0 +1,112 @@
+{
+  "resourceType": "Bundle",
+  "id": "weight-management-intervention-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/weight-management-intervention-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "weight-management-intervention-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/weight-management-intervention-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "weight-management-intervention-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/weight-management-intervention-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ServiceRequest/weight-management-intervention-example",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "weight-management-intervention-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-weight-management-intervention"
+          ]
+        },
+        "status": "active",
+        "intent": "plan",
+        "priority": "routine",
+        "category": [
+          {
+            "text": "Diabetes supportive therapy / service"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "weight-management-intervention",
+              "display": "Weight Management Intervention"
+            }
+          ],
+          "text": "Weight Management Intervention"
+        },
+        "subject": {
+          "reference": "Patient/weight-management-intervention-patient"
+        },
+        "occurrencePeriod": {
+          "start": "2026-08-15",
+          "end": "2026-11-15"
+        },
+        "authoredOn": "2026-08-11",
+        "reasonReference": [
+          {
+            "reference": "Condition/weight-management-intervention-example-diabetes"
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Treatment Strategy; Weight Target; Lifestyle Component; Medication Component; Procedure Component; Response."
+          }
+        ]
+      }
+    }
+  ]
+}

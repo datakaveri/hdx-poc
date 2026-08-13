@@ -1,0 +1,161 @@
+{
+  "resourceType": "Bundle",
+  "id": "psychosocial-behavioral-health-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/psychosocial-behavioral-health-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "psychosocial-behavioral-health-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Questionnaire/psychosocial-behavioral-health-assessment-example-form",
+      "resource": {
+        "resourceType": "Questionnaire",
+        "id": "psychosocial-behavioral-health-assessment-example-form",
+        "url": "https://example.org/fhir/Questionnaire/psychosocial-behavioral-health-assessment-example-form",
+        "status": "active",
+        "title": "Psychosocial / Behavioral Health Assessment Questionnaire",
+        "subjectType": [
+          "Patient"
+        ],
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Diabetes Distress",
+            "type": "string"
+          },
+          {
+            "linkId": "q2",
+            "text": "Depressive Symptoms",
+            "type": "string"
+          },
+          {
+            "linkId": "q3",
+            "text": "Anxiety",
+            "type": "string"
+          },
+          {
+            "linkId": "q4",
+            "text": "Disordered Eating",
+            "type": "string"
+          },
+          {
+            "linkId": "q5",
+            "text": "Fear of Hypoglycemia",
+            "type": "string"
+          },
+          {
+            "linkId": "q6",
+            "text": "Treatment Burden",
+            "type": "string"
+          },
+          {
+            "linkId": "q7",
+            "text": "Psychosocial Support",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/QuestionnaireResponse/psychosocial-behavioral-health-assessment-example",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "psychosocial-behavioral-health-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-psychosocial-behavioral-health-assessment"
+          ]
+        },
+        "questionnaire": "https://example.org/fhir/Questionnaire/psychosocial-behavioral-health-assessment-example-form",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/psychosocial-behavioral-health-assessment-patient"
+        },
+        "authored": "2026-08-11T09:00:00+05:30",
+        "source": {
+          "reference": "Patient/psychosocial-behavioral-health-assessment-patient"
+        },
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Diabetes Distress",
+            "answer": [
+              {
+                "valueString": "Illustrative response for diabetes distress"
+              }
+            ]
+          },
+          {
+            "linkId": "q2",
+            "text": "Depressive Symptoms",
+            "answer": [
+              {
+                "valueString": "Illustrative response for depressive symptoms"
+              }
+            ]
+          },
+          {
+            "linkId": "q3",
+            "text": "Anxiety",
+            "answer": [
+              {
+                "valueString": "Illustrative response for anxiety"
+              }
+            ]
+          },
+          {
+            "linkId": "q4",
+            "text": "Disordered Eating",
+            "answer": [
+              {
+                "valueString": "Illustrative response for disordered eating"
+              }
+            ]
+          },
+          {
+            "linkId": "q5",
+            "text": "Fear of Hypoglycemia",
+            "answer": [
+              {
+                "valueString": "Illustrative response for fear of hypoglycemia"
+              }
+            ]
+          },
+          {
+            "linkId": "q6",
+            "text": "Treatment Burden",
+            "answer": [
+              {
+                "valueString": "Illustrative response for treatment burden"
+              }
+            ]
+          },
+          {
+            "linkId": "q7",
+            "text": "Psychosocial Support",
+            "answer": [
+              {
+                "valueString": "Illustrative response for psychosocial support"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-metabolic-procedure-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-metabolic-procedure-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-metabolic-procedure-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/diabetes-metabolic-procedure-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "diabetes-metabolic-procedure-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-metabolic-procedure-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Procedure/diabetes-metabolic-procedure-example",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "diabetes-metabolic-procedure-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-metabolic-procedure"
+          ]
+        },
+        "status": "completed",
+        "category": {
+          "text": "Diabetes / metabolic procedure"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "diabetes-metabolic-procedure",
+              "display": "Diabetes / Metabolic Procedure"
+            }
+          ],
+          "text": "Diabetes / Metabolic Procedure"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-metabolic-procedure-patient"
+        },
+        "performedDateTime": "2026-07-20T10:00:00+05:30",
+        "reasonReference": [
+          {
+            "reference": "Condition/diabetes-metabolic-procedure-example-diabetes"
+          }
+        ],
+        "outcome": {
+          "text": "Procedure completed; follow-up required"
+        },
+        "note": [
+          {
+            "text": "Graph coverage: Procedure Type; Indication; Procedure Date; Status; Outcome."
+          }
+        ]
+      }
+    }
+  ]
+}

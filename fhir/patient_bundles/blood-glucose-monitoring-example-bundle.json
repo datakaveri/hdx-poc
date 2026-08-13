@@ -1,0 +1,143 @@
+{
+  "resourceType": "Bundle",
+  "id": "blood-glucose-monitoring-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/blood-glucose-monitoring-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "blood-glucose-monitoring-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/blood-glucose-monitoring-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "blood-glucose-monitoring-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-blood-glucose-monitoring"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "blood-glucose-monitoring",
+              "display": "Blood Glucose Monitoring"
+            }
+          ],
+          "text": "Blood Glucose Monitoring"
+        },
+        "subject": {
+          "reference": "Patient/blood-glucose-monitoring-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "monitoring-method",
+                  "display": "Monitoring Method"
+                }
+              ],
+              "text": "Monitoring Method"
+            },
+            "valueString": "Clinician assessment using documented evidence"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "device",
+                  "display": "Device"
+                }
+              ],
+              "text": "Device"
+            },
+            "valueString": "Illustrative device value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "date-time",
+                  "display": "Date / Time"
+                }
+              ],
+              "text": "Date / Time"
+            },
+            "valueString": "2026-08-11"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "measurement-context",
+                  "display": "Measurement Context"
+                }
+              ],
+              "text": "Measurement Context"
+            },
+            "valueString": "Illustrative measurement context value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "glucose-result",
+                  "display": "Glucose Result"
+                }
+              ],
+              "text": "Glucose Result"
+            },
+            "valueQuantity": {
+              "value": 154,
+              "unit": "mg/dL",
+              "system": "http://unitsofmeasure.org",
+              "code": "mg/dL"
+            }
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

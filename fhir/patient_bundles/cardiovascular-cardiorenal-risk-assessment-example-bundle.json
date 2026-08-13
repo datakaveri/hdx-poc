@@ -1,0 +1,130 @@
+{
+  "resourceType": "Bundle",
+  "id": "cardiovascular-cardiorenal-risk-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/cardiovascular-cardiorenal-risk-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "cardiovascular-cardiorenal-risk-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/cardiovascular-cardiorenal-risk-assessment-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cardiovascular-cardiorenal-risk-assessment-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/cardiovascular-cardiorenal-risk-assessment-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/RiskAssessment/cardiovascular-cardiorenal-risk-assessment-example",
+      "resource": {
+        "resourceType": "RiskAssessment",
+        "id": "cardiovascular-cardiorenal-risk-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-cardiovascular-cardiorenal-risk-assessment"
+          ]
+        },
+        "status": "final",
+        "method": {
+          "text": "Clinician assessment using documented diabetes risk factors"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "cardiovascular-cardiorenal-risk-assessment",
+              "display": "Cardiovascular / Cardiorenal Risk Assessment"
+            }
+          ],
+          "text": "Cardiovascular / Cardiorenal Risk Assessment"
+        },
+        "subject": {
+          "reference": "Patient/cardiovascular-cardiorenal-risk-assessment-patient"
+        },
+        "condition": {
+          "reference": "Condition/cardiovascular-cardiorenal-risk-assessment-example-diabetes"
+        },
+        "occurrenceDateTime": "2026-08-11T09:00:00+05:30",
+        "prediction": [
+          {
+            "outcome": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "cardiovascular-cardiorenal-risk-assessment-outcome",
+                  "display": "Clinically significant cardiovascular / cardiorenal risk assessment outcome"
+                }
+              ],
+              "text": "Clinically significant cardiovascular / cardiorenal risk assessment outcome"
+            },
+            "qualitativeRisk": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "moderate",
+                  "display": "Moderate risk"
+                }
+              ],
+              "text": "Moderate risk"
+            },
+            "whenPeriod": {
+              "start": "2026-08-11",
+              "end": "2027-08-11"
+            }
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Blood Pressure; Lipids; Tobacco Exposure; ASCVD History; Heart Failure; Kidney Disease; Calculated / Clinical Risk; Assessment Date. Probability is intentionally qualitative in this prototype."
+          }
+        ]
+      }
+    }
+  ]
+}

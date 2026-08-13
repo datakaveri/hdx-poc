@@ -1,0 +1,274 @@
+{
+  "resourceType": "Bundle",
+  "id": "continuous-glucose-monitoring-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/cgm-example",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "cgm-example",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Device/cgm-device-example",
+      "resource": {
+        "resourceType": "Device",
+        "id": "cgm-device-example",
+        "status": "active",
+        "deviceName": [
+          {
+            "name": "Illustrative CGM sensor",
+            "type": "user-friendly-name"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/dccm-device-type",
+              "code": "continuous-glucose-monitor",
+              "display": "Continuous glucose monitor"
+            }
+          ],
+          "text": "Continuous glucose monitor"
+        },
+        "patient": {
+          "reference": "Patient/cgm-example"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/DeviceUseStatement/cgm-use-example",
+      "resource": {
+        "resourceType": "DeviceUseStatement",
+        "id": "cgm-use-example",
+        "status": "active",
+        "subject": {
+          "reference": "Patient/cgm-example"
+        },
+        "timingPeriod": {
+          "start": "2026-06-01",
+          "end": "2026-08-11"
+        },
+        "recordedOn": "2026-08-11T08:45:00+05:30",
+        "device": {
+          "reference": "Device/cgm-device-example"
+        },
+        "note": [
+          {
+            "text": "Represents the graph child 'Use Start / Stop'."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/cgm-summary-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "cgm-summary-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/dccm-continuous-glucose-monitoring"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "106793-3",
+              "display": "Continuous glucose monitoring time in ranges panel"
+            }
+          ],
+          "text": "Continuous glucose monitoring summary"
+        },
+        "subject": {
+          "reference": "Patient/cgm-example"
+        },
+        "effectivePeriod": {
+          "start": "2026-07-28T00:00:00+05:30",
+          "end": "2026-08-10T23:59:59+05:30"
+        },
+        "issued": "2026-08-11T08:30:00+05:30",
+        "method": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/dccm-monitoring-method",
+              "code": "cgm",
+              "display": "Continuous glucose monitoring"
+            }
+          ],
+          "text": "Continuous glucose monitoring"
+        },
+        "device": {
+          "reference": "Device/cgm-device-example",
+          "display": "Illustrative CGM sensor"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                  "code": "sensor-wear-data-sufficiency",
+                  "display": "Sensor wear / data sufficiency"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 96,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "97507-8",
+                  "display": "Average glucose [Mass/volume] in Interstitial fluid during Reporting Period"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 154,
+              "unit": "mg/dL",
+              "system": "http://unitsofmeasure.org",
+              "code": "mg/dL"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "97506-0",
+                  "display": "Glucose management indicator"
+                }
+              ]
+            },
+            "valueQuantity": {
+              "value": 7.0,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "97510-2",
+                  "display": "Glucose measurements in range out of Total glucose measurements during reporting period"
+                }
+              ],
+              "text": "Time in Range (70-180 mg/dL)"
+            },
+            "valueQuantity": {
+              "value": 72,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                  "code": "time-below-range-total",
+                  "display": "Time Below Range"
+                }
+              ],
+              "text": "Time Below Range (<70 mg/dL)"
+            },
+            "valueQuantity": {
+              "value": 3,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                  "code": "time-above-range-total",
+                  "display": "Time Above Range"
+                }
+              ],
+              "text": "Time Above Range (>180 mg/dL)"
+            },
+            "valueQuantity": {
+              "value": 25,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "104638-2",
+                  "display": "Glucose standard deviation/Glucose mean in Reporting Period Interstitial fluid by calculation"
+                }
+              ],
+              "text": "Glucose variability (coefficient of variation)"
+            },
+            "valueQuantity": {
+              "value": 34,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/dccm-cgm-component",
+                  "code": "glucose-event-pattern",
+                  "display": "Glucose event / pattern"
+                }
+              ]
+            },
+            "valueString": "Repeated post-prandial hyperglycemia after the evening meal; no prolonged nocturnal hypoglycemia."
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: device/method = Observation.device + method; use start/stop = DeviceUseStatement.timingPeriod; reporting period = effectivePeriod; all remaining CGM child metrics are represented as components."
+          }
+        ]
+      }
+    }
+  ]
+}

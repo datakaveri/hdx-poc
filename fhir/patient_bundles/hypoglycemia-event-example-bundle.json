@@ -1,0 +1,191 @@
+{
+  "resourceType": "Bundle",
+  "id": "hypoglycemia-event-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/hypoglycemia-event-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "hypoglycemia-event-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/hypoglycemia-event-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "hypoglycemia-event-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-hypoglycemia-event"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "hypoglycemia-event",
+              "display": "Hypoglycemia Event"
+            }
+          ],
+          "text": "Hypoglycemia Event"
+        },
+        "subject": {
+          "reference": "Patient/hypoglycemia-event-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "date-time",
+                  "display": "Date / Time"
+                }
+              ],
+              "text": "Date / Time"
+            },
+            "valueString": "2026-08-11"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "glucose-value",
+                  "display": "Glucose Value"
+                }
+              ],
+              "text": "Glucose Value"
+            },
+            "valueQuantity": {
+              "value": 154,
+              "unit": "mg/dL",
+              "system": "http://unitsofmeasure.org",
+              "code": "mg/dL"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "severity-level",
+                  "display": "Severity / Level"
+                }
+              ],
+              "text": "Severity / Level"
+            },
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "moderate",
+                  "display": "Moderate"
+                }
+              ],
+              "text": "Moderate"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "symptoms",
+                  "display": "Symptoms"
+                }
+              ],
+              "text": "Symptoms"
+            },
+            "valueString": "Illustrative symptoms value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "assistance-required",
+                  "display": "Assistance Required"
+                }
+              ],
+              "text": "Assistance Required"
+            },
+            "valueString": "Illustrative assistance required value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "treatment-given",
+                  "display": "Treatment Given"
+                }
+              ],
+              "text": "Treatment Given"
+            },
+            "valueString": "Illustrative treatment given value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "precipitating-factor",
+                  "display": "Precipitating Factor"
+                }
+              ],
+              "text": "Precipitating Factor"
+            },
+            "valueString": "Illustrative precipitating factor value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "outcome",
+                  "display": "Outcome"
+                }
+              ],
+              "text": "Outcome"
+            },
+            "valueString": "Illustrative outcome value"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

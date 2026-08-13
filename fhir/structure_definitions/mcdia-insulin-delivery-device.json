@@ -1,0 +1,103 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "mcdia-insulin-delivery-device",
+  "url": "https://example.org/fhir/StructureDefinition/mcdia-insulin-delivery-device",
+  "version": "0.2.0",
+  "name": "InsulinDeliveryDevice",
+  "title": "Insulin Delivery Device Profile",
+  "status": "draft",
+  "experimental": true,
+  "date": "2026-08-11",
+  "publisher": "Illustrative Diabetes Common Clinical Data Elements (mC(Dia)DE)",
+  "description": "An mCODE-inspired FHIR R4 profile for representing insulin delivery device within the diabetes common clinical model.",
+  "purpose": "Prototype only. This profile follows an mCODE-inspired profile-first approach by constraining the closest FHIR R4 base resource and identifying interoperable elements for the diabetes common clinical model.",
+  "fhirVersion": "4.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "DeviceUseStatement",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/DeviceUseStatement",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "DeviceUseStatement",
+        "path": "DeviceUseStatement",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.basedOn",
+        "path": "DeviceUseStatement.basedOn",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.status",
+        "path": "DeviceUseStatement.status",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.subject",
+        "path": "DeviceUseStatement.subject",
+        "min": 1,
+        "mustSupport": true,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Patient"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "DeviceUseStatement.derivedFrom",
+        "path": "DeviceUseStatement.derivedFrom",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.timing[x]",
+        "path": "DeviceUseStatement.timing[x]",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.recordedOn",
+        "path": "DeviceUseStatement.recordedOn",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.source",
+        "path": "DeviceUseStatement.source",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.device",
+        "path": "DeviceUseStatement.device",
+        "min": 1,
+        "mustSupport": true,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Device"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "DeviceUseStatement.reasonCode",
+        "path": "DeviceUseStatement.reasonCode",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.reasonReference",
+        "path": "DeviceUseStatement.reasonReference",
+        "mustSupport": true
+      },
+      {
+        "id": "DeviceUseStatement.note",
+        "path": "DeviceUseStatement.note",
+        "mustSupport": true
+      }
+    ]
+  }
+}

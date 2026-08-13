@@ -1,0 +1,105 @@
+{
+  "resourceType": "Bundle",
+  "id": "insulin-regimen-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/insulin-regimen-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "insulin-regimen-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/insulin-regimen-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "insulin-regimen-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/insulin-regimen-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/MedicationRequest/insulin-regimen-example",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "insulin-regimen-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-insulin-regimen"
+          ]
+        },
+        "status": "active",
+        "intent": "plan",
+        "category": [
+          {
+            "text": "Diabetes medication therapy"
+          }
+        ],
+        "medicationCodeableConcept": {
+          "text": "Basal insulin regimen"
+        },
+        "subject": {
+          "reference": "Patient/insulin-regimen-patient"
+        },
+        "authoredOn": "2026-08-11",
+        "reasonReference": [
+          {
+            "reference": "Condition/insulin-regimen-example-diabetes"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "Dose, route, frequency, timing, and titration individualized to the patient."
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Basal Insulin; Prandial Insulin; Correction Insulin; Total Daily Dose; Insulin-to-Carbohydrate Ratio; Correction Factor; Target Glucose; Delivery Method; Timing / Schedule. Prefer RxNorm coding for medication identity in a production implementation."
+          }
+        ]
+      }
+    }
+  ]
+}

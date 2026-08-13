@@ -1,0 +1,130 @@
+{
+  "resourceType": "Bundle",
+  "id": "hypoglycemia-risk-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/hypoglycemia-risk-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "hypoglycemia-risk-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/hypoglycemia-risk-assessment-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "hypoglycemia-risk-assessment-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/hypoglycemia-risk-assessment-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/RiskAssessment/hypoglycemia-risk-assessment-example",
+      "resource": {
+        "resourceType": "RiskAssessment",
+        "id": "hypoglycemia-risk-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-hypoglycemia-risk-assessment"
+          ]
+        },
+        "status": "final",
+        "method": {
+          "text": "Clinician assessment using documented diabetes risk factors"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "hypoglycemia-risk-assessment",
+              "display": "Hypoglycemia Risk Assessment"
+            }
+          ],
+          "text": "Hypoglycemia Risk Assessment"
+        },
+        "subject": {
+          "reference": "Patient/hypoglycemia-risk-assessment-patient"
+        },
+        "condition": {
+          "reference": "Condition/hypoglycemia-risk-assessment-example-diabetes"
+        },
+        "occurrenceDateTime": "2026-08-11T09:00:00+05:30",
+        "prediction": [
+          {
+            "outcome": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "hypoglycemia-risk-assessment-outcome",
+                  "display": "Clinically significant hypoglycemia risk assessment outcome"
+                }
+              ],
+              "text": "Clinically significant hypoglycemia risk assessment outcome"
+            },
+            "qualitativeRisk": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "moderate",
+                  "display": "Moderate risk"
+                }
+              ],
+              "text": "Moderate risk"
+            },
+            "whenPeriod": {
+              "start": "2026-08-11",
+              "end": "2027-08-11"
+            }
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Prior Hypoglycemia; Hypoglycemia Awareness; Medication-Related Risk; Kidney / Liver Risk; Cognitive / Functional Risk; Food / Social Risk; Rescue Preparedness; Overall Risk. Probability is intentionally qualitative in this prototype."
+          }
+        ]
+      }
+    }
+  ]
+}

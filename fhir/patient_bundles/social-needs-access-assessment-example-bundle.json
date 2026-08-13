@@ -1,0 +1,203 @@
+{
+  "resourceType": "Bundle",
+  "id": "social-needs-access-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/social-needs-access-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "social-needs-access-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Questionnaire/social-needs-access-assessment-example-form",
+      "resource": {
+        "resourceType": "Questionnaire",
+        "id": "social-needs-access-assessment-example-form",
+        "url": "https://example.org/fhir/Questionnaire/social-needs-access-assessment-example-form",
+        "status": "active",
+        "title": "Social Needs & Access Assessment Questionnaire",
+        "subjectType": [
+          "Patient"
+        ],
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Food Security",
+            "type": "string"
+          },
+          {
+            "linkId": "q2",
+            "text": "Housing Stability",
+            "type": "string"
+          },
+          {
+            "linkId": "q3",
+            "text": "Financial Strain",
+            "type": "string"
+          },
+          {
+            "linkId": "q4",
+            "text": "Coverage / Insurance",
+            "type": "string"
+          },
+          {
+            "linkId": "q5",
+            "text": "Medication Access",
+            "type": "string"
+          },
+          {
+            "linkId": "q6",
+            "text": "Device / Supply Access",
+            "type": "string"
+          },
+          {
+            "linkId": "q7",
+            "text": "Health Literacy",
+            "type": "string"
+          },
+          {
+            "linkId": "q8",
+            "text": "Language Needs",
+            "type": "string"
+          },
+          {
+            "linkId": "q9",
+            "text": "Transportation",
+            "type": "string"
+          },
+          {
+            "linkId": "q10",
+            "text": "Social Support",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/QuestionnaireResponse/social-needs-access-assessment-example",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "social-needs-access-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-social-needs-access-assessment"
+          ]
+        },
+        "questionnaire": "https://example.org/fhir/Questionnaire/social-needs-access-assessment-example-form",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/social-needs-access-assessment-patient"
+        },
+        "authored": "2026-08-11T09:00:00+05:30",
+        "source": {
+          "reference": "Patient/social-needs-access-assessment-patient"
+        },
+        "item": [
+          {
+            "linkId": "q1",
+            "text": "Food Security",
+            "answer": [
+              {
+                "valueString": "Illustrative response for food security"
+              }
+            ]
+          },
+          {
+            "linkId": "q2",
+            "text": "Housing Stability",
+            "answer": [
+              {
+                "valueString": "Illustrative response for housing stability"
+              }
+            ]
+          },
+          {
+            "linkId": "q3",
+            "text": "Financial Strain",
+            "answer": [
+              {
+                "valueString": "Illustrative response for financial strain"
+              }
+            ]
+          },
+          {
+            "linkId": "q4",
+            "text": "Coverage / Insurance",
+            "answer": [
+              {
+                "valueString": "Illustrative response for coverage / insurance"
+              }
+            ]
+          },
+          {
+            "linkId": "q5",
+            "text": "Medication Access",
+            "answer": [
+              {
+                "valueString": "Illustrative response for medication access"
+              }
+            ]
+          },
+          {
+            "linkId": "q6",
+            "text": "Device / Supply Access",
+            "answer": [
+              {
+                "valueString": "Illustrative response for device / supply access"
+              }
+            ]
+          },
+          {
+            "linkId": "q7",
+            "text": "Health Literacy",
+            "answer": [
+              {
+                "valueString": "Illustrative response for health literacy"
+              }
+            ]
+          },
+          {
+            "linkId": "q8",
+            "text": "Language Needs",
+            "answer": [
+              {
+                "valueString": "Illustrative response for language needs"
+              }
+            ]
+          },
+          {
+            "linkId": "q9",
+            "text": "Transportation",
+            "answer": [
+              {
+                "valueString": "Illustrative response for transportation"
+              }
+            ]
+          },
+          {
+            "linkId": "q10",
+            "text": "Social Support",
+            "answer": [
+              {
+                "valueString": "Illustrative response for social support"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

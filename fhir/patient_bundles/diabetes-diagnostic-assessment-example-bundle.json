@@ -1,0 +1,171 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-diagnostic-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-diagnostic-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-diagnostic-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/diabetes-diagnostic-assessment-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "diabetes-diagnostic-assessment-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-diagnostic-assessment-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ClinicalImpression/diabetes-diagnostic-assessment-example",
+      "resource": {
+        "resourceType": "ClinicalImpression",
+        "id": "diabetes-diagnostic-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-diagnostic-assessment"
+          ]
+        },
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "diabetes-diagnostic-assessment",
+              "display": "Diabetes Diagnostic Assessment"
+            }
+          ],
+          "text": "Diabetes Diagnostic Assessment"
+        },
+        "description": "Clinical assessment supporting diabetes diagnostic assessment.",
+        "subject": {
+          "reference": "Patient/diabetes-diagnostic-assessment-patient"
+        },
+        "problem": [
+          {
+            "reference": "Condition/diabetes-diagnostic-assessment-example-diabetes"
+          }
+        ],
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "date": "2026-08-11T09:15:00+05:30",
+        "summary": "Diabetes Diagnostic Assessment: illustrative structured clinical impression.",
+        "finding": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "diagnostic-method",
+                  "display": "Diagnostic Method"
+                }
+              ],
+              "text": "Diagnostic Method"
+            },
+            "basis": "Illustrative assessment of diagnostic method."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "assessment-date",
+                  "display": "Assessment Date"
+                }
+              ],
+              "text": "Assessment Date"
+            },
+            "basis": "Illustrative assessment of assessment date."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "symptoms-clinical-context",
+                  "display": "Symptoms / Clinical Context"
+                }
+              ],
+              "text": "Symptoms / Clinical Context"
+            },
+            "basis": "Illustrative assessment of symptoms / clinical context."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "confirmation-status",
+                  "display": "Confirmation Status"
+                }
+              ],
+              "text": "Confirmation Status"
+            },
+            "basis": "Illustrative assessment of confirmation status."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "interpretation",
+                  "display": "Interpretation"
+                }
+              ],
+              "text": "Interpretation"
+            },
+            "basis": "Illustrative assessment of interpretation."
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Diagnostic Method; Assessment Date; Symptoms / Clinical Context; Confirmation Status; Interpretation."
+          }
+        ]
+      }
+    }
+  ]
+}

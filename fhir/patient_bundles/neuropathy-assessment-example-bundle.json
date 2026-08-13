@@ -1,0 +1,164 @@
+{
+  "resourceType": "Bundle",
+  "id": "neuropathy-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/neuropathy-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "neuropathy-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/neuropathy-assessment-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "neuropathy-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-neuropathy-assessment"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "neuropathy-assessment",
+              "display": "Neuropathy Assessment"
+            }
+          ],
+          "text": "Neuropathy Assessment"
+        },
+        "subject": {
+          "reference": "Patient/neuropathy-assessment-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "neuropathic-symptoms",
+                  "display": "Neuropathic Symptoms"
+                }
+              ],
+              "text": "Neuropathic Symptoms"
+            },
+            "valueString": "Illustrative neuropathic symptoms value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "monofilament",
+                  "display": "Monofilament"
+                }
+              ],
+              "text": "Monofilament"
+            },
+            "valueString": "Illustrative monofilament value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "vibration",
+                  "display": "Vibration"
+                }
+              ],
+              "text": "Vibration"
+            },
+            "valueString": "Illustrative vibration value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "reflexes",
+                  "display": "Reflexes"
+                }
+              ],
+              "text": "Reflexes"
+            },
+            "valueString": "Illustrative reflexes value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "other-sensory-testing",
+                  "display": "Other Sensory Testing"
+                }
+              ],
+              "text": "Other Sensory Testing"
+            },
+            "valueString": "Illustrative other sensory testing value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "autonomic-findings",
+                  "display": "Autonomic Findings"
+                }
+              ],
+              "text": "Autonomic Findings"
+            },
+            "valueString": "Illustrative autonomic findings value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "assessment-date",
+                  "display": "Assessment Date"
+                }
+              ],
+              "text": "Assessment Date"
+            },
+            "valueString": "2026-08-11"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

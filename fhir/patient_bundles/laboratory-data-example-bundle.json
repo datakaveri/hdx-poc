@@ -1,0 +1,414 @@
+{
+  "resourceType": "Bundle",
+  "id": "laboratory-data-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/laboratory-data-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "laboratory-data-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-1",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-1",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "a1c",
+              "display": "A1C"
+            }
+          ],
+          "text": "A1C"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueQuantity": {
+          "value": 7.2,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-2",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-2",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "plasma-glucose",
+              "display": "Plasma Glucose"
+            }
+          ],
+          "text": "Plasma Glucose"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueQuantity": {
+          "value": 154,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-3",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-3",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "lipid-panel",
+              "display": "Lipid Panel"
+            }
+          ],
+          "text": "Lipid Panel"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative lipid panel value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-4",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-4",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "creatinine",
+              "display": "Creatinine"
+            }
+          ],
+          "text": "Creatinine"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative creatinine value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-5",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-5",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "egfr",
+              "display": "eGFR"
+            }
+          ],
+          "text": "eGFR"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueQuantity": {
+          "value": 82,
+          "unit": "mL/min/1.73 m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "mL/min/{1.73_m2}"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-6",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-6",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "urine-albumin-uacr",
+              "display": "Urine Albumin / UACR"
+            }
+          ],
+          "text": "Urine Albumin / UACR"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueQuantity": {
+          "value": 24,
+          "unit": "mg/g",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/g"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-7",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-7",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "electrolytes",
+              "display": "Electrolytes"
+            }
+          ],
+          "text": "Electrolytes"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative electrolytes value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-8",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-8",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "bmp-cmp",
+              "display": "BMP / CMP"
+            }
+          ],
+          "text": "BMP / CMP"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative bmp / cmp value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/laboratory-data-example-result-9",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "laboratory-data-example-result-9",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "liver-tests",
+              "display": "Liver Tests"
+            }
+          ],
+          "text": "Liver Tests"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "valueString": "Illustrative liver tests value"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/DiagnosticReport/laboratory-data-example",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "laboratory-data-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-laboratory-data"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "text": "Diabetes assessment"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "laboratory-data",
+              "display": "Laboratory Data"
+            }
+          ],
+          "text": "Laboratory Data"
+        },
+        "subject": {
+          "reference": "Patient/laboratory-data-patient"
+        },
+        "effectiveDateTime": "2026-08-11T08:45:00+05:30",
+        "issued": "2026-08-11T09:10:00+05:30",
+        "result": [
+          {
+            "reference": "Observation/laboratory-data-example-result-1"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-2"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-3"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-4"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-5"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-6"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-7"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-8"
+          },
+          {
+            "reference": "Observation/laboratory-data-example-result-9"
+          }
+        ],
+        "conclusion": "Illustrative laboratory data summary; interpret in clinical context."
+      }
+    }
+  ]
+}

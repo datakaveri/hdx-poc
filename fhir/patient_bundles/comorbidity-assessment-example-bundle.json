@@ -1,0 +1,171 @@
+{
+  "resourceType": "Bundle",
+  "id": "comorbidity-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/comorbidity-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "comorbidity-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/comorbidity-assessment-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "comorbidity-assessment-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/comorbidity-assessment-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ClinicalImpression/comorbidity-assessment-example",
+      "resource": {
+        "resourceType": "ClinicalImpression",
+        "id": "comorbidity-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-comorbidity-assessment"
+          ]
+        },
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "comorbidity-assessment",
+              "display": "Comorbidity Assessment"
+            }
+          ],
+          "text": "Comorbidity Assessment"
+        },
+        "description": "Clinical assessment supporting comorbidity assessment.",
+        "subject": {
+          "reference": "Patient/comorbidity-assessment-patient"
+        },
+        "problem": [
+          {
+            "reference": "Condition/comorbidity-assessment-example-diabetes"
+          }
+        ],
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "date": "2026-08-11T09:15:00+05:30",
+        "summary": "Comorbidity Assessment: illustrative structured clinical impression.",
+        "finding": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "condition-present",
+                  "display": "Condition Present"
+                }
+              ],
+              "text": "Condition Present"
+            },
+            "basis": "Illustrative assessment of condition present."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "condition-absent",
+                  "display": "Condition Absent"
+                }
+              ],
+              "text": "Condition Absent"
+            },
+            "basis": "Illustrative assessment of condition absent."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "condition-status",
+                  "display": "Condition Status"
+                }
+              ],
+              "text": "Condition Status"
+            },
+            "basis": "Illustrative assessment of condition status."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "clinical-relevance",
+                  "display": "Clinical Relevance"
+                }
+              ],
+              "text": "Clinical Relevance"
+            },
+            "basis": "Illustrative assessment of clinical relevance."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "assessment-method",
+                  "display": "Assessment Method"
+                }
+              ],
+              "text": "Assessment Method"
+            },
+            "basis": "Illustrative assessment of assessment method."
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Condition Present; Condition Absent; Condition Status; Clinical Relevance; Assessment Method."
+          }
+        ]
+      }
+    }
+  ]
+}

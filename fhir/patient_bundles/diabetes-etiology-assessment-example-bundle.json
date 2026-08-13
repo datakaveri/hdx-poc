@@ -1,0 +1,184 @@
+{
+  "resourceType": "Bundle",
+  "id": "diabetes-etiology-assessment-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/diabetes-etiology-assessment-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "diabetes-etiology-assessment-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Condition/diabetes-etiology-assessment-example-diabetes",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "diabetes-etiology-assessment-example-diabetes",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Type 2 diabetes mellitus"
+            }
+          ],
+          "text": "Type 2 diabetes mellitus"
+        },
+        "subject": {
+          "reference": "Patient/diabetes-etiology-assessment-patient"
+        },
+        "onsetDateTime": "2018-03-12"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/ClinicalImpression/diabetes-etiology-assessment-example",
+      "resource": {
+        "resourceType": "ClinicalImpression",
+        "id": "diabetes-etiology-assessment-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-diabetes-etiology-assessment"
+          ]
+        },
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "diabetes-etiology-assessment",
+              "display": "Diabetes Etiology Assessment"
+            }
+          ],
+          "text": "Diabetes Etiology Assessment"
+        },
+        "description": "Clinical assessment supporting diabetes etiology assessment.",
+        "subject": {
+          "reference": "Patient/diabetes-etiology-assessment-patient"
+        },
+        "problem": [
+          {
+            "reference": "Condition/diabetes-etiology-assessment-example-diabetes"
+          }
+        ],
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "date": "2026-08-11T09:15:00+05:30",
+        "summary": "Diabetes Etiology Assessment: illustrative structured clinical impression.",
+        "finding": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "autoimmune-evidence",
+                  "display": "Autoimmune Evidence"
+                }
+              ],
+              "text": "Autoimmune Evidence"
+            },
+            "basis": "Illustrative assessment of autoimmune evidence."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "beta-cell-function",
+                  "display": "Beta-Cell Function"
+                }
+              ],
+              "text": "Beta-Cell Function"
+            },
+            "basis": "Illustrative assessment of beta-cell function."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "genetic-evidence",
+                  "display": "Genetic Evidence"
+                }
+              ],
+              "text": "Genetic Evidence"
+            },
+            "basis": "Illustrative assessment of genetic evidence."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "pancreatic-disease-injury",
+                  "display": "Pancreatic Disease / Injury"
+                }
+              ],
+              "text": "Pancreatic Disease / Injury"
+            },
+            "basis": "Illustrative assessment of pancreatic disease / injury."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "medication-exposure",
+                  "display": "Medication / Exposure"
+                }
+              ],
+              "text": "Medication / Exposure"
+            },
+            "basis": "Illustrative assessment of medication / exposure."
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "insulin-resistance-phenotype",
+                  "display": "Insulin Resistance / Phenotype"
+                }
+              ],
+              "text": "Insulin Resistance / Phenotype"
+            },
+            "basis": "Illustrative assessment of insulin resistance / phenotype."
+          }
+        ],
+        "note": [
+          {
+            "text": "Graph coverage: Autoimmune Evidence; Beta-Cell Function; Genetic Evidence; Pancreatic Disease / Injury; Medication / Exposure; Insulin Resistance / Phenotype."
+          }
+        ]
+      }
+    }
+  ]
+}

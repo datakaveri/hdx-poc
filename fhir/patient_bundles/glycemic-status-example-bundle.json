@@ -1,0 +1,138 @@
+{
+  "resourceType": "Bundle",
+  "id": "glycemic-status-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/glycemic-status-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "glycemic-status-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/glycemic-status-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "glycemic-status-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-glycemic-status"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "glycemic-status",
+              "display": "Glycemic Status"
+            }
+          ],
+          "text": "Glycemic Status"
+        },
+        "subject": {
+          "reference": "Patient/glycemic-status-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "assessment-period",
+                  "display": "Assessment Period"
+                }
+              ],
+              "text": "Assessment Period"
+            },
+            "valueString": "Illustrative assessment period value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "evidence-type",
+                  "display": "Evidence Type"
+                }
+              ],
+              "text": "Evidence Type"
+            },
+            "valueString": "Illustrative evidence type value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "target",
+                  "display": "Target"
+                }
+              ],
+              "text": "Target"
+            },
+            "valueString": "Individualized target documented"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "target-achievement",
+                  "display": "Target Achievement"
+                }
+              ],
+              "text": "Target Achievement"
+            },
+            "valueString": "Individualized target documented"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "trend",
+                  "display": "Trend"
+                }
+              ],
+              "text": "Trend"
+            },
+            "valueString": "Illustrative trend value"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

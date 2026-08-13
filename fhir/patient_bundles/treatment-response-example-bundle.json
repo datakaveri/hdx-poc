@@ -1,0 +1,138 @@
+{
+  "resourceType": "Bundle",
+  "id": "treatment-response-example-bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "fullUrl": "https://example.org/fhir/Patient/treatment-response-patient",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "treatment-response-patient",
+        "name": [
+          {
+            "use": "official",
+            "family": "Example",
+            "given": [
+              "Asha"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1972-05-14"
+      }
+    },
+    {
+      "fullUrl": "https://example.org/fhir/Observation/treatment-response-example",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "treatment-response-example",
+        "meta": {
+          "profile": [
+            "https://example.org/fhir/StructureDefinition/mcdia-treatment-response"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+              "code": "treatment-response",
+              "display": "Treatment Response"
+            }
+          ],
+          "text": "Treatment Response"
+        },
+        "subject": {
+          "reference": "Patient/treatment-response-patient"
+        },
+        "effectiveDateTime": "2026-08-11T09:00:00+05:30",
+        "method": {
+          "text": "Illustrative diabetes assessment / monitoring method"
+        },
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "response-domain",
+                  "display": "Response Domain"
+                }
+              ],
+              "text": "Response Domain"
+            },
+            "valueString": "Illustrative response domain value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "baseline",
+                  "display": "Baseline"
+                }
+              ],
+              "text": "Baseline"
+            },
+            "valueString": "Illustrative baseline value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "follow-up",
+                  "display": "Follow-Up"
+                }
+              ],
+              "text": "Follow-Up"
+            },
+            "valueString": "Illustrative follow-up value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "change-response",
+                  "display": "Change / Response"
+                }
+              ],
+              "text": "Change / Response"
+            },
+            "valueString": "Illustrative change / response value"
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "https://example.org/fhir/CodeSystem/mcdia-clinical-concept",
+                  "code": "tolerance-safety",
+                  "display": "Tolerance / Safety"
+                }
+              ],
+              "text": "Tolerance / Safety"
+            },
+            "valueString": "Illustrative tolerance / safety value"
+          }
+        ],
+        "note": [
+          {
+            "text": "Illustrative mC(Dia)DE example. Use LOINC for measurable observations and SNOMED CT for coded findings where appropriate."
+          }
+        ]
+      }
+    }
+  ]
+}

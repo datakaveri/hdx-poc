@@ -1,0 +1,373 @@
+1
+00:00:00,000 --> 00:00:03,750
+HDX is not a central data lake. Think of it
+as a federation:
+
+2
+00:00:03,900 --> 00:00:09,275
+a central Discovery and Governance entity
+indexes what's available across the network,
+
+3
+00:00:09,425 --> 00:00:13,300
+so anyone can find it — but the data itself
+never moves there.
+
+4
+00:00:13,450 --> 00:00:18,763
+Every participating institution runs its own
+federated node, keeping its own data and
+
+5
+00:00:18,912 --> 00:00:23,600
+services, and operating its own control
+plane for access control and audit.
+
+6
+00:00:23,750 --> 00:00:28,375
+Data is discovered centrally. It only ever
+leaves its source with consent.
+
+7
+00:00:28,925 --> 00:00:31,125
+Here's that federation in practice.
+
+8
+00:00:31,275 --> 00:00:36,712
+Every card is an independent institution —
+Node A, Node B, City General Hospital — each
+
+9
+00:00:36,862 --> 00:00:40,238
+with its own infrastructure and its own
+control plane.
+
+10
+00:00:40,387 --> 00:00:44,075
+Only metadata and pointers join the shared
+federated index;
+
+11
+00:00:44,225 --> 00:00:47,412
+the underlying records stay exactly where
+they are.
+
+12
+00:00:47,962 --> 00:00:51,962
+Opening a node shows exactly what it
+contributes to the network:
+
+13
+00:00:52,112 --> 00:00:54,425
+the datasets and services it exposes.
+
+14
+00:00:54,575 --> 00:00:59,700
+Node A here hosts seven datasets, spanning
+diabetes, oncology, cardiovascular, and
+
+15
+00:00:59,850 --> 00:01:05,162
+imaging data, plus one compute service — all
+discoverable, none of it copied anywhere
+
+16
+00:01:05,312 --> 00:01:07,512
+else.
+
+17
+00:01:08,062 --> 00:01:13,250
+This is the Data Plane — every dataset from
+every node, in one federated catalogue.
+
+18
+00:01:13,400 --> 00:01:18,587
+A consumer can filter by node or by track,
+and scan standards and access tiers at a
+
+19
+00:01:18,738 --> 00:01:20,938
+glance without leaving this page.
+
+20
+00:01:21,487 --> 00:01:26,300
+Opening a dataset surfaces its full metadata
+before anyone requests anything:
+
+21
+00:01:26,450 --> 00:01:29,512
+standards used, access tier, tags, record
+counts.
+
+22
+00:01:29,662 --> 00:01:35,100
+This one — the Diabetic Glaucoma Screening
+Cohort — follows the mCXDE diabetes profile,
+
+23
+00:01:35,250 --> 00:01:37,938
+which is worth seeing as more than a label.
+
+24
+00:01:38,487 --> 00:01:43,987
+Standards like mCXDE aren't bolted onto a
+single dataset — they're part of the
+platform.
+
+25
+00:01:44,137 --> 00:01:48,012
+HDX renders the whole profile as an
+interactive concept graph.
+
+26
+00:01:48,162 --> 00:01:51,350
+Overview returns to the top-level clinical
+domains;
+
+27
+00:01:51,500 --> 00:01:54,500
+Fit graph and the zoom controls adjust the
+view.
+
+28
+00:01:55,050 --> 00:02:00,050
+Each chip in the legend is a clinical domain
+in the model — Disease, Assessment,
+
+29
+00:02:00,200 --> 00:02:02,400
+Treatment, and so on.
+
+30
+00:02:02,550 --> 00:02:07,925
+Clicking one hides or shows it, which is how
+you narrow a dense graph down to just the
+
+31
+00:02:08,075 --> 00:02:10,275
+part you care about.
+
+32
+00:02:10,825 --> 00:02:14,575
+Clicking a domain node expands it into its
+own detail graph.
+
+33
+00:02:14,725 --> 00:02:19,162
+Clicking a leaf concept goes one level
+deeper — opening its actual FHIR
+
+34
+00:02:19,312 --> 00:02:23,438
+StructureDefinition next to a worked example
+Bundle, side by side.
+
+35
+00:02:23,987 --> 00:02:29,050
+Services are catalogued the same way
+datasets are — by category, by hosting node,
+
+36
+00:02:29,200 --> 00:02:34,575
+and by which datasets each one is registered
+to operate on. This is the Service Plane.
+
+37
+00:02:35,125 --> 00:02:39,625
+Every dataset carries a consent gate. A non-
+owner requests access here;
+
+38
+00:02:39,775 --> 00:02:44,337
+the owning institution — or an admin —
+approves it before anything moves.
+
+39
+00:02:44,487 --> 00:02:49,425
+Once granted, a download streams from the
+source node's own file server over an
+
+40
+00:02:49,575 --> 00:02:53,262
+authenticated call. There's never a public
+link handed out.
+
+41
+00:02:53,812 --> 00:02:59,250
+Every access request, whether it's one you
+made or one waiting on something you own, is
+
+42
+00:02:59,400 --> 00:03:01,600
+tracked in one place.
+
+43
+00:03:01,750 --> 00:03:06,687
+Approving access to an entire node
+automatically grants everything hosted under
+
+44
+00:03:06,837 --> 00:03:09,837
+it — no need to approve each dataset one by
+one.
+
+45
+00:03:10,387 --> 00:03:14,325
+Requesting a service works identically to
+requesting a dataset.
+
+46
+00:03:14,475 --> 00:03:20,037
+Once you're consented, actually invoking the
+service routes your data through the control
+
+47
+00:03:20,187 --> 00:03:24,250
+plane's secure enclave — the chokepoint
+every job passes through.
+
+48
+00:03:24,400 --> 00:03:28,650
+The service itself only ever sees the one
+dataset it's been granted.
+
+49
+00:03:28,800 --> 00:03:31,737
+It never gets a raw path into a node's
+storage.
+
+50
+00:03:32,287 --> 00:03:35,412
+Services with a live try-it flow show this
+button.
+
+51
+00:03:35,562 --> 00:03:40,812
+Glaucoma Detection is one of them — click
+through to open its cohort screening demo.
+
+52
+00:03:41,362 --> 00:03:45,487
+This is where a consumer routes a specific
+dataset to the service.
+
+53
+00:03:45,637 --> 00:03:50,887
+We've already pasted a dataset ID from the
+exchange — ds-diabetic-glaucoma, the same
+
+54
+00:03:51,037 --> 00:03:55,287
+cohort we looked at earlier — so the next
+step is simply to load it.
+
+55
+00:03:55,837 --> 00:03:59,400
+With the cohort loaded, running the service
+is one click.
+
+56
+00:03:59,550 --> 00:04:04,237
+Every patient in the cohort gets sent
+through the glaucoma screening model.
+
+57
+00:04:04,787 --> 00:04:09,787
+And here are the results — one row per
+patient, positive and negative screenings
+
+58
+00:04:09,937 --> 00:04:12,137
+side by side.
+
+59
+00:04:12,287 --> 00:04:17,162
+Clicking any row expands its fundus
+photograph, the model's stated conclusion,
+
+60
+00:04:17,312 --> 00:04:22,812
+and the raw FHIR input and output bundles
+that were actually exchanged for that
+patient.
+
+61
+00:04:22,962 --> 00:04:25,162
+This is the full round trip:
+
+62
+00:04:25,312 --> 00:04:30,437
+a consented dataset, routed through the
+control plane, processed by a service, and
+
+63
+00:04:30,587 --> 00:04:33,275
+returned as a structured, auditable result.
+
+64
+00:04:33,825 --> 00:04:37,700
+Everything a provider does starts here — one
+of three wizards:
+
+65
+00:04:37,850 --> 00:04:40,350
+onboard a node, a dataset, or a service.
+
+66
+00:04:40,900 --> 00:04:45,962
+This is how an institution — say, ICMR —
+joins the federation in the first place.
+
+67
+00:04:46,112 --> 00:04:48,550
+They register their basic details here.
+
+68
+00:04:48,700 --> 00:04:52,950
+The request sits pending until an HDX admin
+reviews and approves it;
+
+69
+00:04:53,100 --> 00:04:58,600
+approval is what grants the institution the
+node-owner role and a control-plane identity
+
+70
+00:04:58,750 --> 00:05:00,950
+scoped to their own node.
+
+71
+00:05:01,500 --> 00:05:06,875
+Once an institution is an approved node
+owner, publishing a dataset is a short
+wizard:
+
+72
+00:05:07,025 --> 00:05:12,150
+basic info, the standards and access tier it
+follows, and an optional sample file.
+
+73
+00:05:12,300 --> 00:05:17,175
+As soon as it's published, it's discoverable
+in the Data Plane we saw earlier.
+
+74
+00:05:17,725 --> 00:05:22,975
+Onboarding a service follows the same shape
+— register it against your node, declare
+
+75
+00:05:23,125 --> 00:05:27,625
+which datasets it's permitted to operate on,
+and attach an OpenAPI spec.
+
+76
+00:05:27,775 --> 00:05:32,962
+From that point on, it's discoverable and
+requestable in the Service Plane, exactly
+
+77
+00:05:33,112 --> 00:05:36,237
+like the Glaucoma Detection service we just
+tried.
