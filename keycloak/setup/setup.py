@@ -134,9 +134,16 @@ api("POST", "/realms", {
     "registrationAllowed": True, "registrationEmailAsUsername": False,
     "verifyEmail": False,  # no SMTP configured in this dev stack
     "ssoSessionIdleTimeout": 1800, "accessTokenLifespan": 300,
+    # this stack is plain HTTP (no TLS termination anywhere in front of it), so the
+    # realm default of sslRequired=EXTERNAL — which blocks non-localhost HTTP — would
+    # lock out every browser hitting KC_PUBLIC_URL over http://
+    "sslRequired": "none",
 })
 api("PUT", f"/realms/{REALM}", {"realm": REALM, "enabled": True, "loginTheme": "hdx",
-                                "registrationAllowed": True})
+                                "registrationAllowed": True, "sslRequired": "none"})
+
+step("master realm: sslRequired none (admin console is also reached over plain http://)")
+api("PUT", "/realms/master", {"realm": "master", "sslRequired": "none"})
 
 step("realm role hdx_admin")
 api("POST", f"/realms/{REALM}/roles", {"name": "hdx_admin",
