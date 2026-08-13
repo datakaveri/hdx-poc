@@ -7,8 +7,31 @@
     </header>
 
     <div class="format-detail__graph">
-      @if (format.id === 'mcxde') {
-        <app-mcxde-graph />
+      @switch (format.id) {
+        @case ('mcxde') {
+          <app-concept-graph
+            [master]="mcxde.master"
+            [detailGraphs]="mcxde.detailGraphs"
+            [fhirSamples]="mcxde.fhirSamples"
+            [legendItems]="mcxde.legendItems"
+            [masterLayout]="mcxde.masterLayout"
+            [hintHtml]="mcxde.hintHtml"
+            [svgAriaLabel]="mcxde.svgAriaLabel"
+            [fhirSubtitleFor]="mcxde.fhirSubtitleFor"
+          />
+        }
+        @case ('mcode') {
+          <app-concept-graph
+            [master]="mcode.master"
+            [detailGraphs]="mcode.detailGraphs"
+            [fhirSamples]="mcode.fhirSamples"
+            [legendItems]="mcode.legendItems"
+            [masterLayout]="mcode.masterLayout"
+            [hintHtml]="mcode.hintHtml"
+            [svgAriaLabel]="mcode.svgAriaLabel"
+            [fhirSubtitleFor]="mcode.fhirSubtitleFor"
+          />
+        }
       }
     </div>
   </section>

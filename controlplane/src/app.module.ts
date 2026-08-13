@@ -6,6 +6,8 @@ import { FileserverClientModule } from './fileserver-client/fileserver-client.mo
 import { NodesModule } from './nodes/nodes.module';
 import { DatasetsModule } from './datasets/datasets.module';
 import { ServicesModule } from './services/services.module';
+import { AccessRequestsModule } from './access-requests/access-requests.module';
+import { SeedOwnershipModule } from './seed-ownership/seed-ownership.module';
 import { HealthModule } from './health/health.module';
 import { KeycloakAuthGuard } from './common/keycloak-auth.guard';
 
@@ -17,6 +19,8 @@ import { KeycloakAuthGuard } from './common/keycloak-auth.guard';
     NodesModule,
     DatasetsModule,
     ServicesModule,
+    AccessRequestsModule,
+    SeedOwnershipModule,
     HealthModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: KeycloakAuthGuard }],

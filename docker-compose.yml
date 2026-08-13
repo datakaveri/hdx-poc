@@ -23,6 +23,11 @@ services:
       KC_SPI_THEME_STATIC_MAX_AGE: "-1"
     volumes:
       - ./keycloak/theme/hdx:/opt/keycloak/themes/hdx:ro
+      # `start-dev`'s embedded H2 database lives here — without this the
+      # realm/users/roles are gone (and every node_owner/node_id grant with
+      # them) on every `docker compose down` + `up`, even though es-data and
+      # minio-data survive.
+      - keycloak-data:/opt/keycloak/data
     ports:
       # host 8081 (not 8080) so this stack can run alongside other
       # per-portal Keycloak dev instances (e.g. CBR's) without a clash
@@ -144,3 +149,4 @@ services:
 volumes:
   es-data:
   minio-data:
+  keycloak-data:

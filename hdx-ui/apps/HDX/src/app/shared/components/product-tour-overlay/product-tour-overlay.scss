@@ -1,0 +1,147 @@
+.tour-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: transparent;
+
+  &--fallback {
+    background: rgba(15, 23, 42, 0.6);
+  }
+}
+
+.tour-highlight {
+  position: fixed;
+  z-index: 1201;
+  border-radius: 0.75rem;
+  box-shadow:
+    0 0 0 9999px rgba(15, 23, 42, 0.6),
+    0 0 0 3px var(--secondary-color);
+  pointer-events: none;
+  transition:
+    top 0.25s ease,
+    left 0.25s ease,
+    width 0.25s ease,
+    height 0.25s ease;
+}
+
+.tour-popover {
+  position: fixed;
+  z-index: 1202;
+  background: var(--primary-white);
+  border-radius: var(--radius-md, 0.75rem);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.3);
+  padding: 1rem 1.1rem;
+  transition:
+    top 0.25s ease,
+    left 0.25s ease;
+
+  &--centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 340px;
+    transform: translate(-50%, -50%);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+  }
+
+  &__step {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.4rem;
+
+    &:hover {
+      background: var(--hover-bg);
+      color: var(--text-primary);
+    }
+  }
+
+  &__title {
+    margin: 0 0 0.4rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__description {
+    margin: 0 0 0.9rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  &__skip {
+    background: none;
+    border: none;
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 0.3rem 0;
+
+    &:hover {
+      color: var(--text-secondary);
+      text-decoration: underline;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  &__btn {
+    border: none;
+    border-radius: 0.625rem;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &--primary {
+      background: var(--secondary-color);
+      color: var(--text-inverse);
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    &--ghost {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+
+      &:hover {
+        border-color: var(--secondary-color);
+        color: var(--secondary-color);
+      }
+    }
+  }
+}

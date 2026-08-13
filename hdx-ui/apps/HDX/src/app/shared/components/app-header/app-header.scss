@@ -97,6 +97,26 @@
   flex-shrink: 0;
 }
 
+.tour--trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 0.625rem;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+}
+
 .user--name {
   font-size: 0.875rem;
   font-weight: 500;

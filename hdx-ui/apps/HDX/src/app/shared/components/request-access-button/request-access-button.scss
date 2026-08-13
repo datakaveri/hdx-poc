@@ -1,0 +1,22 @@
+.access-status {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-md);
+
+  &--pending {
+    background: rgba(245, 158, 11, 0.12);
+    color: #b45309;
+  }
+
+  &--approved {
+    background: rgba(20, 143, 203, 0.1);
+    color: var(--primary-color);
+  }
+
+  &--rejected {
+    background: rgba(220, 38, 38, 0.1);
+    color: #b91c1c;
+  }
+}

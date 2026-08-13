@@ -1,0 +1,22 @@
+@if (dialog.request(); as req) {
+  <div class="confirm-overlay" (click)="respond(false)">
+    <div class="confirm-dialog" role="alertdialog" aria-modal="true" [attr.aria-label]="req.title ?? 'Confirm'" (click)="$event.stopPropagation()">
+      @if (req.title) {
+        <h2 class="confirm-dialog__title">{{ req.title }}</h2>
+      }
+      <p class="confirm-dialog__message">{{ req.message }}</p>
+      <div class="confirm-dialog__actions">
+        <button type="button" class="confirm-dialog__btn confirm-dialog__btn--secondary" (click)="respond(false)">Cancel</button>
+        <button
+          type="button"
+          class="confirm-dialog__btn"
+          [class.confirm-dialog__btn--danger]="req.danger"
+          [class.confirm-dialog__btn--primary]="!req.danger"
+          (click)="respond(true)"
+        >
+          {{ req.confirmLabel ?? 'Confirm' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

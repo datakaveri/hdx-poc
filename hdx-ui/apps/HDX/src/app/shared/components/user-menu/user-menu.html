@@ -1,0 +1,23 @@
+<div class="user-menu">
+  <button type="button" class="user-menu__trigger" [class.user-menu__trigger--open]="isOpen()" (click)="toggle()">
+    @if (username()) {
+      <span class="user-menu__name">{{ username() }}</span>
+    }
+    <svg class="user-menu__caret" [class.user-menu__caret--rotated]="isOpen()" width="12" height="8" viewBox="0 0 12 8" fill="none">
+      <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
+  @if (isOpen()) {
+    <div class="user-menu__panel">
+      <a routerLink="/profile" class="user-menu__item" (click)="close()">Profile</a>
+      @if (isAdmin()) {
+        <a routerLink="/profile/admin" class="user-menu__item" (click)="close()">Admin</a>
+      }
+      <div class="user-menu__divider"></div>
+      <button type="button" class="user-menu__item user-menu__item--danger" (click)="close(); logoutClick.emit()">
+        Logout
+      </button>
+    </div>
+  }
+</div>

@@ -1,7 +1,7 @@
 <header class="header">
   <div class="header--container">
     <div class="header--logo">
-      <a routerLink="/" class="logo--link">
+      <a routerLink="/" class="logo--link" data-tour="logo">
         <span class="logo--wordmark">HDX</span>
         <span class="logo--tagline">Health Data Exchange · Federation Console</span>
       </a>
@@ -9,9 +9,14 @@
 
     <nav class="header--nav" aria-label="Main">
       <ul class="nav--menu">
-        @for (link of navLinks(); track link.path) {
+        @for (link of navLinks; track link.path) {
           <li class="nav--item">
-            <a [routerLink]="link.path" routerLinkActive="nav--link-active" class="nav--link">
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="nav--link-active"
+              class="nav--link"
+              [attr.data-tour]="link.tourId ?? null"
+            >
               {{ link.label }}
             </a>
           </li>
@@ -20,10 +25,11 @@
     </nav>
 
     <div class="header--user">
-      @if (username) {
-        <span class="user--name">{{ username }}</span>
-      }
-      <button type="button" class="user--logout" (click)="logout()">Logout</button>
+      <button type="button" class="tour--trigger" (click)="tour.start()">
+        <i class="pi pi-compass"></i>
+        Take a tour
+      </button>
+      <app-user-menu [username]="username" [isAdmin]="auth.isAdmin()" (logoutClick)="logout()" />
     </div>
   </div>
 </header>

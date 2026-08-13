@@ -19,6 +19,19 @@ Safe to re-run (409 Conflict is treated as 'already exists'). User/credential cr
 is explicitly idempotent via ensure_user(): it looks the user up first and only creates
 the dummy password credential if the user (or its credential) doesn't already exist, so
 a password changed by hand won't get silently reset on the next run.
+
+Keycloak's `start-dev` embedded H2 database is backed by the `keycloak-data` named
+volume (see ../../docker-compose.yml), so the realm this script creates — and every
+user, role mapping, and node_id attribute in it — survives a plain `docker compose
+down` + `up` (only `down -v` wipes it, same as `es-data`/`minio-data`). This script's
+idempotency is what makes that safe: every `kc-setup` run after the first one hits an
+already-populated realm and is expected to no-op straight through.
+
+This also means hdx.admin's Keycloak user id (the JWT `sub` claim) is now stable
+across restarts rather than being re-randomized on every fresh boot — Controlplane's
+seed-ownership backfill (attributing the bundled demo nodes/datasets/services to
+hdx.admin) depends on that id not drifting, or every restart would orphan the
+previous run's ownerId references.
 """
 import json, os, sys, time, urllib.request, urllib.error
 

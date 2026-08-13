@@ -1,0 +1,319 @@
+openapi: 3.0.3
+info:
+    title: Glaucoma Detection Service
+    description: >
+        Dummy AI service that screens patients for glaucoma from a retinal fundus
+        photograph embedded in a FHIR Bundle. Accepts a Bundle covering multiple
+        patients (each patient's data + fundus image as one Media resource) and
+        returns a FHIR Bundle of per-patient classification results.
+    version: 0.1.0
+servers:
+    - url: http://localhost:8080/api/v1
+
+paths:
+    /glaucoma-screening:
+        post:
+            summary: Screen a batch of patients for glaucoma from fundus images
+            operationId: screenForGlaucoma
+            requestBody:
+                required: true
+                content:
+                    application/fhir+json:
+                        schema:
+                            $ref: "#/components/schemas/InputBundle"
+                        example:
+                            resourceType: Bundle
+                            type: collection
+                            entry:
+                                - resource:
+                                      resourceType: Patient
+                                      id: pt-8vci00h6pwjv
+                                      gender: female
+                                      birthDate: "1955-05-26"
+                                - resource:
+                                      resourceType: Encounter
+                                      id: enc-8vci00h6pwjv
+                                      status: finished
+                                      subject:
+                                          reference: Patient/pt-8vci00h6pwjv
+                                - resource:
+                                      resourceType: Media
+                                      id: media-8vci00h6pwjv
+                                      status: completed
+                                      type:
+                                          coding:
+                                              - system: http://terminology.hl7.org/CodeSystem/media-type
+                                                code: image
+                                      modality:
+                                          coding:
+                                              - system: https://iisc.example.org/fhir/CodeSystem/imaging-modality
+                                                code: fundus-photo
+                                                display: Color fundus photography
+                                      subject:
+                                          reference: Patient/pt-8vci00h6pwjv
+                                      bodySite:
+                                          coding:
+                                              - system: http://snomed.info/sct
+                                                code: "5665001"
+                                                display: Retina
+                                      content:
+                                          contentType: image/jpeg
+                                          title: retinal-fundus-photo-pt-8vci00h6pwjv.jpg
+                                          data: /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAIBAQEBAQIBAQECAgICAgQD...
+                                          size: 623367
+                                # ... additional patients + their Patient/Encounter/Media entries follow
+            responses:
+                "200":
+                    description: Per-patient glaucoma screening results
+                    content:
+                        application/fhir+json:
+                            schema:
+                                $ref: "#/components/schemas/OutputBundle"
+                            example:
+                                resourceType: Bundle
+                                type: collection
+                                timestamp: "2026-08-13T12:45:00+05:30"
+                                entry:
+                                    - resource:
+                                          resourceType: Patient
+                                          id: pt-8vci00h6pwjv
+                                    - resource:
+                                          resourceType: Observation
+                                          id: obs-glaucoma-result-8vci00h6pwjv
+                                          status: final
+                                          code:
+                                              coding:
+                                                  - system: https://iisc.example.org/fhir/CodeSystem/ophthalmology
+                                                    code: glaucoma-screening-result
+                                                    display: Glaucoma screening result
+                                          subject:
+                                              reference: Patient/pt-8vci00h6pwjv
+                                          valueCodeableConcept:
+                                              coding:
+                                                  - system: https://iisc.example.org/fhir/CodeSystem/diabetic-glaucoma-result
+                                                    code: glaucoma-detected
+                                                    display: Glaucoma detected
+                                              text: Glaucoma
+                                          interpretation:
+                                              - coding:
+                                                    - system: http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation
+                                                      code: POS
+                                                      display: Positive
+                                          method:
+                                              coding:
+                                                  - system: https://iisc.example.org/fhir/CodeSystem/screening-method
+                                                    code: fundus-image-ml
+                                                    display: Fundus image ML classification
+                                    - resource:
+                                          resourceType: DiagnosticReport
+                                          id: dr-glaucoma-result-8vci00h6pwjv
+                                          status: final
+                                          code:
+                                              coding:
+                                                  - system: https://iisc.example.org/fhir/CodeSystem/reports
+                                                    code: glaucoma-screening-report
+                                                    display: Glaucoma screening report
+                                          subject:
+                                              reference: Patient/pt-8vci00h6pwjv
+                                          result:
+                                              - reference: Observation/obs-glaucoma-result-8vci00h6pwjv
+                                          conclusion: "Glaucoma screening result: positive."
+                "400":
+                    description: Malformed Bundle, or a patient entry missing a fundus Media resource
+                    content:
+                        application/fhir+json:
+                            schema:
+                                $ref: "#/components/schemas/OperationOutcome"
+
+components:
+    schemas:
+        InputBundle:
+            type: object
+            description: >
+                A FHIR Bundle (type collection or batch) whose entries cover multiple
+                patients. For each patient, expect Patient + Encounter + a Media
+                resource carrying the base64-encoded fundus photo, optionally
+                alongside Condition/Observation/DiagnosticReport context.
+            required: [resourceType, type, entry]
+            properties:
+                resourceType:
+                    type: string
+                    enum: [Bundle]
+                type:
+                    type: string
+                    enum: [collection, batch]
+                entry:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/BundleEntry"
+
+        BundleEntry:
+            type: object
+            properties:
+                fullUrl:
+                    type: string
+                resource:
+                    oneOf:
+                        - $ref: "#/components/schemas/Patient"
+                        - $ref: "#/components/schemas/Media"
+                        - type: object
+                          description: Any other FHIR resource (Encounter, Condition, Observation, DiagnosticReport, ...)
+                          additionalProperties: true
+
+        Patient:
+            type: object
+            properties:
+                resourceType:
+                    type: string
+                    enum: [Patient]
+                id:
+                    type: string
+                gender:
+                    type: string
+                birthDate:
+                    type: string
+                    format: date
+            additionalProperties: true
+
+        Media:
+            type: object
+            description: Carries the fundus image. This is the resource the service reads for classification.
+            required: [resourceType, content]
+            properties:
+                resourceType:
+                    type: string
+                    enum: [Media]
+                id:
+                    type: string
+                modality:
+                    type: object
+                    description: Should indicate fundus-photo
+                subject:
+                    type: object
+                    properties:
+                        reference:
+                            type: string
+                            example: Patient/pt-8vci00h6pwjv
+                bodySite:
+                    type: object
+                content:
+                    type: object
+                    required: [contentType, data]
+                    properties:
+                        contentType:
+                            type: string
+                            example: image/jpeg
+                        title:
+                            type: string
+                        data:
+                            type: string
+                            format: byte
+                            description: Base64-encoded fundus image bytes — this is the field the model consumes.
+                        size:
+                            type: integer
+            additionalProperties: true
+
+        OutputBundle:
+            type: object
+            description: >
+                FHIR Bundle of results. For each input patient, contains the Patient
+                (or a reference to it), one Observation carrying the classification,
+                and one DiagnosticReport summarizing it.
+            required: [resourceType, type, entry]
+            properties:
+                resourceType:
+                    type: string
+                    enum: [Bundle]
+                type:
+                    type: string
+                    enum: [collection]
+                timestamp:
+                    type: string
+                    format: date-time
+                entry:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            resource:
+                                oneOf:
+                                    - $ref: "#/components/schemas/Patient"
+                                    - $ref: "#/components/schemas/GlaucomaObservation"
+                                    - $ref: "#/components/schemas/GlaucomaDiagnosticReport"
+
+        GlaucomaObservation:
+            type: object
+            properties:
+                resourceType:
+                    type: string
+                    enum: [Observation]
+                id:
+                    type: string
+                status:
+                    type: string
+                    enum: [final]
+                code:
+                    type: object
+                    description: Fixed coding identifying this as a glaucoma-screening-result
+                subject:
+                    type: object
+                    properties:
+                        reference:
+                            type: string
+                            example: Patient/pt-8vci00h6pwjv
+                valueCodeableConcept:
+                    type: object
+                    description: glaucoma-detected | no-glaucoma-detected (plus confidence, if modeled, via an extension)
+                interpretation:
+                    type: array
+                    description: POS or NEG coding
+                method:
+                    type: object
+                    description: e.g. fundus-image-ml, identifying which model/method produced the result
+            additionalProperties: true
+
+        GlaucomaDiagnosticReport:
+            type: object
+            properties:
+                resourceType:
+                    type: string
+                    enum: [DiagnosticReport]
+                id:
+                    type: string
+                status:
+                    type: string
+                    enum: [final]
+                subject:
+                    type: object
+                    properties:
+                        reference:
+                            type: string
+                result:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            reference:
+                                type: string
+                                example: Observation/obs-glaucoma-result-8vci00h6pwjv
+                conclusion:
+                    type: string
+                    example: "Glaucoma screening result: positive."
+            additionalProperties: true
+
+        OperationOutcome:
+            type: object
+            properties:
+                resourceType:
+                    type: string
+                    enum: [OperationOutcome]
+                issue:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            severity:
+                                type: string
+                                enum: [fatal, error, warning, information]
+                            diagnostics:
+                                type: string

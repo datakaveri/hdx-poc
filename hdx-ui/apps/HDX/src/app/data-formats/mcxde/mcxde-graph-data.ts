@@ -1,35 +1,8 @@
-// Ported near-verbatim from the standalone diabetes_mCxDE_v6_fhirImaging.html
-// concept-graph prototype (see ../../../../../../diabetes_mCxDE_v6_fhirImaging.html).
-// Data only; rendering lives in mcxde-graph.ts.
+// Ported near-verbatim from DiabeticGlaucoma/mCxDE_diabetes_v11.html (mC(Dia)DE v11):
+// same master/detailGraphs concept model, plus the name-based auto-attachment
+// of the expanded FHIR samples (mirrors attachExpandedFHIRSamples in the source).
 
-export type ConceptType =
-  | 'patient'
-  | 'disease'
-  | 'assessment'
-  | 'tech'
-  | 'treatment'
-  | 'outcome'
-  | 'context'
-  | 'external'
-  | 'element'
-  | 'value';
-
-export interface ConceptNode {
-  id: string;
-  name: string;
-  type: ConceptType;
-  children?: ConceptNode[];
-  expandable?: string | null;
-  fhirSample?: string | null;
-  rootClickable?: boolean;
-}
-
-export interface DetailGraph {
-  title: string;
-  type: ConceptType;
-  data: ConceptNode;
-  crossLinks: [string, string, string][];
-}
+import { ConceptNode, ConceptType, DetailGraph } from '../concept-graph/concept-graph.types';
 
 function node(
   id: string,
@@ -48,10 +21,11 @@ function value(id: string, name: string): ConceptNode {
   return { id, name, type: 'value' };
 }
 
-      export const master: ConceptNode = {
+      const masterData: ConceptNode = {
         id: "patient",
         name: "Diabetes Patient",
         type: "patient",
+        expandable: "patient",
         children: [
           {
             id: "disease",
@@ -151,6 +125,14 @@ function value(id: string, name: string): ConceptNode {
               { id: "inpat", name: "Inpatient Diabetes", type: "context" }
             ]
           },
+          { id: "identity", name: "Identity & Demographics", type: "patient", expandable: "identity" },
+          { id: "history", name: "Diabetes History", type: "patient", expandable: "history" },
+          { id: "overall", name: "Overall Health & Comorbidities", type: "patient", expandable: "overall" },
+          { id: "risk", name: "Risk Factors", type: "patient", expandable: "risk" },
+          { id: "support", name: "Care Partners & Support", type: "patient", expandable: "support" },
+          { id: "sdoh", name: "Social Determinants & Access", type: "patient", expandable: "sdoh" },
+          { id: "preferences", name: "Preferences & Goals", type: "patient", expandable: "preferences" },
+          { id: "continuing", name: "Continuing Care", type: "patient", expandable: "continuing" },
           {
             id: "external",
             name: "External / Common Clinical Concepts",
@@ -161,7 +143,7 @@ function value(id: string, name: string): ConceptNode {
       };
 
 
-      export const detailGraphs: Record<string, DetailGraph> = {
+      const detailGraphsData: Record<string, DetailGraph> = {
         disease: {
           title: "Disease",
           type: "disease",
@@ -183,7 +165,7 @@ function value(id: string, name: string): ConceptNode {
                 ]),
                 leaf("dclass_cert", "Classification Certainty"), leaf("dclass_pheno", "Clinical Phenotype")
               ]),
-              node("dxa2", "Diabetes Diagnostic Assessment", "disease", [
+              node("dxa2", "Diagnostic Assessment", "disease", [
                 node("dx_method", "Diagnostic Method", "element", [
                   value("dx_a1c", "A1C Evidence"), value("dx_fpg", "Fasting Plasma Glucose"),
                   value("dx_ogtt", "Oral Glucose Tolerance"), value("dx_random", "Random Plasma Glucose"),
@@ -192,13 +174,13 @@ function value(id: string, name: string): ConceptNode {
                 leaf("dx_date", "Assessment Date"), leaf("dx_sym", "Symptoms / Clinical Context"),
                 leaf("dx_confirm", "Confirmation Status"), leaf("dx_interp", "Interpretation")
               ]),
-              node("eta2", "Diabetes Etiology Assessment", "disease", [
+              node("eta2", "Etiology Assessment", "disease", [
                 leaf("eta_auto", "Autoimmune Evidence"), leaf("eta_beta", "Beta-Cell Function"),
                 leaf("eta_gen", "Genetic Evidence"), leaf("eta_panc", "Pancreatic Disease / Injury"),
                 leaf("eta_med", "Medication / Exposure"), leaf("eta_pheno", "Insulin Resistance / Phenotype"),
                 leaf("eta_other", "Other Etiologic Evidence")
               ]),
-              node("dstate2", "Diabetes Disease State / Course", "disease", [
+              node("dstate2", "Disease State / Course", "disease", [
                 leaf("ds_state", "Disease State"),
                 node("ds_traj", "Disease Trajectory", "element", [value("ds_stable", "Stable"), value("ds_improve", "Improving"), value("ds_progress", "Progressing")]),
                 leaf("ds_duration", "Duration"), leaf("ds_prog", "Progression"),
@@ -216,14 +198,38 @@ function value(id: string, name: string): ConceptNode {
               node("dac2", "Diabetes-Associated Complication", "disease", [
                 leaf("dac_type", "Complication Type"), leaf("dac_onset", "Onset Date"), leaf("dac_status", "Clinical Status"),
                 leaf("dac_sev", "Severity"), leaf("dac_attr", "Diabetes Attribution"), leaf("dac_evid", "Supporting Evidence")
-              ], "complications")
+              ], "complications"),
+              // Keep all Disease overview children visible in the Disease-focused view.
+              // The generic complication node remains expandable for the dedicated
+              // complication subgraph, but the four named complication profiles are
+              // also shown here as direct siblings to match the overview hierarchy.
+              node("kdd2", "Kidney Disease in Diabetes", "disease", [
+                leaf("kd_ckd", "CKD Status"), leaf("kd_gfr", "GFR Category"), leaf("kd_alb", "Albuminuria Category"),
+                leaf("kd_prog", "Progression"), leaf("kd_kf", "Kidney Failure"),
+                leaf("kd_krt", "Kidney Replacement Therapy"), leaf("kd_etio", "Etiology / Attribution")
+              ]),
+              node("ret2", "Diabetic Retinopathy", "disease", [
+                leaf("ret_type", "Retinopathy Type"), leaf("ret_sev", "Severity / Stage"), leaf("ret_lat", "Laterality"),
+                leaf("ret_dme", "Macular Edema"), leaf("ret_vt", "Vision-Threatening Status"), leaf("ret_tx", "Treatment Status")
+              ]),
+              node("neuro2", "Diabetic Neuropathy", "disease", [
+                leaf("n_type", "Neuropathy Type"), leaf("n_site", "Body Site"), leaf("n_sym", "Symptoms"),
+                leaf("n_sev", "Severity"), leaf("n_lops", "Loss of Protective Sensation"), leaf("n_comp", "Associated Complication")
+              ]),
+              node("footd2", "Diabetes-Related Foot Disease", "disease", [
+                leaf("fd_ulcer", "Ulcer"), leaf("fd_inf", "Infection"), leaf("fd_isch", "Ischemia / PAD"),
+                leaf("fd_char", "Charcot Neuroarthropathy"), leaf("fd_amp", "Amputation"), leaf("fd_lat", "Laterality"),
+                leaf("fd_loc", "Location"), leaf("fd_sev", "Severity"), leaf("fd_heal", "Healing Status")
+              ])
             ]
           },
           crossLinks: [
             ["dclass2", "dc2", "classifies"], ["dxa2", "dc2", "supports diagnosis"],
             ["eta2", "dclass2", "supports classification"], ["dstate2", "dc2", "describes course"],
             ["t1stage2", "dstate2", "specialized state"], ["predm2", "dc2", "may progress to"],
-            ["dc2", "dac2", "may have"]
+            ["dc2", "dac2", "may have"],
+            ["dac2", "kdd2", "includes"], ["dac2", "ret2", "includes"],
+            ["dac2", "neuro2", "includes"], ["dac2", "footd2", "includes"]
           ]
         },
 
@@ -294,7 +300,7 @@ function value(id: string, name: string): ConceptNode {
                 leaf("fr_pulse", "Pedal Pulses / Perfusion"), leaf("fr_ulcer", "Prior Ulcer"), leaf("fr_amp", "Prior Amputation"),
                 leaf("fr_risk", "Foot Risk Category"), leaf("fr_freq", "Recommended Follow-Up")
               ]),
-              node("cvra2", "Cardiovascular / Cardiorenal Risk Assessment", "assessment", [
+              node("cvra2", "Cardiovascular / Cardiorenal Risk", "assessment", [
                 leaf("cv_bp", "Blood Pressure"), leaf("cv_lip", "Lipids"), leaf("cv_smoke", "Tobacco Exposure"),
                 leaf("cv_ascvd", "ASCVD History"), leaf("cv_hf", "Heart Failure"), leaf("cv_ckd", "Kidney Disease"),
                 leaf("cv_risk", "Calculated / Clinical Risk"), leaf("cv_date", "Assessment Date")
@@ -307,12 +313,12 @@ function value(id: string, name: string): ConceptNode {
                 leaf("co_present", "Condition Present"), leaf("co_absent", "Condition Absent"), leaf("co_status", "Condition Status"),
                 leaf("co_relev", "Clinical Relevance"), leaf("co_method", "Assessment Method")
               ]),
-              node("self2", "Diabetes Self-Management Assessment", "assessment", [
+              node("self2", "Self-Management Assessment", "assessment", [
                 leaf("sm_med", "Medication-Taking"), leaf("sm_mon", "Glucose Monitoring"), leaf("sm_nut", "Nutrition Skills"),
                 leaf("sm_act", "Physical Activity"), leaf("sm_ins", "Insulin Skills"), leaf("sm_dev", "Device Skills"),
                 leaf("sm_hypo", "Hypoglycemia Skills"), leaf("sm_sick", "Sick-Day / Ketone Skills"), leaf("sm_dsmes", "DSMES Need")
               ]),
-              node("psy2", "Psychosocial / Behavioral Health Assessment", "assessment", [
+              node("psy2", "Psychosocial / Behavioral Health", "assessment", [
                 leaf("ps_dist", "Diabetes Distress"), leaf("ps_dep", "Depressive Symptoms"), leaf("ps_anx", "Anxiety"),
                 leaf("ps_eat", "Disordered Eating"), leaf("ps_fear", "Fear of Hypoglycemia"), leaf("ps_burden", "Treatment Burden"), leaf("ps_support", "Psychosocial Support")
               ]),
@@ -380,13 +386,13 @@ function value(id: string, name: string): ConceptNode {
                 leaf("cp_med", "Medication Plan"), leaf("cp_life", "Lifestyle Plan"), leaf("cp_hypo", "Hypoglycemia Safety Plan"),
                 leaf("cp_sick", "Sick-Day / Ketone Plan"), leaf("cp_ref", "Referral Plan"), leaf("cp_follow", "Follow-Up Plan")
               ], null, "diabetesManagementPlan"),
-              node("medtx2", "Diabetes-Related Medication Therapy", "treatment", [
+              node("medtx2", "Medication Therapy", "treatment", [
                 leaf("mt_med", "Medication"), leaf("mt_reason", "Indication / Reason"),
                 node("mt_intent", "Treatment Intent", "element", [value("mt_gly", "Glycemic"), value("mt_weight", "Weight"), value("mt_cv", "Cardiovascular"), value("mt_renal", "Kidney"), value("mt_other", "Other")]),
                 leaf("mt_dose", "Dose"), leaf("mt_route", "Route"), leaf("mt_freq", "Frequency"), leaf("mt_start", "Start Date"),
                 leaf("mt_status", "Status"), leaf("mt_change", "Reason for Start / Change / Stop"), leaf("mt_ae", "Adverse Effects / Tolerance")
               ]),
-              node("medadm2", "Diabetes-Related Medication Administration", "treatment", [
+              node("medadm2", "Medication Administration", "treatment", [
                 leaf("ma_med", "Medication"), leaf("ma_dose", "Dose"), leaf("ma_route", "Route"), leaf("ma_time", "Administration Time"),
                 leaf("ma_status", "Status"), leaf("ma_reason", "Status Reason")
               ]),
@@ -399,7 +405,7 @@ function value(id: string, name: string): ConceptNode {
                 leaf("lt_nut", "Nutrition Therapy"), leaf("lt_act", "Physical Activity"), leaf("lt_sleep", "Sleep / Lifestyle"),
                 leaf("lt_behav", "Behavioral Strategies"), leaf("lt_goal", "Goal"), leaf("lt_freq", "Frequency / Duration"), leaf("lt_status", "Participation / Status")
               ]),
-              node("dsmes2", "Diabetes Self-Management Education & Support", "treatment", [
+              node("dsmes2", "DSM Education & Support", "treatment", [
                 leaf("de_topic", "Education Topic"), leaf("de_goal", "Learning Goal"), leaf("de_method", "Education Method"),
                 leaf("de_med", "Medication Skills"), leaf("de_mon", "Monitoring Skills"), leaf("de_nut", "Nutrition Skills"),
                 leaf("de_hypo", "Hypoglycemia Skills"), leaf("de_sick", "Sick-Day Skills"), leaf("de_device", "Technology / Device Training"),
@@ -442,12 +448,12 @@ function value(id: string, name: string): ConceptNode {
                 leaf("hc_osm", "Osmolality / Hydration"), leaf("hc_sev", "Severity"), leaf("hc_cause", "Precipitating Factor"),
                 leaf("hc_setting", "Care Setting"), leaf("hc_res", "Resolution")
               ]),
-              node("compst2", "Diabetes Complication Status", "outcome", [
+              node("compst2", "Complication Status", "outcome", [
                 leaf("cs_ref", "Complication Reference"), leaf("cs_evid", "Evidence"), leaf("cs_state", "Status"),
                 node("cs_trend", "Trend", "element", [value("cs_stable", "Stable"), value("cs_improve", "Improving"), value("cs_prog", "Progressing"), value("cs_res", "Resolved / Recurrent")]),
                 leaf("cs_date", "Assessment Date")
               ]),
-              node("rem2", "Diabetes Remission Status", "outcome", [
+              node("rem2", "Remission Status", "outcome", [
                 leaf("rm_status", "Remission Status"), leaf("rm_start", "Start Date"), leaf("rm_gly", "Glycemic Evidence"),
                 leaf("rm_med", "Glucose-Lowering Medication Status"), leaf("rm_duration", "Duration"), leaf("rm_rec", "Recurrence")
               ]),
@@ -455,7 +461,7 @@ function value(id: string, name: string): ConceptNode {
                 node("tr_domain", "Response Domain", "element", [value("tr_gly", "Glycemic"), value("tr_weight", "Weight"), value("tr_cv", "Cardiovascular"), value("tr_kid", "Kidney"), value("tr_sym", "Symptoms / Function")]),
                 leaf("tr_base", "Baseline"), leaf("tr_follow", "Follow-Up"), leaf("tr_change", "Change / Response"), leaf("tr_tol", "Tolerance / Safety")
               ]),
-              node("pro2", "Patient-Reported Diabetes Outcome", "outcome", [
+              node("pro2", "Patient-Reported Outcome", "outcome", [
                 leaf("po_qol", "Quality of Life"), leaf("po_sat", "Treatment Satisfaction"), leaf("po_burden", "Treatment Burden"),
                 leaf("po_dist", "Diabetes Distress"), leaf("po_func", "Daily Function"), leaf("po_date", "Assessment Date")
               ])
@@ -494,6 +500,167 @@ function value(id: string, name: string): ConceptNode {
           crossLinks: []
         },
 
+        patient: {
+          title: "Diabetes Patient",
+          type: "patient",
+          data: {
+            id: "patient_root", name: "Diabetes Patient", type: "patient", rootClickable: true,
+            children: [
+              node("patient_identity", "Identity & Demographics", "patient", [
+                leaf("patient_ident", "Patient Identifier"), leaf("patient_name", "Name"), leaf("patient_dob", "Date of Birth / Age"),
+                leaf("patient_sex", "Administrative Sex"), leaf("patient_gender", "Gender Identity"), leaf("patient_lang", "Preferred Language")
+              ], "identity"),
+              node("patient_history", "Diabetes History", "patient", [
+                leaf("patient_hist_class", "Diagnosis / Classification"), leaf("patient_hist_date", "Diagnosis Date"),
+                leaf("patient_hist_duration", "Diabetes Duration"), leaf("patient_hist_prev", "Previous Treatment"),
+                leaf("patient_hist_current", "Current Treatment"), leaf("patient_hist_dka", "Prior DKA / HHS"),
+                leaf("patient_hist_hypo", "Prior Severe Hypoglycemia"), leaf("patient_hist_family", "Relevant Family History")
+              ], "history"),
+              node("patient_overall", "Overall Health & Comorbidities", "patient", [
+                leaf("patient_overall_comp", "Diabetes Complications"), leaf("patient_overall_cond", "Comorbid Conditions"),
+                leaf("patient_overall_func", "Functional Status"), leaf("patient_overall_cog", "Cognitive Status"),
+                leaf("patient_overall_access", "Disability / Accessibility Needs"), leaf("patient_overall_imm", "Immunization Status"),
+                leaf("patient_overall_dental", "Dental Health")
+              ], "overall"),
+              node("patient_risk", "Risk Factors", "patient", [
+                leaf("patient_risk_cv", "Cardiovascular Risk"), leaf("patient_risk_kid", "Kidney Risk"),
+                leaf("patient_risk_hypo", "Hypoglycemia Risk"), leaf("patient_risk_weight", "Weight / Adiposity"),
+                leaf("patient_risk_tob", "Tobacco / Nicotine / Cannabis Exposure")
+              ], "risk"),
+              node("patient_support", "Care Partners & Support", "patient", [
+                leaf("patient_support_partner", "Care Partner(s)"), leaf("patient_support_family", "Family / Caregiver Support"),
+                leaf("patient_support_team", "Interprofessional Care Team"), leaf("patient_support_work", "School / Work Support")
+              ], "support"),
+              node("patient_sdoh", "Social Determinants & Access", "patient", [
+                leaf("patient_sdoh_food", "Food Security"), leaf("patient_sdoh_house", "Housing Stability"),
+                leaf("patient_sdoh_fin", "Financial Strain"), leaf("patient_sdoh_cover", "Coverage / Insurance"),
+                leaf("patient_sdoh_med", "Medication Access"), leaf("patient_sdoh_supply", "Device / Supply Access"),
+                leaf("patient_sdoh_transport", "Transportation"), leaf("patient_sdoh_lit", "Health Literacy / Numeracy"),
+                leaf("patient_sdoh_barriers", "Structural Barriers to Care")
+              ], "sdoh"),
+              node("patient_preferences", "Preferences & Goals", "patient", [
+                leaf("patient_pref_values", "Individual Values / Preferences"), leaf("patient_pref_health", "Health & Function Goals"),
+                leaf("patient_pref_gly", "Individual Glycemic Goals"), leaf("patient_pref_burden", "Treatment Burden"),
+                leaf("patient_pref_fin", "Financial Considerations"), leaf("patient_pref_shared", "Shared Decision-Making")
+              ], "preferences"),
+              node("patient_continuing", "Continuing Care", "patient", [
+                leaf("patient_cont_care", "Care Management Plan"), leaf("patient_cont_ref", "Referral Plan"),
+                leaf("patient_cont_follow", "Follow-Up Plan"), leaf("patient_cont_prev", "Preventive Care"),
+                leaf("patient_cont_next", "Next Review / Monitoring Interval")
+              ], "continuing")
+            ]
+          },
+          crossLinks: []
+        },
+
+        identity: {
+          title: "Identity & Demographics",
+          type: "patient",
+          data: {
+            id: "identity_root", name: "Identity & Demographics", type: "patient", rootClickable: true,
+            children: [
+              leaf("id_ident", "Patient Identifier"), leaf("id_name", "Name"), leaf("id_dob", "Date of Birth / Age"),
+              leaf("id_sex", "Administrative Sex"), leaf("id_gender", "Gender Identity"), leaf("id_lang", "Preferred Language")
+            ]
+          },
+          crossLinks: []
+        },
+
+        history: {
+          title: "Diabetes History",
+          type: "patient",
+          data: {
+            id: "history_root", name: "Diabetes History", type: "patient", rootClickable: true,
+            children: [
+              leaf("hist_class", "Diagnosis / Classification"), leaf("hist_date", "Diagnosis Date"), leaf("hist_duration", "Diabetes Duration"),
+              leaf("hist_prevtx", "Previous Treatment"), leaf("hist_currtx", "Current Treatment"), leaf("hist_dka", "Prior DKA / HHS"),
+              leaf("hist_hypo", "Prior Severe Hypoglycemia"), leaf("hist_family", "Relevant Family History")
+            ]
+          },
+          crossLinks: []
+        },
+
+        overall: {
+          title: "Overall Health & Comorbidities",
+          type: "patient",
+          data: {
+            id: "overall_root", name: "Overall Health & Comorbidities", type: "patient", rootClickable: true,
+            children: [
+              leaf("ov_comp", "Diabetes Complications"), leaf("ov_cond", "Comorbid Conditions"), leaf("ov_func", "Functional Status"),
+              leaf("ov_cog", "Cognitive Status"), leaf("ov_access", "Disability / Accessibility Needs"), leaf("ov_imm", "Immunization Status"),
+              leaf("ov_dental", "Dental Health")
+            ]
+          },
+          crossLinks: []
+        },
+
+        risk: {
+          title: "Risk Factors",
+          type: "patient",
+          data: {
+            id: "risk_root", name: "Risk Factors", type: "patient", rootClickable: true,
+            children: [
+              leaf("risk_cv", "Cardiovascular Risk"), leaf("risk_kid", "Kidney Risk"), leaf("risk_hypo", "Hypoglycemia Risk"),
+              leaf("risk_weight", "Weight / Adiposity"), leaf("risk_tob", "Tobacco / Nicotine / Cannabis Exposure")
+            ]
+          },
+          crossLinks: []
+        },
+
+        support: {
+          title: "Care Partners & Support",
+          type: "patient",
+          data: {
+            id: "support_root", name: "Care Partners & Support", type: "patient", rootClickable: true,
+            children: [
+              leaf("sup_partner", "Care Partner(s)"), leaf("sup_family", "Family / Caregiver Support"),
+              leaf("sup_team", "Interprofessional Care Team"), leaf("sup_work", "School / Work Support")
+            ]
+          },
+          crossLinks: []
+        },
+
+        sdoh: {
+          title: "Social Determinants & Access",
+          type: "patient",
+          data: {
+            id: "sdoh_root", name: "Social Determinants & Access", type: "patient", rootClickable: true,
+            children: [
+              leaf("sd_food", "Food Security"), leaf("sd_house", "Housing Stability"), leaf("sd_fin", "Financial Strain"),
+              leaf("sd_cover", "Coverage / Insurance"), leaf("sd_med", "Medication Access"), leaf("sd_supply", "Device / Supply Access"),
+              leaf("sd_transport", "Transportation"), leaf("sd_lit", "Health Literacy / Numeracy"), leaf("sd_barriers", "Structural Barriers to Care")
+            ]
+          },
+          crossLinks: []
+        },
+
+        preferences: {
+          title: "Preferences & Goals",
+          type: "patient",
+          data: {
+            id: "preferences_root", name: "Preferences & Goals", type: "patient", rootClickable: true,
+            children: [
+              leaf("pref_values", "Individual Values / Preferences"), leaf("pref_health", "Health & Function Goals"),
+              leaf("pref_gly", "Individual Glycemic Goals"), leaf("pref_burden", "Treatment Burden"),
+              leaf("pref_fin", "Financial Considerations"), leaf("pref_shared", "Shared Decision-Making")
+            ]
+          },
+          crossLinks: []
+        },
+
+        continuing: {
+          title: "Continuing Care",
+          type: "patient",
+          data: {
+            id: "continuing_root", name: "Continuing Care", type: "patient", rootClickable: true,
+            children: [
+              leaf("cont_care", "Care Management Plan"), leaf("cont_ref", "Referral Plan"), leaf("cont_follow", "Follow-Up Plan"),
+              leaf("cont_prev", "Preventive Care"), leaf("cont_next", "Next Review / Monitoring Interval")
+            ]
+          },
+          crossLinks: []
+        },
+
         external: {
           title: "External / Common Clinical Concepts",
           type: "external",
@@ -523,3 +690,81 @@ function value(id: string, name: string): ConceptNode {
         }
       };
 
+
+// Illustrative, mCODE-inspired profiles/bundles added beyond the five originally
+// called out by name; attach them by concept name wherever not already explicit.
+const expandedFhirSampleByNodeName: Record<string, string> = {
+  "Diabetes Classification": "diabetesClassification",
+  "Diabetes Diagnostic Assessment": "diabetesDiagnosticAssessment",
+  "Diabetes Etiology Assessment": "diabetesEtiologyAssessment",
+  "Diabetes Disease State / Course": "diabetesDiseaseStateCourse",
+  "Type 1 Diabetes Stage": "type1DiabetesStage",
+  "Prediabetes / High-Risk Glycemia": "prediabetesHighRiskGlycemia",
+  "Kidney Disease in Diabetes": "kidneyDiseaseInDiabetes",
+  "Diabetic Retinopathy": "diabeticRetinopathy",
+  "Diabetic Neuropathy": "diabeticNeuropathy",
+  "Diabetes-Related Foot Disease": "diabetesRelatedFootDisease",
+  "Hypoglycemia Risk Assessment": "hypoglycemiaRiskAssessment",
+  "Kidney Health Assessment": "kidneyHealthAssessment",
+  "Neuropathy Assessment": "neuropathyAssessment",
+  "Foot Risk Assessment": "footRiskAssessment",
+  "Cardiovascular / Cardiorenal Risk Assessment": "cardiovascularCardiorenalRiskAssessment",
+  "Weight & Adiposity Assessment": "weightAdiposityAssessment",
+  "Comorbidity Assessment": "comorbidityAssessment",
+  "Diabetes Self-Management Assessment": "diabetesSelfManagementAssessment",
+  "Psychosocial / Behavioral Health Assessment": "psychosocialBehavioralHealthAssessment",
+  "Functional & Cognitive Assessment": "functionalCognitiveAssessment",
+  "Social Needs & Access Assessment": "socialNeedsAccessAssessment",
+  "Reproductive / Pregnancy Assessment": "reproductivePregnancyAssessment",
+  "Blood Glucose Monitoring": "bloodGlucoseMonitoring",
+  "Ketone Monitoring": "ketoneMonitoring",
+  "Insulin Delivery Device": "insulinDeliveryDevice",
+  "Automated Insulin Delivery": "automatedInsulinDelivery",
+  "Diabetes-Related Medication Therapy": "medicationTherapy",
+  "Diabetes-Related Medication Administration": "medicationAdministration",
+  "Insulin Regimen": "insulinRegimen",
+  "Lifestyle & Behavioral Therapy": "lifestyleBehavioralTherapy",
+  "Diabetes Self-Management Education & Support": "diabetesSelfManagementEducationSupport",
+  "Weight Management Intervention": "weightManagementIntervention",
+  "Diabetes / Metabolic Procedure": "diabetesMetabolicProcedure",
+  "Glycemic Status": "glycemicStatus",
+  "Hypoglycemia Event": "hypoglycemiaEvent",
+  "Hyperglycemic Crisis": "hyperglycemicCrisis",
+  "Diabetes Complication Status": "diabetesComplicationStatus",
+  "Diabetes Remission Status": "diabetesRemissionStatus",
+  "Treatment Response": "treatmentResponse",
+  "Patient-Reported Diabetes Outcome": "patientReportedDiabetesOutcome",
+  "Diabetes in Pregnancy": "diabetesInPregnancy",
+  "Pediatric Diabetes": "pediatricDiabetes",
+  "Older Adult Diabetes": "olderAdultDiabetes",
+  "Inpatient Diabetes": "inpatientDiabetes",
+  "Vitals & Anthropometrics": "vitalsAnthropometrics",
+  "Laboratory Data": "laboratoryData",
+  "General Conditions": "generalConditions",
+  "General Patient Context": "generalPatientContext",
+  "Diagnostic Assessment": "diabetesDiagnosticAssessment",
+  "Etiology Assessment": "diabetesEtiologyAssessment",
+  "Disease State / Course": "diabetesDiseaseStateCourse",
+  "Medication Therapy": "medicationTherapy",
+  "Medication Administration": "medicationAdministration",
+  "DSM Education & Support": "diabetesSelfManagementEducationSupport",
+  "Cardiovascular / Cardiorenal Risk": "cardiovascularCardiorenalRiskAssessment",
+  "Self-Management Assessment": "diabetesSelfManagementAssessment",
+  "Psychosocial / Behavioral Health": "psychosocialBehavioralHealthAssessment",
+  "Complication Status": "diabetesComplicationStatus",
+  "Remission Status": "diabetesRemissionStatus",
+  "Patient-Reported Outcome": "patientReportedDiabetesOutcome"
+};
+
+function attachExpandedFHIRSamples(nodeData: ConceptNode | undefined): void {
+  if (!nodeData) return;
+  const sampleKey = expandedFhirSampleByNodeName[nodeData.name];
+  if (sampleKey && !nodeData.fhirSample) nodeData.fhirSample = sampleKey;
+  (nodeData.children ?? []).forEach(attachExpandedFHIRSamples);
+}
+
+attachExpandedFHIRSamples(masterData);
+Object.values(detailGraphsData).forEach((graph) => attachExpandedFHIRSamples(graph.data));
+
+export const master = masterData;
+export const detailGraphs = detailGraphsData;

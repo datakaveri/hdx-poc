@@ -1,10 +1,26 @@
 <section class="wizard-page">
   <header class="plane-page__intro">
     <h1>Onboard a Dataset</h1>
-    <p>Publish a new dataset from an existing federated node into the catalogue.</p>
+    @if (auth.nodeId()) {
+      <p>Publishing under <strong>{{ myNodeName() }}</strong> — the federated node you own.</p>
+    } @else {
+      <p>Publish a new dataset from your federated node into the catalogue.</p>
+    }
   </header>
 
-  @if (!submitted()) {
+  @if (!auth.nodeId()) {
+    <div class="wizard-card">
+      <h2 class="wizard-step__title">You need an approved node first</h2>
+      <p class="wizard-step__hint">
+        Only an approved node_owner can publish datasets. If you haven't already,
+        <a routerLink="/onboarding/node">request a federated node</a> — you can track its approval status on your
+        <a routerLink="/profile">Profile</a> page. Once approved, come back here.
+      </p>
+      <div class="wizard-actions">
+        <a routerLink="/onboarding" class="wizard-btn wizard-btn--secondary">&larr; Back to Onboarding</a>
+      </div>
+    </div>
+  } @else if (!submitted()) {
     <app-wizard-stepper [steps]="steps" [current]="currentStep()" (stepSelect)="goToStep($event)" />
 
     <div class="wizard-card">
@@ -43,35 +59,19 @@
           }
         </div>
 
-        <div class="form-row">
-          <div class="form-field">
-            <span class="form-label" id="ds-node-label">Federated node <span class="required">*</span></span>
-            <app-dropdown-select
-              [id]="'ds-node'"
-              [labelledBy]="'ds-node-label'"
-              [options]="nodeOptions"
-              [value]="nodeId()"
-              placeholder="Select hosting node"
-              (valueChange)="nodeId.set($event)"
-            />
-            @if (showErrors() && !nodeId()) {
-              <span class="error-message">Select the hosting node.</span>
-            }
-          </div>
-          <div class="form-field">
-            <span class="form-label" id="ds-track-label">Track <span class="required">*</span></span>
-            <app-dropdown-select
-              [id]="'ds-track'"
-              [labelledBy]="'ds-track-label'"
-              [options]="trackOptions"
-              [value]="track()"
-              placeholder="Select track"
-              (valueChange)="track.set($event)"
-            />
-            @if (showErrors() && !track()) {
-              <span class="error-message">Select a track.</span>
-            }
-          </div>
+        <div class="form-field">
+          <span class="form-label" id="ds-track-label">Track <span class="required">*</span></span>
+          <app-dropdown-select
+            [id]="'ds-track'"
+            [labelledBy]="'ds-track-label'"
+            [options]="trackOptions"
+            [value]="track()"
+            placeholder="Select track"
+            (valueChange)="track.set($event)"
+          />
+          @if (showErrors() && !track()) {
+            <span class="error-message">Select a track.</span>
+          }
         </div>
 
         <div class="form-field">
@@ -164,7 +164,7 @@
         <div class="review-list">
           <div class="review-row"><span class="review-row__label">Title</span><span class="review-row__value">{{ title() || '—' }}</span></div>
           <div class="review-row"><span class="review-row__label">Description</span><span class="review-row__value">{{ description() || '—' }}</span></div>
-          <div class="review-row"><span class="review-row__label">Federated node</span><span class="review-row__value">{{ nodeLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Federated node</span><span class="review-row__value">{{ myNodeName() }}</span></div>
           <div class="review-row"><span class="review-row__label">Track</span><span class="review-row__value">{{ trackLabel() }}</span></div>
           <div class="review-row"><span class="review-row__label">Record count</span><span class="review-row__value">{{ recordCount() || '—' }}</span></div>
           <div class="review-row"><span class="review-row__label">Standards</span><span class="review-row__value">{{ standards().length ? standards().join(', ') : '—' }}</span></div>
@@ -202,7 +202,7 @@
       </div>
       <h2 class="wizard-success__title">{{ title() }} submitted for review</h2>
       <p class="wizard-success__message">
-        This dataset is now published under {{ nodeLabel() }} and appears across Data Plane and Graph Explorer.
+        This dataset is now published under {{ myNodeName() }} and appears across Data Plane and Graph Explorer.
         It's saved to the local PoC data store, not a real HDX federation backend.
       </p>
       @if (fileSaveError()) {

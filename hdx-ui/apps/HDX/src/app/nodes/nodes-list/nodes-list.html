@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="node-grid">
+  <div class="node-grid" data-tour="node-grid">
     @for (node of nodes; track node.id) {
       <a class="node-card" [routerLink]="[node.id]">
         <div class="node-card__badges">

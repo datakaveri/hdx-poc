@@ -1,11 +1,12 @@
-import { Component, ElementRef, HostListener, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import * as d3 from 'd3';
-import { ConceptNode, ConceptType, DetailGraph, detailGraphs, master } from './mcxde-graph-data';
-import { fhirSamples } from './mcxde-fhir-samples';
+import { ConceptNode, ConceptType, DetailGraph, FhirSample, LegendItem, MasterLayoutConfig } from './concept-graph.types';
 
 // Ported from the standalone diabetes_mCxDE_v6_fhirImaging.html concept-graph
 // prototype: same d3.hierarchy/d3.tree layout math and interaction model,
-// re-scoped from `document` globals to this component's own view and state.
+// re-scoped from `document` globals to this component's own view and state,
+// and generalized (via inputs) so the same engine renders multiple datasets
+// (mCxDE, mCODE, ...) instead of one hardcoded model.
 
 interface NodeSize {
   w: number;
@@ -25,55 +26,62 @@ const TYPE_COLOR_VAR: Record<string, string> = {
   disease: '--disease',
   assessment: '--assessment',
   tech: '--tech',
+  genomics: '--tech',
   treatment: '--treatment',
   outcome: '--outcome',
   context: '--context',
   external: '--external',
 };
 
-const LEGEND_ITEMS: { type: ConceptType; label: string }[] = [
-  { type: 'disease', label: 'Disease' },
-  { type: 'assessment', label: 'Assessment' },
-  { type: 'tech', label: 'Monitoring / Tech' },
-  { type: 'treatment', label: 'Treatment' },
-  { type: 'outcome', label: 'Outcome' },
-  { type: 'patient', label: 'Patient' },
-  { type: 'context', label: 'Special context' },
-  { type: 'external', label: 'External / common' },
-];
-
 @Component({
-  selector: 'app-mcxde-graph',
+  selector: 'app-concept-graph',
   standalone: true,
-  templateUrl: './mcxde-graph.html',
-  styleUrl: './mcxde-graph.scss',
+  templateUrl: './concept-graph.html',
+  styleUrl: './concept-graph.scss',
 })
-export class McxdeGraph {
+export class ConceptGraph {
+  private static instanceCounter = 0;
+  private readonly instanceId = ++ConceptGraph.instanceCounter;
+  private readonly viewportId = `concept-graph-viewport-${this.instanceId}`;
+
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly svgRef = viewChild.required<ElementRef<SVGSVGElement>>('graphSvg');
+  private readonly minimapSvgRef = viewChild.required<ElementRef<SVGSVGElement>>('minimapSvg');
+
+  readonly master = input.required<ConceptNode>();
+  readonly detailGraphs = input.required<Record<string, DetailGraph>>();
+  readonly fhirSamples = input.required<Record<string, FhirSample>>();
+  readonly legendItems = input.required<LegendItem[]>();
+  readonly masterLayout = input.required<MasterLayoutConfig>();
+  readonly hintHtml = input.required<string>();
+  readonly svgAriaLabel = input<string>('Interactive concept graph');
+  readonly fhirSubtitleFor = input.required<(sample: FhirSample) => string>();
 
   readonly currentView = signal<View>('master');
   readonly currentGraphKey = signal<string | null>(null);
   readonly currentGraphTitle = computed(() => {
     const key = this.currentGraphKey();
-    return key ? detailGraphs[key]?.title ?? '' : '';
+    return key ? this.detailGraphs()[key]?.title ?? '' : '';
   });
 
   readonly activeFhirSampleKey = signal<string | null>(null);
   readonly activeFhirTab = signal<FhirTab>('profile');
   readonly copyLabel = signal('Copy JSON');
 
-  readonly legendItems = LEGEND_ITEMS;
   readonly hiddenTypes = signal<ReadonlySet<ConceptType>>(new Set());
 
   readonly activeSample = computed(() => {
     const key = this.activeFhirSampleKey();
-    return key ? fhirSamples[key] : null;
+    return key ? this.fhirSamples()[key] : null;
   });
   readonly fhirCode = computed(() => {
     const sample = this.activeSample();
     if (!sample) return '';
     return JSON.stringify(this.activeFhirTab() === 'profile' ? sample.profile : sample.bundle, null, 2);
+  });
+  readonly fhirSubtitleHtml = computed(() => {
+    const sample = this.activeSample();
+    return sample ? this.fhirSubtitleFor()(sample) : '';
   });
 
   private readonly fhirCloseBtnRef = viewChild<ElementRef<HTMLButtonElement>>('fhirCloseBtn');
@@ -85,6 +93,15 @@ export class McxdeGraph {
   private renderBounds: { x: number; y: number; width: number; height: number } | null = null;
   private resizeTimer: ReturnType<typeof setTimeout> | undefined;
   private initialized = false;
+
+  private minimapSvg!: d3.Selection<SVGSVGElement, unknown, null, undefined>;
+  private minimapCursor!: d3.Selection<SVGRectElement, unknown, null, undefined>;
+  private minimapScale = 1;
+  private minimapOffsetX = 0;
+  private minimapOffsetY = 0;
+  private static readonly MINIMAP_WIDTH = 180;
+  private static readonly MINIMAP_HEIGHT = 120;
+  private static readonly MINIMAP_PAD = 6;
 
   constructor() {
     effect(() => {
@@ -135,14 +152,79 @@ export class McxdeGraph {
       Object.entries(TYPE_COLOR_VAR).map(([type, varName]) => [type, this.css(varName)]),
     );
 
-    this.viewport = this.svg.append('g').attr('class', 'viewport');
+    this.viewport = this.svg.append('g').attr('class', 'viewport').attr('id', this.viewportId);
     this.zoomBehavior = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.22, 2.6])
-      .on('zoom', (event) => this.viewport.attr('transform', event.transform));
+      .on('zoom', (event) => {
+        this.viewport.attr('transform', event.transform);
+        this.updateMinimapCursor();
+      });
     this.svg.call(this.zoomBehavior);
 
+    this.initMinimap();
     this.renderMaster(false);
+  }
+
+  private initMinimap(): void {
+    this.minimapSvg = d3.select(this.minimapSvgRef().nativeElement);
+    this.minimapSvg.insert('use', '.minimap-cursor').attr('href', `#${this.viewportId}`);
+    this.minimapCursor = this.minimapSvg.select<SVGRectElement>('.minimap-cursor');
+
+    const panToEvent = (event: { x: number; y: number }) => this.panToMinimapPoint(event.x, event.y);
+    this.minimapSvg.call(
+      d3.drag<SVGSVGElement, unknown>().on('start', panToEvent).on('drag', panToEvent),
+    );
+    this.minimapSvg.on('click', (event: MouseEvent) => {
+      const [x, y] = d3.pointer(event, this.minimapSvg.node());
+      this.panToMinimapPoint(x, y);
+    });
+  }
+
+  private updateMinimap(): void {
+    if (!this.renderBounds) return;
+    const { MINIMAP_WIDTH: W, MINIMAP_HEIGHT: H, MINIMAP_PAD: pad } = ConceptGraph;
+    const scale = Math.min((W - pad * 2) / this.renderBounds.width, (H - pad * 2) / this.renderBounds.height);
+    this.minimapScale = scale;
+    this.minimapOffsetX = pad + (W - pad * 2 - this.renderBounds.width * scale) / 2 - this.renderBounds.x * scale;
+    this.minimapOffsetY = pad + (H - pad * 2 - this.renderBounds.height * scale) / 2 - this.renderBounds.y * scale;
+
+    this.minimapSvg.select('use').attr('transform', `translate(${this.minimapOffsetX},${this.minimapOffsetY}) scale(${scale})`);
+    this.updateMinimapCursor();
+  }
+
+  private updateMinimapCursor(): void {
+    if (!this.minimapCursor || !this.svg) return;
+    const svgNode = this.svg.node();
+    if (!svgNode) return;
+    const vw = svgNode.clientWidth || 1200;
+    const vh = svgNode.clientHeight || 800;
+    const t = d3.zoomTransform(svgNode);
+
+    const worldX0 = -t.x / t.k;
+    const worldY0 = -t.y / t.k;
+    const worldX1 = (vw - t.x) / t.k;
+    const worldY1 = (vh - t.y) / t.k;
+
+    this.minimapCursor
+      .attr('x', this.minimapOffsetX + worldX0 * this.minimapScale)
+      .attr('y', this.minimapOffsetY + worldY0 * this.minimapScale)
+      .attr('width', Math.max(0, (worldX1 - worldX0) * this.minimapScale))
+      .attr('height', Math.max(0, (worldY1 - worldY0) * this.minimapScale));
+  }
+
+  private panToMinimapPoint(mx: number, my: number): void {
+    if (!this.renderBounds || !this.svg) return;
+    const svgNode = this.svg.node();
+    if (!svgNode) return;
+    const worldX = (mx - this.minimapOffsetX) / this.minimapScale;
+    const worldY = (my - this.minimapOffsetY) / this.minimapScale;
+    const vw = svgNode.clientWidth || 1200;
+    const vh = svgNode.clientHeight || 800;
+    const k = d3.zoomTransform(svgNode).k;
+    const tx = vw / 2 - worldX * k;
+    const ty = vh / 2 - worldY * k;
+    this.svg.interrupt().call(this.zoomBehavior.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
   }
 
   private css(name: string): string {
@@ -170,7 +252,7 @@ export class McxdeGraph {
   }
 
   openDetail(key: string | null | undefined): void {
-    if (!key || !detailGraphs[key]) return;
+    if (!key || !this.detailGraphs()[key]) return;
     this.currentView.set('detail');
     this.currentGraphKey.set(key);
     this.renderDetail(key, true);
@@ -185,7 +267,7 @@ export class McxdeGraph {
   }
 
   openFHIRSample(key: string | null | undefined): void {
-    if (!key || !fhirSamples[key]) return;
+    if (!key || !this.fhirSamples()[key]) return;
     this.activeFhirSampleKey.set(key);
     this.activeFhirTab.set('profile');
   }
@@ -213,31 +295,13 @@ export class McxdeGraph {
   private renderMaster(animate: boolean): void {
     this.clearGraph();
 
-    // Poster-style overview: each domain gets its own generous zone around
-    // the central patient. This preserves every profile from the master graph
-    // without forcing 50+ cards onto a single radial ring.
-    const layoutWidth = 3650;
-    const layoutHeight = 2050;
-    const cx = 1675;
-    const cy = 1060;
+    const { layoutWidth, layoutHeight, cx, cy, zones, patientGroupIds: patientGroupIdList } = this.masterLayout();
+    const patientGroupIds = new Set(patientGroupIdList ?? []);
 
-    const root = d3.hierarchy(master) as PositionedNode;
+    const root = d3.hierarchy(this.master()) as PositionedNode;
     const categories = (root.children ?? []) as PositionedNode[];
     root.x = cx;
     root.y = cy;
-
-    // Only node positions are explicit. Category enclosures are calculated
-    // from the actual node extents below, so every pale box fully contains
-    // its category content and remains correct as the model evolves.
-    const zones: Record<string, { catX: number; catY: number; gridX: number; gridY: number; cols: number; gapX: number; gapY: number }> = {
-      disease: { catX: 900, catY: 820, gridX: 190, gridY: 180, cols: 3, gapX: 260, gapY: 118 },
-      assessment: { catX: 2190, catY: 830, gridX: 2300, gridY: 170, cols: 3, gapX: 250, gapY: 108 },
-      external: { catX: 1675, catY: 260, gridX: 0, gridY: 0, cols: 1, gapX: 0, gapY: 0 },
-      context: { catX: 660, catY: 1320, gridX: 200, gridY: 1460, cols: 2, gapX: 295, gapY: 130 },
-      tech: { catX: 1280, catY: 1480, gridX: 1100, gridY: 1625, cols: 3, gapX: 260, gapY: 125 },
-      outcome: { catX: 2290, catY: 1480, gridX: 2080, gridY: 1625, cols: 3, gapX: 290, gapY: 118 },
-      treatment: { catX: 3220, catY: 1360, gridX: 3100, gridY: 1510, cols: 2, gapX: 260, gapY: 120 },
-    };
 
     const profileNodes: PositionedNode[] = [];
     categories.forEach((cat) => {
@@ -286,6 +350,7 @@ export class McxdeGraph {
 
     const zoneLayer = this.viewport.append('g').attr('class', 'domain-zones');
     categories.forEach((cat) => {
+      if (patientGroupIds.has(cat.data.id)) return;
       const z = enclosureById.get(cat.data.id);
       if (!z) return;
       zoneLayer
@@ -304,8 +369,63 @@ export class McxdeGraph {
         .attr('data-domain', cat.data.type);
     });
 
+    // One visual enclosure for any category ids grouped as direct conceptual
+    // "peer" children of the root (mCxDE's eight patient-context branches).
+    // Placed together purely for visual grouping in the overview; not
+    // represented as its own hierarchy node.
+    let patientGroupBox: { x: number; y: number; w: number; h: number } | null = null;
+    if (patientGroupIds.size) {
+      const members = categories.filter((cat) => patientGroupIds.has(cat.data.id));
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+      members.forEach((n) => {
+        const size = masterNodeSize(n);
+        minX = Math.min(minX, n.x - size.w / 2);
+        maxX = Math.max(maxX, n.x + size.w / 2);
+        minY = Math.min(minY, n.y - size.h / 2);
+        maxY = Math.max(maxY, n.y + size.h / 2);
+      });
+      const padX = 90;
+      const padY = 85;
+      patientGroupBox = { x: minX - padX, y: minY - padY, w: maxX - minX + padX * 2, h: maxY - minY + padY * 2 };
+
+      zoneLayer
+        .append('rect')
+        .attr('x', patientGroupBox.x)
+        .attr('y', patientGroupBox.y)
+        .attr('width', patientGroupBox.w)
+        .attr('height', patientGroupBox.h)
+        .attr('rx', 34)
+        .attr('ry', 34)
+        .attr('fill', this.color['patient'])
+        .attr('fill-opacity', 0.07)
+        .attr('stroke', this.color['patient'])
+        .attr('stroke-opacity', 0.48)
+        .attr('stroke-width', 2)
+        .attr('data-domain', 'patient');
+    }
+
+    // Development guard: warn if a future content/layout edit removes the
+    // intended gutter between any two (non-grouped) category enclosures.
+    const enclosureEntries = Array.from(enclosureById.entries()).filter(([id]) => !patientGroupIds.has(id));
+    for (let i = 0; i < enclosureEntries.length; i += 1) {
+      for (let j = i + 1; j < enclosureEntries.length; j += 1) {
+        const [aId, a] = enclosureEntries[i];
+        const [bId, b] = enclosureEntries[j];
+        const tooClose = !(a.x + a.w + 18 < b.x || b.x + b.w + 18 < a.x || a.y + a.h + 18 < b.y || b.y + b.h + 18 < a.y);
+        if (tooClose) {
+          console.warn(`Overview category enclosures are too close: ${aId} / ${bId}`);
+        }
+      }
+    }
+
     const links: { source: PositionedNode; target: PositionedNode; cls: string }[] = [];
-    categories.forEach((cat) => links.push({ source: root, target: cat, cls: cat.data.id === 'external' ? 'support' : '' }));
+    categories.forEach((cat) => {
+      if (patientGroupIds.has(cat.data.id)) return;
+      links.push({ source: root, target: cat, cls: cat.data.id === 'external' ? 'support' : '' });
+    });
     categories.forEach((cat) => (cat.children ?? []).forEach((kid) => links.push({ source: cat, target: kid as PositionedNode, cls: '' })));
 
     const edgeLayer = this.viewport.append('g').attr('class', 'edges');
@@ -316,6 +436,20 @@ export class McxdeGraph {
       .attr('class', (d) => `edge ${d.cls || ''}`)
       .attr('d', (d) => this.curvedNodeLink(d.source, d.target, masterNodeSize))
       .attr('data-domain', (d) => d.target.data.type);
+
+    if (patientGroupBox) {
+      // Single root -> patient-group connector: a smooth vertical S-curve from
+      // the root's bottom edge to the top of the grouped enclosure.
+      const rootSize = masterNodeSize(root);
+      const rootBottom = { x: root.x, y: root.y + rootSize.h / 2 };
+      const groupTop = { x: patientGroupBox.x + patientGroupBox.w / 2, y: patientGroupBox.y };
+      const midY = (rootBottom.y + groupTop.y) / 2;
+      edgeLayer
+        .append('path')
+        .attr('class', 'edge')
+        .attr('d', `M${rootBottom.x},${rootBottom.y} C${rootBottom.x},${midY} ${groupTop.x},${midY} ${groupTop.x},${groupTop.y}`)
+        .attr('data-domain', 'patient');
+    }
 
     const allNodes: PositionedNode[] = [root, ...categories, ...profileNodes];
     const nodeLayer = this.viewport.append('g').attr('class', 'nodes');
@@ -376,13 +510,14 @@ export class McxdeGraph {
 
     this.renderBounds = { x: 0, y: 0, width: layoutWidth, height: layoutHeight };
     this.applyTypeFilter();
+    this.updateMinimap();
     requestAnimationFrame(() => this.fitGraph());
   }
 
   private renderDetail(key: string | null, animate: boolean): void {
     this.clearGraph();
     if (!key) return;
-    const graph: DetailGraph | undefined = detailGraphs[key];
+    const graph: DetailGraph | undefined = this.detailGraphs()[key];
     if (!graph) return;
 
     const svgNode = this.svg.node()!;
@@ -390,12 +525,10 @@ export class McxdeGraph {
     const height = Math.max(760, svgNode.clientHeight || 800);
 
     const root = d3.hierarchy(graph.data);
-    const nodeCount = root.descendants().length;
     const leafCount = root.leaves().length;
     const layoutHeight = Math.max(height - 120, Math.min(2400, 42 * leafCount + 110));
     const maxDepth = d3.max(root.descendants(), (d) => d.depth) || 1;
     const layoutWidth = Math.max(width - 180, 900 + Math.max(0, maxDepth - 2) * 230);
-    void nodeCount;
 
     const tree = d3
       .tree<ConceptNode>()
@@ -640,6 +773,7 @@ export class McxdeGraph {
 
     this.renderBounds = { x: 20, y: 20, width: layoutWidth, height: layoutHeight + 130 };
     this.applyTypeFilter();
+    this.updateMinimap();
     requestAnimationFrame(() => this.fitGraph());
   }
 
@@ -691,7 +825,7 @@ export class McxdeGraph {
   }
 
   private hasFHIRSample(d: { data: ConceptNode }): boolean {
-    return Boolean(d.data.fhirSample && fhirSamples[d.data.fhirSample]);
+    return Boolean(d.data.fhirSample && this.fhirSamples()[d.data.fhirSample]);
   }
 
   private nodeClass(d: { data: ConceptNode }): string {

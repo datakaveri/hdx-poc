@@ -37,7 +37,7 @@
           <i [class]="categoryMeta(service.category).icon"></i>
           <span class="service-card__host">{{ hostLabel(service.nodeId) }}</span>
         </div>
-        <h3 class="service-card__title">{{ service.name }}</h3>
+        <a class="service-card__title h3" [routerLink]="['/services', service.id]">{{ service.name }}</a>
         <p class="service-card__description">{{ service.description }}</p>
         @if (service.operatesOn.length) {
           <div class="service-card__operates-on">

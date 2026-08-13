@@ -6,13 +6,13 @@ import { FederatedNode } from '../../shared/models';
 
 /** Admin-only: lists pending node-creation requests and lets the platform admin approve them. */
 @Component({
-  selector: 'app-admin-approvals',
+  selector: 'app-admin-panel',
   standalone: true,
   imports: [NodeBadge],
-  templateUrl: './admin-approvals.html',
-  styleUrl: './admin-approvals.scss',
+  templateUrl: './admin-panel.html',
+  styleUrl: './admin-panel.scss',
 })
-export class AdminApprovals implements OnInit {
+export class AdminPanel implements OnInit {
   private readonly mockData = inject(MockDataService);
   readonly auth = inject(AuthService);
 

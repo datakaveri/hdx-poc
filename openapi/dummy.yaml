@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+    title: Dummy API
+    description: A minimal dummy OpenAPI spec for testing and scaffolding.
+    version: 1.0.0
+servers:
+    - url: http://localhost:3000/api/v1
+paths:
+    /items:
+        get:
+            summary: List items
+            operationId: listItems
+            parameters:
+                - name: limit
+                  in: query
+                  schema: { type: integer, default: 20 }
+            responses:
+                "200":
+                    description: A list of items
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items: { $ref: "#/components/schemas/Item" }
+        post:
+            summary: Create an item
+            operationId: createItem
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema: { $ref: "#/components/schemas/ItemInput" }
+            responses:
+                "201":
+                    description: Item created
+                    content:
+                        application/json:
+                            schema: { $ref: "#/components/schemas/Item" }
+    /items/{itemId}:
+        get:
+            summary: Get an item by ID
+            operationId: getItem
+            parameters:
+                - name: itemId
+                  in: path
+                  required: true
+                  schema: { type: string }
+            responses:
+                "200":
+                    description: The requested item
+                    content:
+                        application/json:
+                            schema: { $ref: "#/components/schemas/Item" }
+                "404": { description: Item not found }
+        put:
+            summary: Update an item
+            operationId: updateItem
+            parameters:
+                - name: itemId
+                  in: path
+                  required: true
+                  schema: { type: string }
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema: { $ref: "#/components/schemas/ItemInput" }
+            responses:
+                "200":
+                    description: Item updated
+                    content:
+                        application/json:
+                            schema: { $ref: "#/components/schemas/Item" }
+        delete:
+            summary: Delete an item
+            operationId: deleteItem
+            parameters:
+                - name: itemId
+                  in: path
+                  required: true
+                  schema: { type: string }
+            responses:
+                "204": { description: Item deleted }
+components:
+    schemas:
+        ItemInput:
+            type: object
+            required: [name]
+            properties:
+                name: { type: string, example: Sample Item }
+                description: { type: string, example: A sample dummy item }
+        Item:
+            allOf:
+                - $ref: "#/components/schemas/ItemInput"
+                - type: object
+                  properties:
+                      id: { type: string, example: "abc123" }
+                      createdAt: { type: string, format: date-time }

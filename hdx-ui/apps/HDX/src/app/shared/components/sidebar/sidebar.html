@@ -1,0 +1,15 @@
+<nav class="sidebar" aria-label="Section">
+  <ul class="sidebar__list">
+    @for (item of items(); track item.route) {
+      <li>
+        <a
+          class="sidebar__link"
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__link--active"
+          [attr.data-tour]="item.tourId ?? null"
+          >{{ item.label }}</a
+        >
+      </li>
+    }
+  </ul>
+</nav>

@@ -58,6 +58,16 @@
 .service-card {
   height: 100%;
   position: relative;
+
+  &__title {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
   transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* IUDX gradient-ring hover effect: masked gradient border fades in, card lifts */

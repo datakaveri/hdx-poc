@@ -60,4 +60,11 @@ export class KeycloakAdminService {
     });
     this.logger.log(`Set node_id=${nodeId} on user ${userId}`);
   }
+
+  /** The Keycloak id (JWT `sub`) for a username — used to attribute unowned seed data to hdx.admin. */
+  async findUserIdByUsername(username: string): Promise<string | undefined> {
+    const res = await this.adminFetch(`/users?username=${encodeURIComponent(username)}&exact=true`);
+    const users = (await res.json()) as { id: string }[];
+    return users[0]?.id;
+  }
 }

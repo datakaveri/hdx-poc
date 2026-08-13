@@ -8,5 +8,6 @@ import { ServicesModule } from '../services/services.module';
   imports: [DatasetsModule, ServicesModule],
   controllers: [NodesController],
   providers: [NodesService],
+  exports: [NodesService],
 })
 export class NodesModule {}

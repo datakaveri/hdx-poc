@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { MockDataService } from '../../shared/services/mock-data.service';
 import { FileUploadService } from '../../shared/services/file-upload.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { ConfirmDialogService } from '../../shared/services/confirm-dialog.service';
 import { NodeBadge } from '../../shared/components/node-badge/node-badge';
 import { Dataset, FederatedNode, ServiceOffering } from '../../shared/models';
 
@@ -23,6 +24,7 @@ interface NodeBranch {
 export class ProfileHome {
   private readonly mockData = inject(MockDataService);
   private readonly fileUpload = inject(FileUploadService);
+  private readonly confirmDialog = inject(ConfirmDialogService);
   readonly auth = inject(AuthService);
 
   readonly deletingId = signal<string | null>(null);
@@ -62,7 +64,11 @@ export class ProfileHome {
   }
 
   async deleteNode(node: FederatedNode): Promise<void> {
-    if (!confirm(`Delete "${node.name}"? This also deletes every dataset and service registered under it.`)) return;
+    const confirmed = await this.confirmDialog.confirm(
+      `This also deletes every dataset and service registered under "${node.name}", along with any uploaded files.`,
+      { title: `Delete "${node.name}"?`, confirmLabel: 'Delete node', danger: true },
+    );
+    if (!confirmed) return;
     this.actionError.set(null);
     this.deletingId.set(node.id);
     try {
@@ -75,7 +81,12 @@ export class ProfileHome {
   }
 
   async deleteDataset(dataset: Dataset): Promise<void> {
-    if (!confirm(`Delete dataset "${dataset.title}"?`)) return;
+    const confirmed = await this.confirmDialog.confirm(`Delete dataset "${dataset.title}"? This can't be undone.`, {
+      title: 'Delete dataset?',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     this.actionError.set(null);
     this.deletingId.set(dataset.id);
     try {
@@ -88,7 +99,12 @@ export class ProfileHome {
   }
 
   async deleteService(service: ServiceOffering): Promise<void> {
-    if (!confirm(`Delete service "${service.name}"?`)) return;
+    const confirmed = await this.confirmDialog.confirm(`Delete service "${service.name}"? This can't be undone.`, {
+      title: 'Delete service?',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) return;
     this.actionError.set(null);
     this.deletingId.set(service.id);
     try {

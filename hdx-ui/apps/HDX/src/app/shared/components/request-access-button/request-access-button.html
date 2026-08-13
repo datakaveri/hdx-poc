@@ -1,0 +1,21 @@
+@if (!isOwnerOrAdmin()) {
+  @switch (status()) {
+    @case ('none') {
+      <button type="button" class="wizard-btn wizard-btn--secondary" [disabled]="requesting()" (click)="request()">
+        {{ requesting() ? 'Requesting…' : 'Request Access' }}
+      </button>
+    }
+    @case ('pending') {
+      <span class="access-status access-status--pending">Access request pending</span>
+    }
+    @case ('approved') {
+      <span class="access-status access-status--approved">Access granted</span>
+    }
+    @case ('rejected') {
+      <span class="access-status access-status--rejected">Access request rejected</span>
+    }
+  }
+  @if (error()) {
+    <span class="error-message">{{ error() }}</span>
+  }
+}

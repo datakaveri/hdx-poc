@@ -7,7 +7,7 @@
     </p>
   </header>
 
-  <div class="format-grid">
+  <div class="format-grid" data-tour="format-grid">
     @for (format of formats; track format.id) {
       <a class="format-card" [routerLink]="[format.id]">
         <span class="format-card__name">{{ format.name }}</span>

@@ -1,0 +1,58 @@
+<section class="requests-page" data-tour="access-requests-page">
+  <header class="requests-page__intro">
+    <h1>Access Requests</h1>
+    <p>Requests you've made, and requests for things you own that need your decision.</p>
+  </header>
+
+  @if (loadError()) {
+    <div class="requests-page__error">{{ loadError() }}</div>
+  }
+  @if (actionError()) {
+    <div class="requests-page__error">{{ actionError() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="empty-state">Loading…</p>
+  } @else {
+    <h2 class="section-title">Requests to review ({{ toReview().length }})</h2>
+    @if (toReview().length === 0) {
+      <p class="empty-state">Nothing waiting on your decision.</p>
+    } @else {
+      <div class="request-list">
+        @for (request of toReview(); track request.id) {
+          <div class="request-row">
+            <div class="request-row__body">
+              <span class="request-row__type">{{ request.resourceType }}</span>
+              <span class="request-row__label">{{ resourceLabel(request.resourceType, request.resourceId) }}</span>
+            </div>
+            <div class="request-row__actions">
+              <button type="button" class="request-row__approve" [disabled]="decidingId() === request.id" (click)="approve(request)">
+                Approve
+              </button>
+              <button type="button" class="request-row__reject" [disabled]="decidingId() === request.id" (click)="reject(request)">
+                Reject
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <h2 class="section-title">My requests ({{ mine().length }})</h2>
+    @if (mine().length === 0) {
+      <p class="empty-state">You haven't requested access to anything yet.</p>
+    } @else {
+      <div class="request-list">
+        @for (request of mine(); track request.id) {
+          <div class="request-row">
+            <div class="request-row__body">
+              <span class="request-row__type">{{ request.resourceType }}</span>
+              <span class="request-row__label">{{ resourceLabel(request.resourceType, request.resourceId) }}</span>
+            </div>
+            <span class="status-badge" [class]="'status-badge--' + request.status">{{ request.status }}</span>
+          </div>
+        }
+      </div>
+    }
+  }
+</section>

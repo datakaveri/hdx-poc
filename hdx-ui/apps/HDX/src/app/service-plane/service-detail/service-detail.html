@@ -1,0 +1,47 @@
+@if (service(); as svc) {
+  <section class="plane-page">
+    <a class="back-link" routerLink="/service-plane">&larr; All services</a>
+
+    <header class="svc-header">
+      @if (node(); as n) {
+        <div class="svc-header__node">
+          <app-node-badge [archetype]="n.archetype" [status]="n.status" />
+          <a class="svc-header__node-link" [routerLink]="['/nodes', n.id]">{{ n.name }}</a>
+        </div>
+      } @else {
+        <span class="svc-header__platform-badge">Platform-wide</span>
+      }
+      <h1>{{ svc.name }}</h1>
+      <p class="svc-header__description">{{ svc.description }}</p>
+      <div class="svc-header__meta">
+        <span class="standard-chip">{{ categoryLabel() }}</span>
+        <span class="visibility-chip" [class.visibility-chip--private]="svc.visibility === 'private'">
+          {{ svc.visibility === 'private' ? 'Private' : 'Public' }}
+        </span>
+      </div>
+      <app-request-access-button resourceType="service" [resourceId]="svc.id" [ownerId]="svc.ownerId" />
+    </header>
+
+    <h2 class="section-title">Registered against ({{ operatesOnDatasets().length }})</h2>
+    <div class="dataset-list">
+      @for (dataset of operatesOnDatasets(); track dataset!.id) {
+        <a class="dataset-row" [routerLink]="['/datasets', dataset!.id]">
+          <span class="dataset-row__title">{{ dataset!.title }}</span>
+          <span class="dataset-row__track">{{ dataset!.track }}</span>
+        </a>
+      } @empty {
+        <p class="empty-state">Not yet registered against any dataset.</p>
+      }
+    </div>
+
+    @if (parsedSpec(); as spec) {
+      <h2 class="section-title">API spec</h2>
+      <app-spec-diagram-viewer [spec]="spec" />
+    }
+  </section>
+} @else {
+  <section class="plane-page">
+    <a class="back-link" routerLink="/service-plane">&larr; All services</a>
+    <p class="empty-state">No service matches "{{ id() }}".</p>
+  </section>
+}

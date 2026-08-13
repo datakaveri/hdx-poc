@@ -6,6 +6,7 @@ import { FileDropzone } from '../../shared/components/file-dropzone/file-dropzon
 import { DropdownOption, DropdownSelect } from '../../shared/components/dropdown-select/dropdown-select';
 import { MockDataService } from '../../shared/services/mock-data.service';
 import { FileUploadService } from '../../shared/services/file-upload.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { AccessTier, DataTrack, Visibility } from '../../shared/models';
 
 const TRACK_OPTIONS: DropdownOption[] = [
@@ -38,7 +39,12 @@ const STANDARD_CHOICES = [
   'NCIt',
 ];
 
-/** Submits to Controlplane (see /controlplane at the repo root); a sample file, if attached, is uploaded to Fileserver. */
+/**
+ * Submits to Controlplane (see /controlplane at the repo root); a sample file, if attached, is
+ * uploaded to Fileserver. Only reachable by an approved node_owner — Controlplane's
+ * `isOwnerOfNode` check already rejects anything else, so there's no node picker here at all:
+ * the dataset is always published under the signed-in user's own node.
+ */
 @Component({
   selector: 'app-dataset-onboarding',
   standalone: true,
@@ -50,13 +56,14 @@ export class DatasetOnboarding {
   private readonly mockData = inject(MockDataService);
   private readonly fileUpload = inject(FileUploadService);
   private readonly selectedFiles = signal<File[]>([]);
+  readonly auth = inject(AuthService);
 
   readonly steps = ['Basic Info', 'Standards & Access', 'Sample File', 'Review'];
   readonly trackOptions = TRACK_OPTIONS;
   readonly accessOptions = ACCESS_OPTIONS;
   readonly standardChoices = STANDARD_CHOICES;
 
-  readonly nodeOptions: DropdownOption[] = this.mockData.getNodes().map((n) => ({ label: n.name, value: n.id }));
+  readonly myNodeName = computed(() => this.mockData.getNode(this.auth.nodeId() ?? '')?.name ?? '—');
 
   readonly currentStep = signal(0);
   readonly submitted = signal(false);
@@ -67,7 +74,6 @@ export class DatasetOnboarding {
 
   readonly title = signal('');
   readonly description = signal('');
-  readonly nodeId = signal('');
   readonly track = signal('');
   readonly standards = signal<string[]>([]);
   readonly access = signal('');
@@ -82,7 +88,6 @@ export class DatasetOnboarding {
       .filter(Boolean),
   );
 
-  readonly nodeLabel = computed(() => this.nodeOptions.find((o) => o.value === this.nodeId())?.label ?? '—');
   readonly trackLabel = computed(() => this.trackOptions.find((o) => o.value === this.track())?.label ?? '—');
   readonly accessLabel = computed(() => this.accessOptions.find((o) => o.value === this.access())?.label ?? '—');
   readonly fileCount = computed(() => this.selectedFiles().length);
@@ -91,9 +96,7 @@ export class DatasetOnboarding {
     this.selectedFiles.set(files);
   }
 
-  private readonly step0Valid = computed(
-    () => !!this.title().trim() && !!this.description().trim() && !!this.nodeId() && !!this.track(),
-  );
+  private readonly step0Valid = computed(() => !!this.title().trim() && !!this.description().trim() && !!this.track());
   private readonly step1Valid = computed(() => this.standards().length > 0 && !!this.access());
 
   readonly canGoNext = computed(() => {
@@ -128,13 +131,15 @@ export class DatasetOnboarding {
   }
 
   async submit(): Promise<void> {
+    const nodeId = this.auth.nodeId();
+    if (!nodeId) return;
     this.submitting.set(true);
     this.submitError.set(null);
     this.fileSaveError.set(null);
     try {
       const created = await this.mockData.createDataset({
         id: crypto.randomUUID(),
-        nodeId: this.nodeId(),
+        nodeId,
         title: this.title().trim(),
         description: this.description().trim(),
         track: this.track() as DataTrack,
@@ -171,7 +176,6 @@ export class DatasetOnboarding {
     this.currentStep.set(0);
     this.title.set('');
     this.description.set('');
-    this.nodeId.set('');
     this.track.set('');
     this.standards.set([]);
     this.access.set('');

@@ -1,10 +1,26 @@
 <section class="wizard-page">
   <header class="plane-page__intro">
     <h1>Onboard a Service</h1>
-    <p>Register a compute or data-processing service on the exchange, and the datasets it may operate on.</p>
+    @if (auth.nodeId()) {
+      <p>Publishing under <strong>{{ myNodeName() }}</strong> — the federated node you own.</p>
+    } @else {
+      <p>Register a compute or data-processing service on the exchange.</p>
+    }
   </header>
 
-  @if (!submitted()) {
+  @if (!auth.nodeId()) {
+    <div class="wizard-card">
+      <h2 class="wizard-step__title">You need an approved node first</h2>
+      <p class="wizard-step__hint">
+        Only an approved node_owner can publish services. If you haven't already,
+        <a routerLink="/onboarding/node">request a federated node</a> — you can track its approval status on your
+        <a routerLink="/profile">Profile</a> page. Once approved, come back here.
+      </p>
+      <div class="wizard-actions">
+        <a routerLink="/onboarding" class="wizard-btn wizard-btn--secondary">&larr; Back to Onboarding</a>
+      </div>
+    </div>
+  } @else if (!submitted()) {
     <app-wizard-stepper [steps]="steps" [current]="currentStep()" (stepSelect)="goToStep($event)" />
 
     <div class="wizard-card">
@@ -60,28 +76,13 @@
       }
 
       @if (currentStep() === 1) {
-        <h2 class="wizard-step__title">Hosting &amp; Datasets</h2>
-        <p class="wizard-step__hint">Where does this service run, and what is it allowed to touch?</p>
-
-        <div class="form-field">
-          <span class="form-label" id="svc-host-label">Hosted by <span class="required">*</span></span>
-          <app-dropdown-select
-            [id]="'svc-host'"
-            [labelledBy]="'svc-host-label'"
-            [options]="hostOptions"
-            [value]="hostId()"
-            placeholder="Select host"
-            (valueChange)="hostId.set($event)"
-          />
-          @if (showErrors() && !hostId()) {
-            <span class="error-message">Select a host.</span>
-          }
-        </div>
+        <h2 class="wizard-step__title">Datasets</h2>
+        <p class="wizard-step__hint">What is this service allowed to touch, and who can see it?</p>
 
         <div class="form-field">
           <span class="form-label">Registered against (datasets)</span>
           <div class="chip-toggle-group">
-            @for (dataset of datasetChoices; track dataset.id) {
+            @for (dataset of datasetChoices(); track dataset.id) {
               <button
                 type="button"
                 class="chip-toggle"
@@ -90,6 +91,8 @@
               >
                 {{ dataset.title }}
               </button>
+            } @empty {
+              <span class="form-hint">Your node doesn't have any datasets published yet.</span>
             }
           </div>
           <span class="form-hint">Optional — can be left empty and registered against datasets later.</span>
@@ -110,6 +113,24 @@
       }
 
       @if (currentStep() === 2) {
+        <h2 class="wizard-step__title">API Spec <span class="form-hint">(optional)</span></h2>
+        <p class="wizard-step__hint">
+          Upload {{ name() || 'this service' }}'s <code>openapi.yaml</code> or <code>.json</code> spec to generate an
+          endpoint and schema diagram for it.
+        </p>
+
+        <app-spec-upload (specParsed)="onSpecParsed($event)" />
+
+        @if (specError()) {
+          <span class="error-message">{{ specError() }}</span>
+        }
+
+        @if (parsedSpec(); as spec) {
+          <app-spec-diagram-viewer [spec]="spec" />
+        }
+      }
+
+      @if (currentStep() === 3) {
         <h2 class="wizard-step__title">Review &amp; Submit</h2>
         <p class="wizard-step__hint">Double check before this joins the service plane.</p>
 
@@ -117,9 +138,10 @@
           <div class="review-row"><span class="review-row__label">Service name</span><span class="review-row__value">{{ name() || '—' }}</span></div>
           <div class="review-row"><span class="review-row__label">Description</span><span class="review-row__value">{{ description() || '—' }}</span></div>
           <div class="review-row"><span class="review-row__label">Category</span><span class="review-row__value">{{ categoryLabel() }}</span></div>
-          <div class="review-row"><span class="review-row__label">Hosted by</span><span class="review-row__value">{{ hostLabel() }}</span></div>
+          <div class="review-row"><span class="review-row__label">Hosted by</span><span class="review-row__value">{{ myNodeName() }}</span></div>
           <div class="review-row"><span class="review-row__label">Registered against</span><span class="review-row__value">{{ operatesOnTitles().length ? operatesOnTitles().join(', ') : 'None yet' }}</span></div>
           <div class="review-row"><span class="review-row__label">Visibility</span><span class="review-row__value">{{ visibility() === 'public' ? 'Public' : 'Private' }}</span></div>
+          <div class="review-row"><span class="review-row__label">API spec</span><span class="review-row__value">{{ parsedSpec() ? 'Attached' : 'None' }}</span></div>
         </div>
         @if (submitError()) {
           <span class="error-message">{{ submitError() }}</span>
@@ -150,31 +172,13 @@
       </div>
       <h2 class="wizard-success__title">{{ name() }} submitted for review</h2>
       <p class="wizard-success__message">
-        This service is now published under {{ hostLabel() }} and appears across Service Plane and Graph Explorer.
+        This service is now published under {{ myNodeName() }} and appears across Service Plane and Graph Explorer.
         It's saved to the local PoC data store, not a real HDX federation backend.
       </p>
       <div class="wizard-success__actions">
         <button type="button" class="wizard-btn wizard-btn--secondary" (click)="addAnother()">Add another service</button>
         <a routerLink="/service-plane" class="wizard-btn wizard-btn--primary">Back to Service Plane</a>
       </div>
-    </div>
-
-    <div class="wizard-card">
-      <h2 class="wizard-step__title">Attach an API spec <span class="form-hint">(optional)</span></h2>
-      <p class="wizard-step__hint">
-        Upload {{ name() }}'s <code>openapi.yaml</code> or <code>.json</code> spec to generate an endpoint and
-        schema diagram for it.
-      </p>
-
-      <app-spec-upload (specParsed)="onSpecParsed($event)" />
-
-      @if (specSaveError()) {
-        <span class="error-message">{{ specSaveError() }}</span>
-      }
-
-      @if (parsedSpec(); as spec) {
-        <app-spec-diagram-viewer [spec]="spec" />
-      }
     </div>
   }
 </section>

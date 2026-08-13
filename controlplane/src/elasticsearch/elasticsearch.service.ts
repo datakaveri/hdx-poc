@@ -54,6 +54,14 @@ export class ElasticsearchService {
     await this.client.delete({ index, id, refresh: true }).catch(() => undefined);
   }
 
+  /** Sets `ownerId` on every document in `index` that doesn't already have one — used to attribute the bundled demo data to hdx.admin so it behaves like normal owned data (Profile, delete, etc). Idempotent: a no-op once every document has an owner. */
+  async backfillMissingOwner<T extends { id: string; ownerId?: string }>(index: string, ownerId: string): Promise<void> {
+    const unowned = (await this.list<T>(index)).filter((doc) => !doc.ownerId);
+    if (unowned.length === 0) return;
+    await Promise.all(unowned.map((doc) => this.update<T>(index, doc.id, { ownerId } as Partial<T>)));
+    this.logger.log(`Backfilled ownerId=${ownerId} on ${unowned.length} document(s) in "${index}"`);
+  }
+
   /** Finds every document where `field` equals `value` — used to gather a node's datasets/services before a cascade delete. */
   async findByField<T>(index: string, field: string, value: string): Promise<T[]> {
     const res = await this.client.search<T>({ index, size: 1000, query: { term: { [`${field}.keyword`]: value } } });

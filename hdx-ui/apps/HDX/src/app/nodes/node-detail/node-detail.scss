@@ -161,6 +161,11 @@
     font-weight: 600;
     font-size: 0.92rem;
     color: var(--text-primary);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--primary-color);
+    }
   }
 
   &__description {

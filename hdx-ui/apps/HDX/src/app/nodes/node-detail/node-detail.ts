@@ -5,12 +5,13 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { MockDataService } from '../../shared/services/mock-data.service';
 import { NodeBadge } from '../../shared/components/node-badge/node-badge';
+import { RequestAccessButton } from '../../shared/components/request-access-button/request-access-button';
 import { AccessTier } from '../../shared/models';
 
 @Component({
   selector: 'app-node-detail',
   standalone: true,
-  imports: [RouterLink, NodeBadge, CardModule, TagModule, DecimalPipe],
+  imports: [RouterLink, NodeBadge, CardModule, TagModule, DecimalPipe, RequestAccessButton],
   templateUrl: './node-detail.html',
   styleUrl: './node-detail.scss',
 })

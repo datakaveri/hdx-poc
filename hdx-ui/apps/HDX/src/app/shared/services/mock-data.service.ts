@@ -56,6 +56,25 @@ export class MockDataService {
     return this.datasetsSignal().filter((d) => d.nodeId === nodeId);
   }
 
+  /**
+   * GET /datasets excludes other owners' private datasets, so a direct link to
+   * one (e.g. shared to request access) won't resolve via getDataset(). This
+   * hits GET /datasets/:id directly, which has no visibility filter, and
+   * caches the result into the signal so the rest of the page (node lookups,
+   * compatible services) sees it too.
+   */
+  async fetchDatasetById(id: string): Promise<Dataset | undefined> {
+    const cached = this.getDataset(id);
+    if (cached) return cached;
+    try {
+      const dataset = await firstValueFrom(this.http.get<Dataset>(`${API_BASE}/datasets/${id}`));
+      this.datasetsSignal.update((datasets) => (datasets.some((d) => d.id === id) ? datasets : [...datasets, dataset]));
+      return dataset;
+    } catch {
+      return undefined;
+    }
+  }
+
   getServices(): ServiceOffering[] {
     return this.servicesSignal();
   }
@@ -67,6 +86,19 @@ export class MockDataService {
   /** Services registered to operate on this dataset — the reverse of ServiceOffering.operatesOn. */
   getServicesForDataset(datasetId: string): ServiceOffering[] {
     return this.servicesSignal().filter((s) => s.operatesOn.includes(datasetId));
+  }
+
+  /** Same rationale as fetchDatasetById() — see its comment. */
+  async fetchServiceById(id: string): Promise<ServiceOffering | undefined> {
+    const cached = this.servicesSignal().find((s) => s.id === id);
+    if (cached) return cached;
+    try {
+      const service = await firstValueFrom(this.http.get<ServiceOffering>(`${API_BASE}/services/${id}`));
+      this.servicesSignal.update((services) => (services.some((s) => s.id === id) ? services : [...services, service]));
+      return service;
+    } catch {
+      return undefined;
+    }
   }
 
   async createNode(node: FederatedNode): Promise<FederatedNode> {

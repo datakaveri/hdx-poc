@@ -19,6 +19,10 @@ export const appRoutes: Route[] = [
     loadChildren: () => import('./service-plane/service-plane.routes').then((m) => m.servicePlaneRoutes),
   },
   {
+    path: 'services',
+    loadChildren: () => import('./service-plane/services.routes').then((m) => m.servicesRoutes),
+  },
+  {
     path: 'graph-explorer',
     loadChildren: () => import('./graph-explorer/graph-explorer.routes').then((m) => m.graphExplorerRoutes),
   },
@@ -33,9 +37,5 @@ export const appRoutes: Route[] = [
   {
     path: 'profile',
     loadChildren: () => import('./profile/profile.routes').then((m) => m.profileRoutes),
-  },
-  {
-    path: 'admin',
-    loadChildren: () => import('./admin/admin.routes').then((m) => m.adminRoutes),
   },
 ];

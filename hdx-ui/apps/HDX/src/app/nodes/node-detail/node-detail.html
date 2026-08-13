@@ -10,6 +10,7 @@
       <div class="node-header__meta">{{ n.institution }} &middot; {{ n.location }}</div>
       <p class="node-header__description">{{ n.description }}</p>
       <div class="node-header__onboarding"><strong>Onboarded via:</strong> {{ n.onboardedVia }}</div>
+      <app-request-access-button resourceType="node" [resourceId]="n.id" [ownerId]="n.ownerId" />
     </header>
 
     <h2 class="section-title">Datasets hosted here ({{ datasets().length }})</h2>
@@ -39,7 +40,7 @@
       <div class="service-list">
         @for (service of services(); track service.id) {
           <div class="service-row">
-            <span class="service-row__name">{{ service.name }}</span>
+            <a class="service-row__name" [routerLink]="['/services', service.id]">{{ service.name }}</a>
             <span class="service-row__description">{{ service.description }}</span>
           </div>
         }
