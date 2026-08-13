@@ -48,6 +48,14 @@
                 ],
                 "outputHashing": "all"
               },
+              "prod-vm": {
+                "fileReplacements": [
+                  {
+                    "replace": "apps/HDX/src/environments/environment.ts",
+                    "with": "apps/HDX/src/environments/environment.prod.ts"
+                  }
+                ]
+              },
               "development": {
                 "optimization": false,
                 "extractLicenses": false,
@@ -31456,5 +31464,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1786619749567
+  "computedAt": 1786623127803
 }

@@ -1,0 +1,62 @@
+# Production overrides for the VM at 65.2.128.179 (plain HTTP, no domain/TLS yet).
+#
+# Run on the VM with:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#
+# What this changes vs. the dev compose:
+#   - UI is built with `production,prod-vm` so environment.prod.ts (65.2.128.179
+#     URLs) replaces environment.ts
+#   - Keycloak redirect URIs + backend CORS point at http://65.2.128.179:4300
+#   - Keycloak theme caching is switched back on (dev compose disables it)
+#   - every long-running service restarts automatically after a reboot/crash
+#   - Kibana and the MinIO console are internal-only debug tools, so their
+#     ports are not published on the VM
+
+services:
+  hapi-fhir:
+    restart: unless-stopped
+
+  keycloak:
+    restart: unless-stopped
+    environment:
+      KC_SPI_THEME_CACHE_THEMES: "true"
+      KC_SPI_THEME_CACHE_TEMPLATES: "true"
+      KC_SPI_THEME_STATIC_MAX_AGE: "2592000"
+
+  kc-setup:
+    environment:
+      KC_PUBLIC_URL: http://65.2.128.179:8081
+      APP_URL: http://65.2.128.179:4300
+
+  elasticsearch:
+    restart: unless-stopped
+    # xpack security is off — never publish ES on a public VM; only the
+    # controlplane needs it, over the compose network
+    ports: !override []
+
+  kibana:
+    restart: unless-stopped
+    ports: !override []
+
+  minio:
+    restart: unless-stopped
+    # fileserver streams uploads/downloads itself (browser never hits MinIO),
+    # so neither the S3 API (9000) nor the console (9001) is published
+    ports: !override []
+
+  controlplane:
+    restart: unless-stopped
+    environment:
+      CORS_ORIGIN: http://65.2.128.179:4300
+
+  fileserver:
+    restart: unless-stopped
+    environment:
+      CORS_ORIGIN: http://65.2.128.179:4300
+
+  ui:
+    restart: unless-stopped
+    build:
+      context: ./hdx-ui
+      args:
+        BUILD_CONFIGURATION: production,prod-vm

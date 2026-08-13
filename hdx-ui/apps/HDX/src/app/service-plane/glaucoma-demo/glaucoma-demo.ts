@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FhirService } from '../../shared/services/fhir.service';
 import { GLAUCOMA_PATIENTS, glaucomaResourceIds } from '../../shared/data/glaucoma-patients.data';
-import { redactMediaData } from '../../shared/utils/redact-fhir-media';
+import { redactMediaData, redactPatientIdentity } from '../../shared/utils/redact-fhir-media';
 
 interface MediaResource {
   content?: { contentType?: string; data?: string };
@@ -74,7 +74,7 @@ export class GlaucomaDemo {
   readonly filteredPatients = computed(() => {
     const q = this.filterText().trim().toLowerCase();
     if (!q) return this.patients;
-    return this.patients.filter((p) => p.name.toLowerCase().includes(q) || p.labelText.toLowerCase().includes(q));
+    return this.patients.filter((p) => `pt-${p.id}`.includes(q) || p.labelText.toLowerCase().includes(q));
   });
 
   readonly expandedId = signal<string | null>(null);
@@ -148,8 +148,8 @@ export class GlaucomaDemo {
           loading: false,
           error: null,
           imageDataUrl,
-          inputBundleJson: JSON.stringify(redactMediaData(bundle), null, 2),
-          outputBundleJson: JSON.stringify(outputBundle, null, 2),
+          inputBundleJson: JSON.stringify(redactPatientIdentity(redactMediaData(bundle)), null, 2),
+          outputBundleJson: JSON.stringify(redactPatientIdentity(outputBundle), null, 2),
           conclusion: report.conclusion ?? (observation.interpretation?.[0]?.coding?.[0]?.display ?? null),
         },
       }));

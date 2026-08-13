@@ -38,6 +38,14 @@
           ],
           "outputHashing": "all"
         },
+        "prod-vm": {
+          "fileReplacements": [
+            {
+              "replace": "apps/HDX/src/environments/environment.ts",
+              "with": "apps/HDX/src/environments/environment.prod.ts"
+            }
+          ]
+        },
         "development": {
           "optimization": false,
           "extractLicenses": false,

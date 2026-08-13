@@ -92,6 +92,14 @@
       "apps/HDX/project.json",
       "nx/core/project-json"
     ],
+    "targets.build.configurations.prod-vm": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.prod-vm.fileReplacements": [
+      "apps/HDX/project.json",
+      "nx/core/project-json"
+    ],
     "targets.build.configurations.development": [
       "apps/HDX/project.json",
       "nx/core/project-json"

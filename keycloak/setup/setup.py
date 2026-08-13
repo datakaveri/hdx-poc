@@ -37,10 +37,11 @@ import json, os, sys, time, urllib.request, urllib.error
 
 KC = os.environ.get("KC_URL", "http://keycloak:8080")
 PUB = os.environ.get("KC_PUBLIC_URL", "http://localhost:8081")
+APP = os.environ.get("APP_URL", "http://localhost:4300")  # browser-visible Angular origin
 ADMIN, ADMIN_PW, DEMO_PW = "admin", "admin", "Demo123!"
 REALM = "hdx"
 CLIENT_ID = "hdx-ui"
-REDIRECT_URIS = [f"{PUB}/*", "http://localhost:4300/*", "http://localhost:4200/*"]
+REDIRECT_URIS = [f"{PUB}/*", f"{APP}/*", "http://localhost:4300/*", "http://localhost:4200/*"]
 
 
 def http(method, url, body=None, ctype="application/json", token=None, ok=(200, 201, 204, 409)):

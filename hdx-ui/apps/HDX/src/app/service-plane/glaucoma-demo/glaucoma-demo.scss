@@ -132,6 +132,19 @@
   &__filter {
     margin-bottom: var(--spacing-sm);
   }
+
+  &__privacy {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: var(--spacing-sm);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+
+    .pi {
+      font-size: 0.8rem;
+    }
+  }
 }
 
 .demo-table-wrap {
@@ -165,6 +178,12 @@
     border-bottom: 1px solid var(--border-color);
     color: var(--text-primary);
   }
+}
+
+.demo-table__patient-id {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
 }
 
 .demo-table__row {

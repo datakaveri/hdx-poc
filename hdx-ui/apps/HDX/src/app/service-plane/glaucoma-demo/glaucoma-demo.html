@@ -57,10 +57,15 @@
           <h2 class="section-title">Results ({{ patients.length }} patients)</h2>
           <span class="demo-results__summary">{{ positiveCount }} positive · {{ patients.length - positiveCount }} negative</span>
         </div>
+        <p class="demo-results__privacy">
+          <i class="pi pi-lock"></i>
+          Patient identities are withheld — the service only ever sees de-identified FHIR records, so results are keyed by
+          pseudonymous patient ID.
+        </p>
         <input
           type="text"
           class="demo-picker__input demo-results__filter"
-          placeholder="Filter by name or result…"
+          placeholder="Filter by patient ID or result…"
           [ngModel]="filterText()"
           (ngModelChange)="filterText.set($event)"
         />
@@ -81,7 +86,7 @@
             <tbody>
               @for (patient of filteredPatients(); track patient.id) {
                 <tr class="demo-table__row" (click)="toggleExpand(patient.id)" [class.demo-table__row--expanded]="expandedId() === patient.id">
-                  <td>{{ patient.name }}</td>
+                  <td class="demo-table__patient-id">pt-{{ patient.id }}</td>
                   <td>{{ patient.gender }}</td>
                   <td>{{ patient.age }}</td>
                   <td>{{ patient.hba1cPercent }}%</td>
@@ -104,7 +109,7 @@
                         } @else {
                           <div class="demo-table__detail">
                             @if (detail.imageDataUrl) {
-                              <img class="demo-table__fundus" [src]="detail.imageDataUrl" alt="Fundus photograph for {{ patient.name }}" />
+                              <img class="demo-table__fundus" [src]="detail.imageDataUrl" alt="Fundus photograph for patient pt-{{ patient.id }}" />
                             }
                             <div class="demo-table__detail-body">
                               <p class="demo-table__conclusion">{{ detail.conclusion }}</p>
